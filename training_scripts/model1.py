@@ -1,4 +1,4 @@
-from training import full_train
+import training
 import ray
 import ray.rllib.agents.ppo as ppo
 import json, os, shutil, sys
@@ -21,6 +21,6 @@ print(policy.model.base_model.summary())
 t0 = time.time()
 checkpoint_root='../tmp/ppo/model1'
 n_iter = sys.argv[1]
-full_train(checkpoint_root, agent, n_iter)
+training.full_train(checkpoint_root, agent, n_iter)
 t1 = time.time()-t0
 print("Total time for the " + str(n_iter) + " training iterations: " + str(t1))
