@@ -18,6 +18,9 @@ policy=agent.get_policy()
 print(policy.model.model_config)
 print(policy.model.base_model.summary())
 
+print("Configuración del agente:\n\n" + str(config))
+print("\nConfiguración del modelo del agente:\n\n" + str(config["model"]))
+
 t0 = time.time()
 checkpoint_root='../tmp/ppo/model1'
 n_iter = int(sys.argv[1])
