@@ -14,6 +14,7 @@ ray.shutdown()
 ray.init()
 config = ppo.DEFAULT_CONFIG.copy()
 config['num_workers'] = 8 
+config['num_gpus'] = 1
 agent = ppo.PPOTrainer(env='Pong-v0')
 policy=agent.get_policy()
 print(policy.model.model_config)
