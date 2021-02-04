@@ -10,7 +10,7 @@ print(policy.model.model_config)
 print(policy.model.base_model.summary())
 
 t0 = time.time()
-checkpoint_root='/tmp/ppo/model1'
+checkpoint_root='./tmp/ppo/model1'
 n_iter = sys.argv[1]
 full_train(checkpoint_root, agent, n_iter)
 t1 = time.time()-t0
