@@ -13,6 +13,7 @@ shutil.rmtree('~/ray_results', ignore_errors = True, onerror = False)
 ray.shutdown()
 ray.init()
 config = ppo.DEFAULT_CONFIG.copy()
+config['num_workers'] = 8 
 agent = ppo.PPOTrainer(env='Pong-v0')
 policy=agent.get_policy()
 print(policy.model.model_config)
