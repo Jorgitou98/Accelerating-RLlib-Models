@@ -1,4 +1,4 @@
-import training
+from training import full_train
 import ray
 import ray.rllib.agents.ppo as ppo
 import json, os, shutil, sys
