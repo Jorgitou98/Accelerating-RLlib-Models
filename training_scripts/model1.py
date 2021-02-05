@@ -15,7 +15,7 @@ ray.init()
 config = ppo.DEFAULT_CONFIG.copy()
 num_workers = int(sys.argv[1])
 config['num_workers'] = num_workers
-agent = ppo.PPOTrainer(env='Pong-v0')
+agent = ppo.PPOTrainer(config, env='Pong-v0')
 policy=agent.get_policy()
 print(policy.model.model_config)
 print(policy.model.base_model.summary())
