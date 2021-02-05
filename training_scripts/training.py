@@ -7,8 +7,9 @@ import time
 import shelve
 from tensorflow import keras
 from ray import tune
+import csv
 
-def full_train(checkpoint_root, agent, n_iter, save_file, restore = False, restore_dir = None):
+def full_train(checkpoint_root, agent, n_iter, save_file, n_ini = 0, header = True, restore = False, restore_dir = None):
     s = "{:3d} reward {:6.2f}/{:6.2f}/{:6.2f} len {:6.2f} learn_time(ms) {:6.2f} saved {}"
     if(restore):
         if restore_dir == None:
@@ -25,7 +26,7 @@ def full_train(checkpoint_root, agent, n_iter, save_file, restore = False, resto
     for n in range(n_iter):
         result = agent.train()
         results.append(result)
-        episode = {'n': n,
+        episode = {'n': n_ini + n + 1,
                    'episode_reward_min': result['episode_reward_min'],
                    'episode_reward_mean': result['episode_reward_mean'],
                    'episode_reward_max': result['episode_reward_max'],
@@ -35,7 +36,7 @@ def full_train(checkpoint_root, agent, n_iter, save_file, restore = False, resto
         episode_json.append(json.dumps(episode))
         file_name = agent.save(checkpoint_root)
         print(s.format(
-        n + 1,
+        n_ini + n + 1,
         result["episode_reward_min"],
         result["episode_reward_mean"],
         result["episode_reward_max"],
@@ -48,12 +49,13 @@ def full_train(checkpoint_root, agent, n_iter, save_file, restore = False, resto
     print("Total learn time: " + str(total_learn_time))
     print("Average learn time per iteration: " + str(total_learn_time/n_iter))
 
-    with open(save_file + '.json', 'w+') as outfile:
-        json.dump(episode_json, outfile)
+    with open(save_file + '.json', mode='a') as outfile:
+        json.dumps(episode_json, outfile)
 
-    with open(save_file + '.csv', mode='w+') as csv_file:
+    with open(save_file + '.csv', mode='a') as csv_file:
         fieldnames = ['n', 'episode_reward_min', 'episode_reward_mean', 'episode_reward_max','episode_len_mean', 'learn_time_ms']
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
-        writer.writeheader()
+        if header:
+            writer.writeheader()
         for row in episode_data:
             writer.writerow(row)
