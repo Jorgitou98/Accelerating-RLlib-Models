@@ -48,7 +48,7 @@ def full_train(checkpoint_root, agent, n_iter, save_file, restore = False, resto
     print("Total learn time: " + str(total_learn_time))
     print("Average learn time per iteration: " + str(total_learn_time/n_iter))
 
-    with open(save_file + .'json', 'w+') as outfile:
+    with open(save_file + '.json', 'w+') as outfile:
         json.dump(episode_json, outfile)
 
     with open(save_file + '.csv', mode='w+') as csv_file:
