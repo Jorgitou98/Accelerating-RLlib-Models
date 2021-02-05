@@ -8,7 +8,7 @@ import shelve
 from tensorflow import keras
 from ray import tune
 
-def full_train(checkpoint_root, agent, n_iter, restore = False, restore_dir = None):
+def full_train(checkpoint_root, agent, n_iter, save_file, restore = False, restore_dir = None):
     s = "{:3d} reward {:6.2f}/{:6.2f}/{:6.2f} len {:6.2f} learn_time(ms) {:6.2f} saved {}"
     if(restore):
         if restore_dir == None:
@@ -47,4 +47,13 @@ def full_train(checkpoint_root, agent, n_iter, restore = False, restore_dir = No
 
     print("Total learn time: " + str(total_learn_time))
     print("Average learn time per iteration: " + str(total_learn_time/n_iter))
-    return results, episode_data, episode_json
+
+    with open(save_file + .'json', 'w+') as outfile:
+        json.dump(episode_json, outfile)
+
+    with open(save_file + '.csv', mode='w+') as csv_file:
+        fieldnames = ['n', 'episode_reward_min', 'episode_reward_mean', 'episode_reward_max','episode_len_mean', 'learn_time_ms']
+        writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+        writer.writeheader()
+        for row in episode_data:
+            writer.writerow(row)
