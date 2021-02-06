@@ -17,6 +17,7 @@ config = apex.APEX_DEFAULT_CONFIG.copy()
 num_workers = int(sys.argv[2])
 config['num_workers'] = num_workers
 config['num_gpus'] = 1
+config['buf_size'] = 2000
 
 if model == 'model1':
     save_file = './training_results/model1/model1_results_gpu'
