@@ -20,7 +20,7 @@ config['num_gpus'] = 1
 
 if model == 'model1':
     save_file = './training_results/model1/model1_results_gpu'
-    checkpoint_root='./d'
+    checkpoint_root='./checkpoints/model1_gpu'
 elif model == 'model2':
     config['model']['dim'] = 168
     config['model']['conv_filters'] = [[16, [16, 16], 8],[32, [4, 4], 2],[256, [11, 11], 1]]
