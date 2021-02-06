@@ -47,7 +47,7 @@ elif model == 'model6':
     save_file = './training_results/ppo/model6/model6_results_gpu'
     checkpoint_root='./checkpoints/ppo/model6_gpu'
 
-agent = apex.ApexTrainer(config, env='Pong-v0')
+agent = ppo.PPOTrainer(config, env='Pong-v0')
 policy=agent.get_policy()
 print(policy.model.model_config)
 print(policy.model.base_model.summary())
