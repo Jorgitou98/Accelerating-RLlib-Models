@@ -26,7 +26,7 @@ def full_train(checkpoint_root, agent, n_iter, save_file, n_ini = 0, header = Tr
     for n in range(n_iter):
         result = agent.train()
         results.append(result)
-        episode = {'n': 1,
+        episode = {'n': n_ini + n + 1,
                    'episode_reward_min': result['episode_reward_min'],
                    'episode_reward_mean': result['episode_reward_mean'],
                    'episode_reward_max': result['episode_reward_max'],
