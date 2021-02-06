@@ -26,12 +26,16 @@ def full_train(checkpoint_root, agent, n_iter, save_file, n_ini = 0, header = Tr
     for n in range(n_iter):
         result = agent.train()
         results.append(result)
-        episode = {'n': n_ini + n + 1,
+        episode = {'n': 1,
                    'episode_reward_min': result['episode_reward_min'],
                    'episode_reward_mean': result['episode_reward_mean'],
                    'episode_reward_max': result['episode_reward_max'],
                    'episode_len_mean': result['episode_len_mean'],
-                   'learn_time_ms': result['timers']['learn_time_ms']}
+                   'learner_dequeue_time_ms': result['timers']['learner_dequeue_time_ms'],
+                   'learner_grad_time_ms': result['timers']['learner_grad_time_ms'],
+                   'learner_overall_time_ms': result['timers']['learner_overall_time_ms'],
+                   'time_this_iter_s': result['time_this_iter_s']
+                   }
         episode_data.append(episode)
         episode_json.append(json.dumps(episode))
         file_name = agent.save(checkpoint_root)
@@ -41,10 +45,10 @@ def full_train(checkpoint_root, agent, n_iter, save_file, n_ini = 0, header = Tr
         result["episode_reward_mean"],
         result["episode_reward_max"],
         result["episode_len_mean"],
-        result["timers"]["learn_time_ms"],
+        result["time_this_iter_s"],
         file_name
        ))
-        total_learn_time+= result["timers"]["learn_time_ms"]
+        total_learn_time+= result["timers"]["learner_overall_time_ms"]
 
     print("Total learn time: " + str(total_learn_time))
     print("Average learn time per iteration: " + str(total_learn_time/n_iter))
@@ -53,7 +57,7 @@ def full_train(checkpoint_root, agent, n_iter, save_file, n_ini = 0, header = Tr
         json.dump(episode_json, outfile)
 
     with open(save_file + '.csv', mode='a') as csv_file:
-        fieldnames = ['n', 'episode_reward_min', 'episode_reward_mean', 'episode_reward_max','episode_len_mean', 'learn_time_ms']
+        fieldnames = ['n', 'episode_reward_min', 'episode_reward_mean', 'episode_reward_max','episode_len_mean', 'learner_dequeue_time_ms', 'learner_grad_time_ms', 'learner_overall_time_ms', 'time_this_iter_s']
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
         if header:
             writer.writeheader()
