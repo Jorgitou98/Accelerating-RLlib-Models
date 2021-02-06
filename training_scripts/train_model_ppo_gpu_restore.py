@@ -19,33 +19,33 @@ config['num_workers'] = num_workers
 config['num_gpus'] = 1
 
 if model == 'model1':
-    save_file = './training_results/ppo/model1/model1_results'
-    checkpoint_root='./checkpoints/ppo/model1'
+    save_file = './training_results/ppo/model1/model1_results_gpu'
+    checkpoint_root='./checkpoints/ppo/model1_gpu'
 elif model == 'model2':
     config['model']['dim'] = 168
     config['model']['conv_filters'] = [[16, [16, 16], 8],[32, [4, 4], 2],[256, [11, 11], 1]]
-    save_file = './training_results/ppo/model2/model2_results'
-    checkpoint_root='./checkpoints/ppo/model2'
+    save_file = './training_results/ppo/model2/model2_results_gpu'
+    checkpoint_root='./checkpoints/ppo/model2_gpu'
 elif model == 'model3':
     config['model']['dim'] = 252
     config['model']['conv_filters'] = [[16, [8, 8], 4],[16, [8, 8], 4], [32, [4, 4], 2], [256, [8, 8], 1]]
-    save_file = './training_results/ppo/model3/model3_results'
-    checkpoint_root='./checkpoints/ppo/model3'
+    save_file = './training_results/ppo/model3/model3_results_gpu'
+    checkpoint_root='./checkpoints/ppo/model3_gpu'
 elif model == 'model4':
     config['model']['dim'] = 168
     config['model']['conv_filters'] = [[16, [8, 8], 4],[32, [4, 4], 2],[32, [4, 4], 2], [256, [11, 11], 1]]
-    save_file = './training_results/ppo/model4/model4_results'
-    checkpoint_root='./checkpoints/ppo/model4'
+    save_file = './training_results/ppo/model4/model4_results_gpu'
+    checkpoint_root='./checkpoints/ppo/model4_gpu'
 elif model == 'model5':
     config['model']['dim'] = 252
     config['model']['conv_filters'] = [[16, [8, 8], 4],[32, [4, 4], 2], [32, [4, 4], 2], [256, [16, 16], 1]]
-    save_file = './training_results/ppo/model5/model5_results'
-    checkpoint_root='./checkpoints/ppo/model5'
+    save_file = './training_results/ppo/model5/model5_results_gpu'
+    checkpoint_root='./checkpoints/ppo/model5_gpu'
 elif model == 'model6':
     config['model']['dim'] = 168
     config['model']['conv_filters'] = [[16, [8, 8], 4],[32, [4, 4], 2],[256, [21, 21], 1]]
-    save_file = './training_results/ppo/model6/model6_results'
-    checkpoint_root='./checkpoints/ppo/model6'
+    save_file = './training_results/ppo/model6/model6_results_gpu'
+    checkpoint_root='./checkpoints/ppo/model6_gpu'
 
 agent = ppo.PPOTrainer(config, env='Pong-v0')
 policy=agent.get_policy()
