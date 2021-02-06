@@ -42,7 +42,7 @@ def full_train(checkpoint_root, agent, n_iter, save_file, n_ini = 0, header = Tr
         result["episode_reward_mean"],
         result["episode_reward_max"],
         result["episode_len_mean"],
-        result["timers"]["learn_time(ms)"]
+        result["timers"]["learn_time(ms)"],
         file_name
        ))
         total_learn_time+= result["timers"]["learn_time(ms)"]
