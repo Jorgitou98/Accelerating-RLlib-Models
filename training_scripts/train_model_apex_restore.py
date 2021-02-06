@@ -1,4 +1,4 @@
-import training
+import training_apex as training
 import ray
 import ray.rllib.agents.dqn.apex as apex
 import json, os, shutil, sys

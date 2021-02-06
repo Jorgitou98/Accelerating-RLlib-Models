@@ -1,6 +1,6 @@
-import training
+import training_ppo as training
 import ray
-import ray.rllib.agents.dqn.apex as apex
+import ray.rllib.agents.ppo as ppo
 import json, os, shutil, sys
 import gym
 import pprint
@@ -13,40 +13,39 @@ shutil.rmtree('~/ray_results', ignore_errors = True, onerror = False)
 ray.shutdown()
 ray.init()
 model = sys.argv[1]
-config = apex.APEX_DEFAULT_CONFIG.copy()
+config = ppo.DEFAULT_CONFIG.copy()
 num_workers = int(sys.argv[2])
 config['num_workers'] = num_workers
 config['num_gpus'] = 1
-config['buffer_size'] = 2000
 
 if model == 'model1':
-    save_file = './training_results/model1/model1_results_gpu'
-    checkpoint_root='./checkpoints/model1_gpu'
+    save_file = './training_results/ppo/model1/model1_results_gpu'
+    checkpoint_root='./checkpoints/ppo/model1_gpu'
 elif model == 'model2':
     config['model']['dim'] = 168
     config['model']['conv_filters'] = [[16, [16, 16], 8],[32, [4, 4], 2],[256, [11, 11], 1]]
-    save_file = './training_results/model2/model2_results_gpu'
-    checkpoint_root='./checkpoints/model2_gpu'
+    save_file = './training_results/ppo/model2/model2_results_gpu'
+    checkpoint_root='./checkpoints/ppo/model2_gpu'
 elif model == 'model3':
     config['model']['dim'] = 252
     config['model']['conv_filters'] = [[16, [8, 8], 4],[16, [8, 8], 4], [32, [4, 4], 2], [256, [8, 8], 1]]
-    save_file = './training_results/model3/model3_results_gpu'
-    checkpoint_root='./checkpoints/model3_gpu'
+    save_file = './training_results/ppo/model3/model3_results_gpu'
+    checkpoint_root='./checkpoints/ppo/model3_gpu'
 elif model == 'model4':
     config['model']['dim'] = 168
     config['model']['conv_filters'] = [[16, [8, 8], 4],[32, [4, 4], 2],[32, [4, 4], 2], [256, [11, 11], 1]]
-    save_file = './training_results/model4/model4_results_gpu'
-    checkpoint_root='./checkpoints/model4_gpu'
+    save_file = './training_results/ppo/model4/model4_results_gpu'
+    checkpoint_root='./checkpoints/ppo/model4_gpu'
 elif model == 'model5':
     config['model']['dim'] = 252
     config['model']['conv_filters'] = [[16, [8, 8], 4],[32, [4, 4], 2], [32, [4, 4], 2], [256, [16, 16], 1]]
-    save_file = './training_results/model5/model5_results_gpu'
-    checkpoint_root='./checkpoints/model5_gpu'
+    save_file = './training_results/ppo/model5/model5_results_gpu'
+    checkpoint_root='./checkpoints/ppo/model5_gpu'
 elif model == 'model6':
     config['model']['dim'] = 168
     config['model']['conv_filters'] = [[16, [8, 8], 4],[32, [4, 4], 2],[256, [21, 21], 1]]
-    save_file = './training_results/model6/model6_results_gpu'
-    checkpoint_root='./checkpoints/model6_gpu'
+    save_file = './training_results/ppo/model6/model6_results_gpu'
+    checkpoint_root='./checkpoints/ppo/model6_gpu'
 
 agent = apex.ApexTrainer(config, env='Pong-v0')
 policy=agent.get_policy()
