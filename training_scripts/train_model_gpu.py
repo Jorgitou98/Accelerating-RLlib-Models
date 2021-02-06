@@ -1,6 +1,6 @@
 import training
 import ray
-import ray.rllib.agents.ppo as ppo
+import ray.rllib.agents.dqn.apex as apex
 import json, os, shutil, sys
 import gym
 import pprint
@@ -13,7 +13,7 @@ shutil.rmtree('~/ray_results', ignore_errors = True, onerror = False)
 ray.shutdown()
 ray.init()
 model = sys.argv[1]
-config = ppo.DEFAULT_CONFIG.copy()
+config = apex.APEX_DEFAULT_CONFIG.copy()
 num_workers = int(sys.argv[2])
 config['num_workers'] = num_workers
 config['num_gpus'] = 1
@@ -47,7 +47,7 @@ elif model == 'model6':
     save_file = './training_results/model6/model6_results_gpu'
     checkpoint_root='./checkpoints/model6_gpu'
 
-agent = ppo.PPOTrainer(config, env='Pong-v0')
+agent = apex.ApexTrainer(config, env='Pong-v0')
 policy=agent.get_policy()
 print(policy.model.model_config)
 print(policy.model.base_model.summary())

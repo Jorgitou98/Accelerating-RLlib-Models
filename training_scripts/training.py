@@ -1,5 +1,5 @@
 import ray
-import ray.rllib.agents.ppo as ppo
+import ray.rllib.agents.dqn.apex as apex
 import json, os, shutil, sys
 import gym
 import pprint
