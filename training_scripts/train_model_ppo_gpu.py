@@ -18,6 +18,8 @@ num_workers = int(sys.argv[2])
 config['num_workers'] = num_workers
 config['num_gpus'] = 0.0001
 config['num_gpus_per_worker'] = 0.9999/num_workers
+physical_devices = tf.config.list_physical_devices('GPU')
+print("Num GPUs:", len(physical_devices))
 
 if model == 'model1':
     save_file = './training_results/ppo/model1/model1_results_gpu'
