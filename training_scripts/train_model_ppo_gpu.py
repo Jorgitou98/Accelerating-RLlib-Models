@@ -15,6 +15,7 @@ ray.init(num_gpus=1)
 model = sys.argv[1]
 config = ppo.DEFAULT_CONFIG.copy()
 num_workers = int(sys.argv[2])
+config['framework'] = tf2
 config['num_workers'] = num_workers
 config['num_gpus'] = 1
 config['num_gpus_per_worker'] = 0.9999/num_workers
