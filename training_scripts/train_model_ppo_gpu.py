@@ -8,6 +8,7 @@ import time
 import shelve
 from tensorflow import keras
 from ray import tune
+import tensorflow as tf
 
 shutil.rmtree('~/ray_results', ignore_errors = True, onerror = False)
 ray.shutdown()
