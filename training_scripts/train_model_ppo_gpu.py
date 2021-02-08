@@ -12,8 +12,7 @@ import tensorflow as tf
 
 shutil.rmtree('~/ray_results', ignore_errors = True, onerror = False)
 ray.shutdown()
-#ray.init(num_gpus=1)
-ray.init()
+ray.init(num_gpus=1)
 model = sys.argv[1]
 config = ppo.DEFAULT_CONFIG.copy()
 num_workers = int(sys.argv[2])
