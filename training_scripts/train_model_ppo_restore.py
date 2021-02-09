@@ -57,6 +57,6 @@ print("\nConfiguración del modelo del agente:\n\n" + str(config["model"]))
 t0 = time.time()
 n_iter = int(sys.argv[3])
 restore_file = sys.argv[4]
-training.full_train(checkpoint_root, agent, n_iter, save_file, True, restore_file)
+training.full_train(checkpoint_root, agent, n_iter, save_file, n_ini = 36, header = False, restore = True, restore_dir = restore_file)
 t1 = time.time()-t0
 print("Total time for the " + str(n_iter) + " training iterations: " + str(t1))
