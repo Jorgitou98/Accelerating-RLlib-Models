@@ -14,7 +14,7 @@ ray.shutdown()
 ray.init()
 model = sys.argv[1]
 config = ppo.DEFAULT_CONFIG.copy()
-num_workers = int(sys.argv[1])
+num_workers = int(sys.argv[2])
 config['num_workers'] = num_workers
 
 if model == 'model1':
@@ -55,8 +55,8 @@ print("Configuración del agente:\n\n" + str(config))
 print("\nConfiguración del modelo del agente:\n\n" + str(config["model"]))
 
 t0 = time.time()
-n_iter = int(sys.argv[2])
-restore_file = sys.argv[3]
+n_iter = int(sys.argv[3])
+restore_file = sys.argv[4]
 training.full_train(checkpoint_root, agent, n_iter, save_file, True, restore_file)
 t1 = time.time()-t0
 print("Total time for the " + str(n_iter) + " training iterations: " + str(t1))
