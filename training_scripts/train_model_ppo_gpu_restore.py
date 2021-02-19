@@ -63,6 +63,6 @@ t0 = time.time()
 n_iter = int(sys.argv[3])
 restore_file = sys.argv[4]
 n_ini = int(sys.argv[5])
-training.full_train(checkpoint_root, agent, n_iter, save_file, n_ini = n_ini, header = False, restore = true, restore_dir = restore_file)
+training.full_train(checkpoint_root, agent, n_iter, save_file, n_ini = n_ini, header = False, restore = True, restore_dir = restore_file)
 t1 = time.time()-t0
 print("Total time for the " + str(n_iter) + " training iterations: " + str(t1))
