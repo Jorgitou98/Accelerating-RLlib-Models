@@ -10,7 +10,7 @@ from tensorflow import keras
 from ray import tune
 import tensorflow as tf
 
-shutil.rmtree('~/ray_results', ignore_errors = True, onerror = False)
+#shutil.rmtree('~/ray_results', ignore_errors = True, onerror = False)
 ray.shutdown()
 ray.init(num_gpus=1)
 model = sys.argv[1]

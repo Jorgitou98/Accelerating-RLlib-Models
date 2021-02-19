@@ -9,14 +9,17 @@ import shelve
 from tensorflow import keras
 from ray import tune
 
-shutil.rmtree('~/ray_results', ignore_errors = True, onerror = False)
+#shutil.rmtree('~/ray_results', ignore_errors = True, onerror = False)
 ray.shutdown()
 ray.init()
 model = sys.argv[1]
 config = ppo.DEFAULT_CONFIG.copy()
-num_workers = int(sys.argv[1])
+num_workers = int(sys.argv[2])
 config['num_workers'] = num_workers
-config['num_gpus'] = 1
+config['num_gpus'] = 0.0001
+config['num_gpus_per_worker'] = 0.9999/num_workers
+physical_devices = tf.config.list_physical_devices('GPU')
+print("Num GPUs:", len(physical_devices))
 
 if model == 'model1':
     save_file = './training_results/ppo/model1/model1_results_gpu'
@@ -56,8 +59,9 @@ print("Configuración del agente:\n\n" + str(config))
 print("\nConfiguración del modelo del agente:\n\n" + str(config["model"]))
 
 t0 = time.time()
-n_iter = int(sys.argv[2])
-restore_file = sys.argv[3]
-training.full_train(checkpoint_root, agent, n_iter, save_file, True, restore_file)
+n_iter = int(sys.argv[3])
+restore_file = sys.argv[4]
+n_ini = int(sys.argv[5])
+training.full_train(checkpoint_root, agent, n_iter, save_file, n_ini = n_ini, header = False, restore = true, restore_dir = restore_file)
 t1 = time.time()-t0
 print("Total time for the " + str(n_iter) + " training iterations: " + str(t1))
