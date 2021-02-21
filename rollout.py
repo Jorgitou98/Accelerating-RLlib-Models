@@ -293,6 +293,9 @@ def run(args, parser):
     agent = cls(env=args.env, config=config)
     # Load state from checkpoint.
     agent.restore(args.checkpoint)
+
+    print("Model configuration after restore:\n")
+    print(agent.get_policy().model.model_config)
     num_steps = int(args.steps)
     num_episodes = int(args.episodes)
 
@@ -499,7 +502,6 @@ def rollout(agent,
     ########################
     print("Episodes times:")
     print(model_times_totals_per_episode)
-    print(model_times_per_episode)
     print("Total model time: {}".format(sum(model_times_totals_per_episode)))
     print("Average model time per episode: {}".format(sum(model_times_totals_per_episode)/episodes))
     print("average model time per step: {}".format(sum(model_times_totals_per_episode)/sum(steps_per_episode)))
@@ -511,7 +513,7 @@ def rollout(agent,
         writer = csv.DictWriter(time_outfile, fieldnames = fieldnames)
         writer.writeheader()
         for row in results:
-            writer.write(results)
+            writer.writerow(row)
 
 
 
