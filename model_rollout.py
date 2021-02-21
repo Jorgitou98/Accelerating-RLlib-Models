@@ -1,11 +1,12 @@
 import ray
 import time
 import os
+import sys
 
 ray.shutdown()
-restore_path = input("Enter the restore checkpoint path: ")
-num_episodes = int(input("Enter the number of episodes to run: "))
-output_dir = input("Enter the output file path: ")
+restore_path = sys.argv[1]
+num_episodes = sys.argv[2]
+output_dir = sys.argv[3]
 output_pkl = output_dir + '.pkl'
 output_csv = output_dir + '.csv'
 t0 = time.time()
