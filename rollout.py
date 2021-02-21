@@ -9,7 +9,10 @@ import json
 import os
 from pathlib import Path
 import shelve
+##############
 import time
+import csv
+##############
 
 import ray
 import ray.cloudpickle as cloudpickle
@@ -182,6 +185,8 @@ def create_parser(parser_creator=None):
         "tune registry.")
     required_named.add_argument(
         "--env", type=str, help="The gym environment to use.")
+    required_named.add_argument(
+        "--time-output", type=str, help="The output file to save timing results.")
     parser.add_argument(
         "--no-render",
         default=False,
@@ -388,9 +393,12 @@ def rollout(agent,
 
     steps = 0
     episodes = 0
-    times = []
+    model_times_totals_per_episode = []
     steps_per_episode =[]
+    model_times_per_episode = []
+    results = []
     while keep_going(steps, num_steps, episodes, num_episodes):
+        
         mapping_cache = {}  # in case policy_agent_mapping is stochastic
         saver.begin_rollout()
         obs = env.reset()
@@ -401,8 +409,10 @@ def rollout(agent,
         prev_rewards = collections.defaultdict(lambda: 0.)
         done = False
         reward_total = 0.0
-        episode_time = 0.0
+        this_episode_time = 0.0
         steps_this_episode = 0
+        model_times_this_episode = []
+        results_this_episode = []
         while not done and keep_going(steps, num_steps, episodes,
                                       num_episodes): 
             multi_obs = obs if multiagent else {_DUMMY_AGENT_ID: obs}
@@ -435,7 +445,8 @@ def rollout(agent,
                         
                     ########################
                     t1 = time.time()
-                    episode_time += (t1-t0)
+                    model_times_this_episode.append(t1-t0)
+                    this_episode_time += (t1-t0)
                     ########################
                     
                     a_action = flatten_to_single_ndarray(a_action)
@@ -468,12 +479,18 @@ def rollout(agent,
         print("Episode #{}: reward: {}".format(episodes, reward_total))
         
         ####################################################################
-        print("Episode #{}: model_time: {}".format(episodes, episode_time))
+        print("Episode #{}: model_time: {}".format(episodes, this_episode_time))
         print("Episode #{}: steps: {}".format(episodes, steps_this_episode))
-        print("Episode #{}: average model time per step: {}".format(episodes, (episode_time/steps_this_episode)))
+        print("Episode #{}: average model time per step: {}".format(episodes, (this_episode_time/steps_this_episode)))
         print("-------------------------------------------------------------")
-        times.append(episode_time)
+        model_times_totals_per_episode.append(this_episode_time)
         steps_per_episode.append(steps_this_episode)
+        model_times_per_episode.append(model_times_this_episode)
+        results_this_episode.append(episodes)
+        results_this_episode.append(this_episode_time)
+        results_this_episode.append(model_times_per_episode)
+        results_this_episode.append(steps_this_episode)
+        results.append(results_this_episode)
         ####################################################################
         
         if done:
@@ -481,12 +498,21 @@ def rollout(agent,
             
     ########################
     print("Episodes times:")
-    print(times)
-    print("Total model time: {}".format(sum(times)))
-    print("Average model time per episode: {}".format(sum(times)/episodes))
-    print("average model time per step: {}".format(sum(times)/sum(steps_per_episode)))
+    print(model_times_totals_per_episode)
+    print(model_times_per_episode)
+    print("Total model time: {}".format(sum(model_times_totals_per_episode)))
+    print("Average model time per episode: {}".format(sum(model_times_totals_per_episode)/episodes))
+    print("average model time per step: {}".format(sum(model_times_totals_per_episode)/sum(steps_per_episode)))
     print("Steps:")
     print(steps_per_episode)
+
+    with open(args.time_output, mode='w') as time_outfile:
+        fieldnames = ['episode', 'total_model_time', 'model_time_per_step', 'steps']
+        writer = csv.DictWriter(time_outfile, fieldnames = fieldnames)
+        writer.writeheader()
+        for row in results:
+            writer.write(results)
+
 
 
 if __name__ == "__main__":
