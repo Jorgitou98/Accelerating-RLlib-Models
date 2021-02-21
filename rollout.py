@@ -291,6 +291,8 @@ def run(args, parser):
     # Create the Trainer from config.
     cls = get_trainable_cls(args.run)
     agent = cls(env=args.env, config=config)
+
+    print(config)
     # Load state from checkpoint.
     agent.restore(args.checkpoint)
 
