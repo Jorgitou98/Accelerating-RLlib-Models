@@ -14,7 +14,7 @@ def get_data(directory,it_ini, it_fin, policy):
         model_name = name.format(i, policy)
         
         if(len([j for j in glob.glob(model_name)]) != 1):
-            model_names_list = [k for k in glob.glob('model_{}_gpu_it_*'.format(i))]
+            model_names_list = [k for k in glob.glob('model{}_{}_gpu_it_*'.format(i, policy))]
             final_model_name_list = []
             for name in model_names_list:
                 splitted_name = name.split('_')
