@@ -79,7 +79,7 @@ def get_data_models(directory,it_ini, it_fin, policy, model_name_format, model_n
 def get_data(directory, it_ini, it_fin, it_ini_gpu, it_fin_gpu, policy):
     name_gpu = 'model{}_' + policy+ '_gpu_it_' + str(it_ini) + '_' + str(it_fin)
     name_no_gpu = name_gpu = 'model{}_' + policy + '_it_' + str(it_ini) + '_' + str(it_fin)
-    save_directory = '~/Mejorando-el-Aprendizaje-Automatico/result_analysis/training_results/'
+    save_directory = '~/Mejorando-el-Aprendizaje-Automatico/result_analysis/training_results'
     aggregated_results_name_gpu = 'results_{}_gpu_it_{}_{}.csv'.format(policy, it_ini_gpu, it_fin_gpu)
     aggregated_results_name_no_gpu = 'results_{}_it_{}_{}.csv'.format(policy, it_ini, it_fin)
     model_name_all_gpu = 'model{}_' + policy+ '_gpu_it_*'
