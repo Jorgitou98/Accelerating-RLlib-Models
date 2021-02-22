@@ -76,8 +76,8 @@ def get_data(directory, it_ini, it_fin, it_ini_gpu, it_fin_gpu, policy):
     name_no_gpu = name_gpu = ('model{}_' + policy+ '_it_' + str(it_ini) + '_' + str(it_fin))
     aggregated_results_name_gpu = '~/Mejorando-el-Aprendizaje-Automatico/result_analysis/training_results/results_{}_gpu_it_{}_{}'.format(policy, it_ini_gpu, it_fin_gpu)
     aggregated_results_name_no_gpu = '~/Mejorando-el-Aprendizaje-Automatico/result_analysis/training_results/results_{}_it_{}_{}'.format(policy, it_ini, it_fin)
-    model_name_all_gpu = 'model{}_' + policy+ '_gpu_it_*
-    model_name_all_no_gpu = 'model{}_' + policy+ '_it_*
+    model_name_all_gpu = 'model{}_' + policy+ '_gpu_it_*'
+    model_name_all_no_gpu = 'model{}_' + policy+ '_it_*'
     model_split_len_gpu = 6
     model_split_len_no_gpu = 5
     get_data_models(directory,it_ini, it_fin, policy,name_no_gpu, model_name_all_no_gpu, name_split_len_no_gpu, aggregated_results_name_no_gpu)
