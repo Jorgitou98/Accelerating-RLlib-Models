@@ -420,7 +420,7 @@ def rollout(agent,
         this_episode_time = 0.0
         steps_this_episode = 0
         model_times_this_episode = []
-        results_this_episode = []
+        results_this_episode = {}
         while not done and keep_going(steps, num_steps, episodes,
                                       num_episodes): 
             multi_obs = obs if multiagent else {_DUMMY_AGENT_ID: obs}
@@ -494,10 +494,10 @@ def rollout(agent,
         model_times_totals_per_episode.append(this_episode_time)
         steps_per_episode.append(steps_this_episode)
         model_times_per_episode.append(model_times_this_episode)
-        results_this_episode.append(episodes)
-        results_this_episode.append(this_episode_time)
-        results_this_episode.append(model_times_per_episode)
-        results_this_episode.append(steps_this_episode)
+        results_this_episode['episodes']=episodes
+        results_this_episode['total_model_time'] = this_episode_time
+        results_this_episode['model_time_per_step']=model_times_this_episode
+        results_this_episode['steps'] = steps_this_episode
         results.append(results_this_episode)
         ####################################################################
         
