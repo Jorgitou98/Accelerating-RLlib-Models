@@ -494,7 +494,7 @@ def rollout(agent,
         model_times_totals_per_episode.append(this_episode_time)
         steps_per_episode.append(steps_this_episode)
         model_times_per_episode.append(model_times_this_episode)
-        results_this_episode['episodes']=episodes
+        results_this_episode['episode']=episodes
         results_this_episode['total_model_time'] = this_episode_time
         results_this_episode['model_time_per_step']=model_times_this_episode
         results_this_episode['steps'] = steps_this_episode
