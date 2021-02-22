@@ -265,6 +265,7 @@ def run(args, parser):
         with open(config_path, "rb") as f:
             config = cloudpickle.load(f)
 
+    print(config)
     # Set num_workers to be at least 2.
     if "num_workers" in config:
         config["num_workers"] = min(2, config["num_workers"])
