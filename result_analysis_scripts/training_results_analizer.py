@@ -7,7 +7,7 @@ import pandas as pd
 def merge_csv(files_to_merge, merged_name):
     combined_csv = pd.concat([pd.read_csv(f) for f in files_to_merge])
     combined_csv.sort_values(by='training_iteration')
-    print(combined_csv.head(20))
+    print(combined_csv['training_iteration'].head(20))
     combined_csv.to_csv(merged_name, index=False, encoding='utf-8-sig')
 
 def get_data(directory,it_ini, it_fin, policy):
