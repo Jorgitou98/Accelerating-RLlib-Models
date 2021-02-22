@@ -31,7 +31,7 @@ def plot_line(df, columnX, columnY, name, save_name, x_label = None, y_label = N
     plt.savefig(save_name)
     print('Graph saved at ' + save_name)
 
-def get_data_models(directory,it_ini, it_fin, policy, model_name_format, model_name_all_format, name_split_len, aggregated_results_name):
+def get_data_models(directory,it_ini, it_fin, policy, model_name_format, model_name_all_format, name_split_len, aggregated_results_name, save_directory):
     aggregated_results = []
     os.chdir(directory)
     for i in range(1,7):
@@ -68,6 +68,7 @@ def get_data_models(directory,it_ini, it_fin, policy, model_name_format, model_n
         aggregated_data_this_model['mean_update_time_ms'] = df['timers/update_time_ms'].mean()
         aggregated_results.append(aggregated_data_this_model)
 
+    chdir(save_directory)
     with open(aggregated_results_name, mode='w+') as csv_agg_file:
         fieldnames = list(aggregated_results[0].keys())
         writer = csv.DictWriter(csv_agg_file, fieldnames=fieldnames)
@@ -78,14 +79,15 @@ def get_data_models(directory,it_ini, it_fin, policy, model_name_format, model_n
 def get_data(directory, it_ini, it_fin, it_ini_gpu, it_fin_gpu, policy):
     name_gpu = 'model{}_' + policy+ '_gpu_it_' + str(it_ini) + '_' + str(it_fin)
     name_no_gpu = name_gpu = 'model{}_' + policy + '_it_' + str(it_ini) + '_' + str(it_fin)
-    aggregated_results_name_gpu = '~/Mejorando-el-Aprendizaje-Automatico/result_analysis/training_results/results_{}_gpu_it_{}_{}.csv'.format(policy, it_ini_gpu, it_fin_gpu)
-    aggregated_results_name_no_gpu = '~/Mejorando-el-Aprendizaje-Automatico/result_analysis/training_results/results_{}_it_{}_{}.csv'.format(policy, it_ini, it_fin)
+    save_directory = '~/Mejorando-el-Aprendizaje-Automatico/result_analysis/training_results/'
+    aggregated_results_name_gpu = 'results_{}_gpu_it_{}_{}.csv'.format(policy, it_ini_gpu, it_fin_gpu)
+    aggregated_results_name_no_gpu = 'results_{}_it_{}_{}.csv'.format(policy, it_ini, it_fin)
     model_name_all_gpu = 'model{}_' + policy+ '_gpu_it_*'
     model_name_all_no_gpu = 'model{}_' + policy+ '_it_*'
     name_split_len_gpu = 6
     name_split_len_no_gpu = 5
-    get_data_models(directory,it_ini, it_fin, policy, name_no_gpu, model_name_all_no_gpu, name_split_len_no_gpu, aggregated_results_name_no_gpu)
-    get_data_models(directory,it_ini_gpu, it_fin_gpu, policy,name_gpu, model_name_all_gpu, name_split_len_gpu, aggregated_results_name_gpu)
+    get_data_models(directory,it_ini, it_fin, policy, name_no_gpu, model_name_all_no_gpu, name_split_len_no_gpu, aggregated_results_name_no_gpu, save_directory)
+    get_data_models(directory,it_ini_gpu, it_fin_gpu, policy,name_gpu, model_name_all_gpu, name_split_len_gpu, aggregated_results_name_gpu, save_directory)
 
 
 
