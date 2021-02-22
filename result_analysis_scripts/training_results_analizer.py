@@ -22,7 +22,7 @@ def get_data(directory,it_ini, it_fin, policy):
             final_model_name_list = []
             for name in model_names_list:
                 splitted_name = name.split('_')
-                if(len(splitted_name) == 6 and splitted_name[4] >= it_ini and splitted_name[4] <= it_fin and splitted_name[5] <= it_fin and splitted_name[5] >= it_ini):
+                if(len(splitted_name) == 6 and int(splitted_name[4]) >= it_ini and int(splitted_name[4]) <= it_fin and int(splitted_name[5]) <= it_fin and int(splitted_name[5]) >= it_ini):
                     final_model_name_list.append(name + '/progress.csv')
             merge_csv(final_model_name_list, directoy + '/' + name + '/progress.csv')
 
