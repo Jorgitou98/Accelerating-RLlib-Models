@@ -71,7 +71,7 @@ def get_data_models(directory,it_ini, it_fin, policy, model_name, model_name_all
         for row in aggregated_results:
             writer.writerow(row)  
 
-def get_data(directory,it_ini, it_fin, it_ini_gpu, it_fin_gpu, policy):
+def get_data(directory, it_ini, it_fin, it_ini_gpu, it_fin_gpu, policy):
     name_gpu = ('model{}_' + policy+ '_gpu_it_' + str(it_ini) + '_' + str(it_fin))
     name_no_gpu = name_gpu = ('model{}_' + policy+ '_it_' + str(it_ini) + '_' + str(it_fin))
     aggregated_results_name_gpu = '~/Mejorando-el-Aprendizaje-Automatico/result_analysis/training_results/results_{}_gpu_it_{}_{}'.format(policy, it_ini_gpu, it_fin_gpu)
@@ -82,15 +82,17 @@ def get_data(directory,it_ini, it_fin, it_ini_gpu, it_fin_gpu, policy):
     model_split_len_no_gpu = 5
     get_data_models(directory,it_ini, it_fin, policy,name_no_gpu, model_name_all_no_gpu, name_split_len_no_gpu, aggregated_results_name_no_gpu)
     get_data_models(directory,it_ini_gpu, it_fin_gpu, policy,name_gpu, model_name_all_gpu, name_split_len_gpu, aggregated_results_name_gpu)
-    
+
 
 
 def main():
     directory = sys.argv[1]
     it_ini = int(sys.argv[2])
     it_fin = int(sys.argv[3])
-    policy = sys.argv[4]
-    get_data(directory, it_ini, it_fin, policy)         
+    it_ini_gpu = int(sys.argv[4])
+    it_fin_gpu = int(sys.argv[5])
+    policy = sys.argv[6]
+    get_data(directory, it_ini, it_fin, it_ini_gpu, it_fin_gpu, policy)         
 
 if __name__ == "__main__":
     main()        
