@@ -31,12 +31,12 @@ def plot_line(df, columnX, columnY, name, save_name, x_label = None, y_label = N
     plt.savefig(save_name)
     print('Graph saved at ' + save_name)
 
-def get_data_models(directory,it_ini, it_fin, policy, model_name, model_name_all, name_split_len, aggregated_results_name):
+def get_data_models(directory,it_ini, it_fin, policy, model_name_format, model_name_all_format, name_split_len, aggregated_results_name):
     aggregated_results = []
     os.chdir(directory)
     for i in range(1,7):
-        model_name = model_name.format(i)
-        model_name_all = model_name_all.format(i) 
+        model_name = model_name_format.format(i)
+        model_name_all = model_name_all_format.format(i) 
         print(model_name) 
         print(model_name_all)    
         if(len([j for j in glob.glob(model_name)]) != 1):
