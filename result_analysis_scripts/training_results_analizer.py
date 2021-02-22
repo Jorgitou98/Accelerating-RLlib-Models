@@ -6,7 +6,7 @@ import pandas as pd
 
 def merge_csv(files_to_merge, merged_name):
     combined_csv = pd.concat([pd.read_csv(f) for f in files_to_merge])
-    combined_csv.to_csv( merged_name, index=False, encoding='utf-8-sig')
+    combined_csv.to_csv(merged_name, index=False, encoding='utf-8-sig')
 
 def get_data(directory,it_ini, it_fin, policy):
     os.chdir(directory)
@@ -21,7 +21,7 @@ def get_data(directory,it_ini, it_fin, policy):
                 splitted_name = name.split('_')
                 if(len(splitted_name) == 6 and int(splitted_name[4]) >= it_ini and int(splitted_name[4]) <= it_fin and int(splitted_name[5]) <= it_fin and int(splitted_name[5]) >= it_ini):
                     final_model_name_list.append(name + '/progress.csv')
-            os.mkdir(directory + '/' + model_name)
+            os.mkdir(model_name)
             merge_csv(final_model_name_list, directory + '/' + model_name + '/progress.csv')
 
 def main():
