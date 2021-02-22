@@ -1,6 +1,7 @@
 import csv
 import glob
 import os
+import sys
 import pandas as pd
 
 def merge_csv(files_to_merge, merged_name):
