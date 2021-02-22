@@ -26,9 +26,12 @@ def get_data(directory,it_ini, it_fin, policy):
             merge_csv(final_model_name_list, directoy + '/' + name + '/progress.csv')
 
 def main():
+    print("Hola")
     directory = sys.argv[1]
     it_ini = int(sys.argv[2])
     it_fin = int(sys.argv[3])
     policy = sys.argv[4]
     get_data(directory, it_ini, it_fin, policy)         
-        
+
+if __name__ == "__main__":
+    main()        
