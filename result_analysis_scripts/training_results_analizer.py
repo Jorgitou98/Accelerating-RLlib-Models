@@ -41,7 +41,7 @@ def get_data_models(directory,it_ini, it_fin, policy, model_name_format, model_n
         print(model_name_all)    
         if(len([j for j in glob.glob(model_name)]) != 1):
             model_names_list = [k for k in glob.glob(model_name_all)]
-            print(model_name_list)
+            print(model_names_list)
             final_model_name_list = []
             for name in model_names_list:
                 splitted_name = name.split('_')
