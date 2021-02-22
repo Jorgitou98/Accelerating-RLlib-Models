@@ -8,6 +8,7 @@ import matplotlib.ticker as ticker
 import numpy as np
 
 def merge_csv(files_to_merge, merged_name):
+    print("hola")
     combined_csv = pd.concat([pd.read_csv(f) for f in files_to_merge])
     combined_csv.sort_values(by='training_iteration', inplace = True)
     combined_csv.drop_duplicates(keep = 'first', inplace = True)
