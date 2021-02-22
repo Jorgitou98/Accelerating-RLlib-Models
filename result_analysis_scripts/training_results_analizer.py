@@ -13,7 +13,7 @@ def get_data(directory,it_ini, it_fin, policy):
     for i in range(1,7):
         model_name = name.format(i, policy)
         
-        if(len([j for j in glob.glob(name)]) != 1):
+        if(len([j for j in glob.glob(model_name)]) != 1):
             model_names_list = [k for k in glob.glob('model_{}_gpu_it_*'.format(i))]
             final_model_name_list = []
             for name in model_names_list:
