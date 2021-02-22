@@ -21,5 +21,11 @@ def get_data(directory,it_ini, it_fin, policy):
                 if(len(splitted_name) == 6 and splitted_name[4] >= it_ini and splitted_name[4] <= it_fin and splitted_name[5] <= it_fin and splitted_name[5] >= it_ini):
                     final_model_name_list.append(name + '/progress.csv')
             merge_csv(final_model_name_list, name)
-            
+
+def main():
+    directory = sys.argv[1]
+    it_ini = int(sys.argv[2])
+    it_fin = int(sys.argv[3])
+    policy = sys.argv[4]
+    get_data(directory, it_ini, it_fin, policy)         
         
