@@ -67,6 +67,7 @@ def get_data_models(directory,it_ini, it_fin, policy, model_name_format, model_n
         aggregated_data_this_model['mean_load_throughput'] = df['timers/load_throughput'].mean()
         aggregated_data_this_model['mean_update_time_ms'] = df['timers/update_time_ms'].mean()
         aggregated_results.append(aggregated_data_this_model)
+        print(aggregated_data_this_model)
 
     os.chdir(save_directory)
     with open(aggregated_results_name, mode='w+') as csv_agg_file:
