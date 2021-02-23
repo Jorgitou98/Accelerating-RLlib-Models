@@ -142,6 +142,7 @@ def get_data(directory, it_ini, it_fin, it_ini_gpu, it_fin_gpu, policy):
         var_values_speedup = [speedups[i][var] for i in range(0,6)]
         title = var + ' speedup no GPU vs GPU'
         save_name = dir + '/result_analysis/training_results/graphs/' + var + '_speedup_no_gpu_it_' + str(it_ini) + '_' + str(it_fin) + '_vs_gpu_it_' + str(it_ini_gpu) + '_' + str(it_fin_gpu) + '.png'
+        plot_bars(model_names, var_values_speedup, title, save_name)
 
 
 def main():
