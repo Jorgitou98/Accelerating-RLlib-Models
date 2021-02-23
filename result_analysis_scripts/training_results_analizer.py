@@ -33,7 +33,7 @@ def plot_bars_double(bars, values1, values2, name, save_name, label1, label2):
     pos = np.arange(len(bars))
     ax.bar(pos + 0.0, values1, label = label1, width=0.25)
     ax.bar(pos + 0.25, values2, label= label2, width=0.25)
-    plt.xticks(pos, bars)
+    plt.xticks(pos + 0.125, bars)
     ax.set_title(name, loc='center', wrap=True)
     plt.legend()
     fig.autofmt_xdate()
