@@ -52,6 +52,7 @@ def get_data_models(directory,it_ini, it_fin, policy, model_name_format, model_n
             merge_csv(final_model_name_list, directory + '/' + model_name + '/progress.csv')
         df = pd.read_csv(model_name + '/progress.csv')
         df.dropna(inplace = True)
+        print(df)
         #vars_to_plot = ['episode_reward_mean', 'episode_reward_max', 'episode_reward_mean']
         aggregated_data_this_model = {}
         aggregated_data_this_model['model'] = 'model' + str(i)
