@@ -6,6 +6,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 import numpy as np
+from os.path import dirname, abspath
 
 def merge_csv(files_to_merge, merged_name):
     combined_csv = pd.concat([pd.read_csv(f) for f in files_to_merge])
@@ -13,22 +14,34 @@ def merge_csv(files_to_merge, merged_name):
     combined_csv.drop_duplicates(keep = 'first', inplace = True)
     combined_csv.to_csv(merged_name, index=False, encoding='utf-8-sig')
 
-def plot_line(df, columnX, columnY, name, save_name, x_label = None, y_label = None):
+def plot_bars(bars, values, name, save_name):
     plt.close('all')
-    df.show()
-    x_values = [row[0] for row in df.select(columnX).collect()]
-    y_values = [row[0] for row in df.select(columnY).collect()]
     fig, ax = plt.subplots()
-    ax.plot(x_values, y_values)
+    pos = np.arange(len(bars))
+    ax.bar(pos, values)
+    plt.xticks(pos, bars)
     ax.set_title(name, loc='center', wrap=True)
-    if xlabel != None:
-        ax.set_xlabel(xlabel)
-    if ylabel != None:
-        ax.set_ylabel(ylabel)
+    fig.autofmt_xdate()
     if os.path.exists(save_name):
         os.remove(save_name)
     plt.savefig(save_name)
     print('Graph saved at ' + save_name)
+
+def plot_bars_double(bars, values1, values2, name, save_name, label1, label2):
+    plt.close('all')
+    fig, ax = plt.subplots()
+    pos = np.arange(len(bars))
+    ax.bar(pos + 0.0, values1, label = label1, width=0.5)
+    ax.bar(pos + 0.5, values2, label= label2, width=0.5)
+    plt.xticks(pos + 0.5, bars)
+    ax.set_title(name, loc='center', wrap=True)
+    plt.legend()
+    fig.autofmt_xdate()
+    if os.path.exists(save_name):
+        os.remove(save_name)
+    plt.savefig(save_name)
+    print('Graph saved at ' + save_name)    
+
 
 def get_data_models(directory,it_ini, it_fin, policy, model_name_format, model_name_all_format, name_split_len, aggregated_results_name, save_directory):
     aggregated_results = []
@@ -48,7 +61,6 @@ def get_data_models(directory,it_ini, it_fin, policy, model_name_format, model_n
             merge_csv(final_model_name_list, directory + '/' + model_name + '/progress.csv')
         df = pd.read_csv(model_name + '/progress.csv')
         df.dropna(inplace = True)
-        #vars_to_plot = ['episode_reward_mean', 'episode_reward_max', 'episode_reward_mean']
         aggregated_data_this_model = {}
         aggregated_data_this_model['model'] = 'model' + str(i)
         aggregated_data_this_model['iter_ini'] = it_ini
@@ -62,7 +74,13 @@ def get_data_models(directory,it_ini, it_fin, policy, model_name_format, model_n
         aggregated_data_this_model['mean_load_time_ms'] = df['timers/load_time_ms'].mean()
         aggregated_data_this_model['mean_load_throughput'] = df['timers/load_throughput'].mean()
         aggregated_data_this_model['mean_update_time_ms'] = df['timers/update_time_ms'].mean()
+        aggregated_data_this_model['cpu_util_percent'] = df['perf/cpu_util_percent'].mean()
+        aggregated_data_this_model['ram_util_percent'] = df['perf/ram_util_percent'].mean()
+        
         aggregated_results.append(aggregated_data_this_model)
+
+    
+    
 
     os.chdir(save_directory)
     with open(aggregated_results_name, mode='w+') as csv_agg_file:
@@ -72,7 +90,13 @@ def get_data_models(directory,it_ini, it_fin, policy, model_name_format, model_n
         for row in aggregated_results:
             writer.writerow(row)  
 
+
+    return aggregated_results
+   
+
+        
 def get_data(directory, it_ini, it_fin, it_ini_gpu, it_fin_gpu, policy):
+    dir = dirname(abspath(__file__))
     name_gpu = 'model{}_' + policy+ '_gpu_it_' + str(it_ini) + '_' + str(it_fin)
     name_no_gpu = 'model{}_' + policy + '_it_' + str(it_ini) + '_' + str(it_fin)
     save_directory = '../result_analysis/training_results'
@@ -82,9 +106,41 @@ def get_data(directory, it_ini, it_fin, it_ini_gpu, it_fin_gpu, policy):
     model_name_all_no_gpu = 'model{}_' + policy+ '_it_*'
     name_split_len_gpu = 6
     name_split_len_no_gpu = 5
-    get_data_models(directory,it_ini, it_fin, policy, name_no_gpu, model_name_all_no_gpu, name_split_len_no_gpu, aggregated_results_name_no_gpu, save_directory)
-    get_data_models(directory,it_ini_gpu, it_fin_gpu, policy, name_gpu, model_name_all_gpu, name_split_len_gpu, aggregated_results_name_gpu, save_directory)
+    aggregated_results_no_gpu = get_data_models(directory,it_ini, it_fin, policy, name_no_gpu, model_name_all_no_gpu, name_split_len_no_gpu, aggregated_results_name_no_gpu, save_directory)
+    aggregated_results_gpu = get_data_models(directory,it_ini_gpu, it_fin_gpu, policy, name_gpu, model_name_all_gpu, name_split_len_gpu, aggregated_results_name_gpu, save_directory)
+    
+    model_names = [aggregated_results_no_gpu[i]['model'] for i in range(0,6)]
+    vars = ['sample_time_ms','sample_throughput','load_time_ms','load_throughput','learn_time_ms','learn_throughput','update_time_ms','num_steps_sampled', 'ram_util_percent', 'cpu_util_percent']
+    
+    ## plot data for non gpu training
+    for var in vars:
+        var_values_no_gpu = [aggregated_results_no_gpu[i][var] for i in range(0,6)]
+        title_no_gpu = var + ' per model no gpu'
+        save_name_no_gpu = dir + '/result_analysis/training_results/graphs/' + var + '_per_model_no_gpu_it_' + str(it_ini) + '_'+ str(it_fin) + '.png'
+        plot_bars(model_names, var_values_no_gpu, title_no_gpu, save_name_no_gpu)
 
+        var_values_gpu = [aggregated_results_gpu[i][var] for i in range(0,6)]
+        title_gpu = var + ' per model gpu'
+        save_name_gpu = dir + '/result_analysis/training_results/graphs/' + var + '_per_model_gpu_it_' + str(it_ini_gpu) + '_'+ str(it_fin_gpu) + '.png'
+        plot_bars(model_names, var_values_gpu, title_gpu, save_name_gpu)
+
+        title_combined = var + ' per model gpu and no gpu'
+        save_name_combined = dir + '/result_analysis/training_results/graphs/' + var+ '_per_model_no_gpu_it_' + str(it_ini) + '_'+ str(it_fin) + '_and_gpu_it_' + str(it_ini_gpu) + '_' + str(it_fin_gpu) + '.png'
+        plot_bars_double(model_names, var_values_no_gpu, var_values_gpu, title_combined, save_name_combined, 'training without GPU', 'training with GPU')
+    
+    speedups = []
+    for i in range(0,6):
+        this_model_speedup = {}
+        this_model_speedup['model'] = 'model{}'.format(i+1)
+        for var in vars:
+            this_model_speedup[var] = aggregated_results_no_gpu[i][var] / aggregated_results_gpu[i][var]
+        speedups.append(this_model_speedup)
+    
+    ## plot speedup data
+    for var in vars:
+        var_values_speedup = [speedups[i][var] for i in range(0,6)]
+        title = var + ' speedup no GPU vs GPU'
+        save_name = dir + '/result_analysis/training_results/graphs/' + var + '_speedup_no_gpu_it_' + str(it_ini) + '_' + str(it_fin) + '_vs_gpu_it_' + str(it_ini_gpu) + '_' + str(it_fin_gpu) + '.png'
 
 
 def main():
