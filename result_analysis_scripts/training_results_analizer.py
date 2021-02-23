@@ -111,7 +111,7 @@ def get_data(directory, it_ini, it_fin, it_ini_gpu, it_fin_gpu, policy):
     aggregated_results_gpu = get_data_models(directory,it_ini_gpu, it_fin_gpu, policy, name_gpu, model_name_all_gpu, name_split_len_gpu, aggregated_results_name_gpu, save_directory)
     
     model_names = [aggregated_results_no_gpu[i]['model'] for i in range(0,6)]
-    vars = ['mean_sample_time_ms','mean_sample_throughput','mean_load_time_ms','mean_load_throughput','mean_learn_time_ms','mean_learn_throughput','mean_update_time_ms','mean_num_steps_sampled', 'mean_ram_util_percent', 'mean_cpu_util_percent']
+    vars = ['mean_sample_time_ms','mean_sample_throughput','mean_load_time_ms','mean_load_throughput','mean_learn_time_ms','mean_learn_throughput','mean_update_time_ms', 'mean_ram_util_percent', 'mean_cpu_util_percent']
     
     ## plot data for non gpu training
     for var in vars:
