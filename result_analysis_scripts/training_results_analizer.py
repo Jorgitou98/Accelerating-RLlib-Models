@@ -7,40 +7,13 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 import numpy as np
 from os.path import dirname, abspath
+import plot_results
 
 def merge_csv(files_to_merge, merged_name):
     combined_csv = pd.concat([pd.read_csv(f) for f in files_to_merge])
     combined_csv.sort_values(by='training_iteration', inplace = True)
     combined_csv.drop_duplicates(keep = 'first', inplace = True)
-    combined_csv.to_csv(merged_name, index=False, encoding='utf-8-sig')
-
-def plot_bars(bars, values, name, save_name):
-    plt.close('all')
-    fig, ax = plt.subplots()
-    pos = np.arange(len(bars))
-    ax.bar(pos, values)
-    plt.xticks(pos, bars)
-    ax.set_title(name, loc='center', wrap=True)
-    fig.autofmt_xdate()
-    if os.path.exists(save_name):
-        os.remove(save_name)
-    plt.savefig(save_name)
-    print('Graph saved at ' + save_name)
-
-def plot_bars_double(bars, values1, values2, name, save_name, label1, label2):
-    plt.close('all')
-    fig, ax = plt.subplots()
-    pos = np.arange(len(bars))
-    ax.bar(pos + 0.0, values1, label = label1, width=0.25)
-    ax.bar(pos + 0.25, values2, label= label2, width=0.25)
-    plt.xticks(pos + 0.125, bars)
-    ax.set_title(name, loc='center', wrap=True)
-    plt.legend()
-    fig.autofmt_xdate()
-    if os.path.exists(save_name):
-        os.remove(save_name)
-    plt.savefig(save_name)
-    print('Graph saved at ' + save_name)    
+    combined_csv.to_csv(merged_name, index=False, encoding='utf-8-sig') 
 
 
 def get_data_models(directory,it_ini, it_fin, policy, model_name_format, model_name_all_format, name_split_len, aggregated_results_name, save_directory):
@@ -118,16 +91,16 @@ def get_data(directory, it_ini, it_fin, it_ini_gpu, it_fin_gpu, policy):
         var_values_no_gpu = [aggregated_results_no_gpu[i][var] for i in range(0,6)]
         title_no_gpu = var + ' per model no gpu'
         save_name_no_gpu = dir + '/result_analysis/training_results/graphs/' + var + '_per_model_no_gpu_it_' + str(it_ini) + '_'+ str(it_fin) + '.png'
-        plot_bars(model_names, var_values_no_gpu, title_no_gpu, save_name_no_gpu)
+        plot_results.plot_bars(model_names, var_values_no_gpu, title_no_gpu, save_name_no_gpu)
 
         var_values_gpu = [aggregated_results_gpu[i][var] for i in range(0,6)]
         title_gpu = var + ' per model gpu'
         save_name_gpu = dir + '/result_analysis/training_results/graphs/' + var + '_per_model_gpu_it_' + str(it_ini_gpu) + '_'+ str(it_fin_gpu) + '.png'
-        plot_bars(model_names, var_values_gpu, title_gpu, save_name_gpu)
+        plot_results.plot_bars(model_names, var_values_gpu, title_gpu, save_name_gpu)
 
         title_combined = var + ' per model gpu and no gpu'
         save_name_combined = dir + '/result_analysis/training_results/graphs/' + var+ '_per_model_no_gpu_it_' + str(it_ini) + '_'+ str(it_fin) + '_and_gpu_it_' + str(it_ini_gpu) + '_' + str(it_fin_gpu) + '.png'
-        plot_bars_double(model_names, var_values_no_gpu, var_values_gpu, title_combined, save_name_combined, 'training without GPU', 'training with GPU')
+        plot_results.plot_bars_double(model_names, var_values_no_gpu, var_values_gpu, title_combined, save_name_combined, 'training without GPU', 'training with GPU')
     
     speedups = []
     for i in range(0,6):
@@ -142,7 +115,7 @@ def get_data(directory, it_ini, it_fin, it_ini_gpu, it_fin_gpu, policy):
         var_values_speedup = [speedups[i][var] for i in range(0,6)]
         title = var + ' speedup no GPU vs GPU'
         save_name = dir + '/result_analysis/training_results/graphs/' + var + '_speedup_no_gpu_it_' + str(it_ini) + '_' + str(it_fin) + '_vs_gpu_it_' + str(it_ini_gpu) + '_' + str(it_fin_gpu) + '.png'
-        plot_bars(model_names, var_values_speedup, title, save_name)
+        plot_results.plot_bars(model_names, var_values_speedup, title, save_name)
 
     with open(dir + '/result_analysis/training_results/results_speedup_{}_no_gpu_it_{}_{}_vs_gpu_it_{}_{}.csv'.format(policy, it_ini, it_fin, it_ini_gpu, it_fin_gpu), mode='w+') as csv_speedup_file:
         fieldnames = list(speedups[0].keys())

@@ -496,8 +496,10 @@ def rollout(agent,
         model_times_per_episode.append(model_times_this_episode)
         results_this_episode['episode']=episodes
         results_this_episode['total_model_time'] = this_episode_time
-        results_this_episode['model_time_per_step']=model_times_this_episode
-        results_this_episode['steps'] = steps_this_episode
+        results_this_episode['num_steps'] = steps_this_episode
+        results_this_episode['average_model_time_per_step'] = this_episode_time/steps_this_episode
+        results_this_episode['reward'] = reward_total
+       
         results.append(results_this_episode)
         ####################################################################
         
@@ -509,12 +511,11 @@ def rollout(agent,
     print(model_times_totals_per_episode)
     print("Total model time: {}".format(sum(model_times_totals_per_episode)))
     print("Average model time per episode: {}".format(sum(model_times_totals_per_episode)/episodes))
-    print("average model time per step: {}".format(sum(model_times_totals_per_episode)/sum(steps_per_episode)))
-    print("Steps:")
-    print(steps_per_episode)
+    print("Average model time per step: {}".format(sum(model_times_totals_per_episode)/sum(steps_per_episode)))
+    print("Average steps per episode: {}").format(sum(steps_per_episode)/episodes)
 
     with open(args.time_output, mode='w') as time_outfile:
-        fieldnames = ['episode', 'total_model_time', 'model_time_per_step', 'steps']
+        fieldnames = ['episode', 'total_model_time','num_steps', 'average_model_time_per_step', 'reward']
         writer = csv.DictWriter(time_outfile, fieldnames = fieldnames)
         writer.writeheader()
         for row in results:
