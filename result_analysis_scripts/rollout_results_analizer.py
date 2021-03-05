@@ -11,7 +11,6 @@ from os.path import dirname, abspath
 import plot_results
 
 def get_data_models(directory, n_iters, gpu, save_directory):
-    dir_name = 'rollout_results/it_{}/'.format(n_iters)
     if gpu:
         name = 'model{}_gpu_{}_iters.csv'
         aggregated_results_name = 'results_rollout_gpu_{}_iters.csv'.format(n_iters)

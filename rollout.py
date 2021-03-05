@@ -512,7 +512,7 @@ def rollout(agent,
     print("Total model time: {}".format(sum(model_times_totals_per_episode)))
     print("Average model time per episode: {}".format(sum(model_times_totals_per_episode)/episodes))
     print("Average model time per step: {}".format(sum(model_times_totals_per_episode)/sum(steps_per_episode)))
-    print("Average steps per episode: {}").format(sum(steps_per_episode)/episodes)
+    print("Average steps per episode: {}".format(sum(steps_per_episode)/episodes))
 
     with open(args.time_output, mode='w') as time_outfile:
         fieldnames = ['episode', 'total_model_time','num_steps', 'average_model_time_per_step', 'reward']
