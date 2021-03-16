@@ -23,7 +23,7 @@ def plot_data(it_ini, it_fin):
         df_list.append(pd.read_csv(file_names[i]))
 
     #Compare the three models results
-    vars_to_compare = list(df_model1.columns)
+    vars_to_compare = list(df_list[0].columns)
     x_values = [i for i in range(it_ini+1, it_fin+1)]
     for var in vars_to_compare:
         y_values = []
