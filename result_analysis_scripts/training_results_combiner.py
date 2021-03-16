@@ -1,4 +1,7 @@
 import training_results_analizer
+import os
+import sys
+
 
 def combine_data(directory,it_ini, it_fin):
     file_names = []
