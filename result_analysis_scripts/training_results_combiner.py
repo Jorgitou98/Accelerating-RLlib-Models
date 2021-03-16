@@ -6,10 +6,10 @@ import plot_results
 
 
 def combine_data(directory,it_ini, it_fin):
-    file_names = []
     os.chdir(directory)
     name = "model{}_ppo_gpu_it_{}_{}/progress.csv"
     for model in [1,3,4]:
+        file_names = []
         for i in range(it_ini, it_fin, 1000):
             file_names.append(name.format(model, i+1, i+1000))
         combined_name = "../ray_results_gathered/model{}_ppo_gpu_it_{}_{}.csv".format(model, it_ini+1, it_fin)
@@ -49,7 +49,7 @@ def plot_data(it_ini, it_fin):
 
 
 def main():
-    '''
+    
     directory = sys.argv[1]
     it_ini = int(sys.argv[2])
     it_fin = int(sys.argv[3])
@@ -58,6 +58,7 @@ def main():
     it_ini = int(sys.argv[1])
     it_fin = int(sys.argv[2])
     plot_data(it_ini, it_fin)
+    '''
 
 if __name__ == '__main__':
     main()
