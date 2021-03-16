@@ -49,7 +49,7 @@ def plot_data(it_ini, it_fin):
 
 
 def main():
-    
+    '''
     directory = sys.argv[1]
     it_ini = int(sys.argv[2])
     it_fin = int(sys.argv[3])
@@ -58,7 +58,7 @@ def main():
     it_ini = int(sys.argv[1])
     it_fin = int(sys.argv[2])
     plot_data(it_ini, it_fin)
-    '''
+    
 
 if __name__ == '__main__':
     main()
