@@ -22,7 +22,7 @@ def main():
     it_fin = int(sys.argv[3])
     combine_data(directory,it_ini,it_fin)
 
-if __name == '__main__':
+if __name__ == '__main__':
     main()
 
 
