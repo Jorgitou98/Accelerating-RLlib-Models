@@ -23,7 +23,18 @@ def plot_data(it_ini, it_fin):
         df_list.append(pd.read_csv(file_names[i]))
 
     #Compare the three models results
-    vars_to_compare = list(df_list[0].columns)
+    vars_to_compare = (['episode_reward_max','episode_reward_min','episode_reward_mean',
+    'episode_len_mean','episodes_this_iter','timesteps_total','done','episodes_total',
+    'training_iteration','time_this_iter_s','time_total_s','time_since_restore',
+    'timesteps_since_restore','iterations_since_restore','timers/sample_time_ms',
+    'timers/sample_throughput','timers/load_time_ms','timers/load_throughput','timers/learn_time_ms',
+    'timers/learn_throughput','timers/update_time_ms',
+    'info/num_steps_sampled','info/num_steps_trained','perf/cpu_util_percent','perf/ram_util_percent',
+    'info/learner/default_policy/cur_kl_coeff','info/learner/default_policy/cur_lr',
+    'info/learner/default_policy/total_loss','info/learner/default_policy/policy_loss',
+    'info/learner/default_policy/vf_loss','info/learner/default_policy/vf_explained_var',
+    'info/learner/default_policy/kl','info/learner/default_policy/entropy',
+    'info/learner/default_policy/entropy_coeff'])
     x_values = [i for i in range(it_ini+1, it_fin+1)]
     for var in vars_to_compare:
         y_values = []
