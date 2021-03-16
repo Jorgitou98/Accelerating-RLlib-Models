@@ -2,6 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 import numpy as np
+import os
 
 def plot_bars(bars, values, name, save_name):
     plt.close('all')
