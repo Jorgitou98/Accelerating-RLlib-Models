@@ -31,7 +31,7 @@ def plot_data(it_ini, it_fin):
             y_values.append(list(df_list[i][var]))
         labels = ['model1', 'model3', 'model4']
         title = 'Compare ' + var + ' models 1,3 and 4'
-        var_save_name = var_name.split('/')[len(var_name.split('/'))-1]
+        var_save_name = var.split('/')[len(var.split('/'))-1]
         save_name = 'graphs/compare_' + var_save_name + '_it_' + str(it_ini + 1) + '_' + str(it_fin) +'_models_1_3_4.png'
         plot_results.plot_line_three(x_values, y_values, labels, title, save_name)
 
