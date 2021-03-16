@@ -55,7 +55,7 @@ def plot_data(it_ini, it_fin):
         labels = ['max reward','min reward','average reward']
         title = 'Rewards Model {} iterations {} to {}'.format(models[i], it_ini+1, it_fin)
         save_name = 'graphs/rewards_model_{}_it_{}_{}.png'.format(models[i], it_ini+1, it_fin)
-        plot_results.plot_line_three(x_values, y_values, labels, totle, save_name)
+        plot_results.plot_line_three(x_values, y_values, labels, title, save_name)
 
 
 
