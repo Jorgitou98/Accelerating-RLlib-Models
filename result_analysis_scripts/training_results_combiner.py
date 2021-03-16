@@ -1,7 +1,7 @@
 import training_results_analizer
 import os
 import sys
-import pandas as pd
+import pandas as pdcd
 import plot_results
 
 
@@ -17,7 +17,7 @@ def combine_data(directory,it_ini, it_fin):
 
 def plot_data(it_ini, it_fin):
     os.chdir('ray_results_gathered')
-    file_names = ['model{}_ppo_gpu_it_{}_{}'.format(i,it_ini+1,it_fin) for i in[1,3,4]]
+    file_names = ['model{}_ppo_gpu_it_{}_{}.csv'.format(i,it_ini+1,it_fin) for i in[1,3,4]]
     df_list = []
     for i in range(0,3):
         df_list.append(pd.read_csv(file_names[i]))
