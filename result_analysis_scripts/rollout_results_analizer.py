@@ -39,7 +39,7 @@ def get_data_models(name, aggregated_results_name, model_ids, directory, n_iters
 
 def get_data(num_workers_no_gpu, num_workers_gpu, model_ids, directory, num_iters):
     dir = dirname(dirname(abspath(__file__)))
-    save_directory = '../result_analysis/rollout_results'
+    save_directory = dir + '/result_analysis/rollout_results'
     name_gpu = 'model{}_' + str(num_workers_gpu) + '_workers_gpu.csv'
     name_no_gpu = 'model{}_' + str(num_workers_no_gpu) + '_workers_no_gpu.csv'
     aggregated_name_gpu = 'results_{}_iters_{}_workers_gpu.csv'.format(num_iters, num_workers_gpu)
