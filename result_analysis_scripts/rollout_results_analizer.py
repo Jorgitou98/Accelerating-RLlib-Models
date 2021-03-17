@@ -54,16 +54,16 @@ def get_data(num_workers_no_gpu, num_workers_gpu, model_ids, directory, num_iter
     for var in vars:
         var_values_no_gpu=[aggregated_results_no_gpu[i][var] for i in range(0, len(model_ids))]
         title_no_gpu = var + ' per model {} workers no gpu {} iters'.format(num_workers_no_gpu, num_iters)
-        save_name_no_gpu = dir + '/result_analysis/rollout_results/graphs/' + var + '_per_model_' + str(num_workers_no_gpu) + '_workers_no_gpu_' + str(num_iters) + '_iters.png'
+        save_name_no_gpu = dir + '/result_analysis/rollout_results/graphs/'+ str(num_iters) + '_iters/' + var + '_per_model_' + str(num_workers_no_gpu) + '_workers_no_gpu_' + str(num_iters) + '_iters.png'
         plot_results.plot_bars(model_names, var_values_no_gpu, title_no_gpu, save_name_no_gpu)
 
         var_values_gpu = [aggregated_results_gpu[i][var] for i in range(0, len(model_ids))]
         title_gpu = var + ' per model gpu {} workers gpu {} iters'.format(num_workers_gpu, num_iters)
-        save_name_no_gpu = dir + '/result_analysis/rollout_results/graphs/' + var + '_per_model_' +str(num_workers_gpu) + '_workers_gpu_' + str(num_iters) + '_iters.png'
+        save_name_no_gpu = dir + '/result_analysis/rollout_results/graphs/' + str(num_iters) + '_iters/' + var + '_per_model_' +str(num_workers_gpu) + '_workers_gpu_' + str(num_iters) + '_iters.png'
         plot_results.plot_bars(model_names, var_values_gpu, title_gpu, save_name_gpu)
 
         title_combined = var + ' per model {} workers gpu and {} workers no gpu'.format(num_workers_gpu, num_workers_no_gpu)
-        save_name_combined = dir + '/result_analysis/rollout_results/graphs/' + var + '_per_model_' + str(num_workers_no_gpu) + '_workers_no_gpu_and_' + str(num_workers_gpu) + '_workers_gpu_' + str(num_iters) + '_iters.png'
+        save_name_combined = dir + '/result_analysis/rollout_results/graphs/' + str(num_iters) + '_iters/'+ var + '_per_model_' + str(num_workers_no_gpu) + '_workers_no_gpu_and_' + str(num_workers_gpu) + '_workers_gpu_' + str(num_iters) + '_iters.png'
         plot_results.plot_bars_double(model_names, var_values_no_gpu, var_values_gpu, title_combined, save_name_combined, 'rollout {} workers without GPU'.format(num_workers_no_gpu), 'rollout {} workers with GPU'.format(num_workers_gpu))
 
     speedups = []
@@ -78,7 +78,7 @@ def get_data(num_workers_no_gpu, num_workers_gpu, model_ids, directory, num_iter
     for var in vars:
         var_values_speedup = [speedups[i][var] for i in range(0,len(model_ids))]
         title = var + ' speedup {} workers no GPU vs {} workers GPU'.format(num_workers_no_gpu, num_workers_gpu)
-        save_name = dir + '/result_analysis/rollout_results/graphs/' + var + '_speedup_' + str(num_workers_no_gpu) + '_workers_no_gpu_vs_'+ str(num_workers_gpu) + '_workers_gpu_' + str(num_iters) + '_iters.png'
+        save_name = dir + '/result_analysis/rollout_results/graphs/' + str(num_iters) + '_iters/'+ var + '_speedup_' + str(num_workers_no_gpu) + '_workers_no_gpu_vs_'+ str(num_workers_gpu) + '_workers_gpu_' + str(num_iters) + '_iters.png'
         plot_results.plot_bars(model_names, var_values_speedup, title, save_name)
 
     with open(dir + '/result_analysis/rollout_results/results_speedup_{}_workers_no_gpu_vs_{}_workers_gpu_{}_iters.csv'.format(num_workers_no_gpu, num_workers_gpu, num_iters), mode='w+') as csv_speedup_file:
