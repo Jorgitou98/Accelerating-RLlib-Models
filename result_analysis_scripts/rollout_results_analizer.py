@@ -59,7 +59,7 @@ def get_data(num_workers_no_gpu, num_workers_gpu, model_ids, directory, num_iter
 
         var_values_gpu = [aggregated_results_gpu[i][var] for i in range(0, len(model_ids))]
         title_gpu = var + ' per model gpu {} workers gpu {} iters'.format(num_workers_gpu, num_iters)
-        save_name_no_gpu = dir + '/result_analysis/rollout_results/graphs/' + str(num_iters) + '_iters/' + var + '_per_model_' +str(num_workers_gpu) + '_workers_gpu_' + str(num_iters) + '_iters.png'
+        save_name_gpu = dir + '/result_analysis/rollout_results/graphs/' + str(num_iters) + '_iters/' + var + '_per_model_' +str(num_workers_gpu) + '_workers_gpu_' + str(num_iters) + '_iters.png'
         plot_results.plot_bars(model_names, var_values_gpu, title_gpu, save_name_gpu)
 
         title_combined = var + ' per model {} workers gpu and {} workers no gpu'.format(num_workers_gpu, num_workers_no_gpu)
