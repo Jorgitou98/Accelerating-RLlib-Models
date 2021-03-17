@@ -48,7 +48,7 @@ def get_data(num_workers_no_gpu, num_workers_gpu, model_ids, directory, num_iter
     aggregated_results_gpu = get_data_models(name_gpu, aggregated_name_gpu, model_ids, directory, num_iters, save_directory)
 
     model_names = [aggregated_results_no_gpu[i]['model'] for i in range(0, len(model_ids))]
-    vars = list(aggregated_results_gpu[0].keys())
+    vars = ['average_model_time_per_episode', 'average_steps_per_episode', 'average_model_time_per_step', 'average_reward_per_episode', 'min_reward', 'max_reward']
 
     # plot data for non gpu 
     for var in vars:
