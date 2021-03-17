@@ -43,7 +43,7 @@ def get_data(num_workers_no_gpu, num_workers_gpu, model_ids, directory, num_iter
     name_gpu = 'model{}_' + str(num_workers_gpu) + '_workers_gpu.csv'
     name_no_gpu = 'model{}_' + str(num_workers_no_gpu) + '_workers_no_gpu.csv'
     aggregated_name_gpu = 'results_{}_iters_{}_workers_gpu.csv'.format(num_iters, num_workers_gpu)
-    aggregated_name_no_gpu = 'results_{}_iters_{}_workers_no_gpu.csv'.format(num_iters, num_workers_gpu)
+    aggregated_name_no_gpu = 'results_{}_iters_{}_workers_no_gpu.csv'.format(num_iters, num_workers_no_gpu)
     aggregated_results_no_gpu = get_data_models(name_no_gpu, aggregated_name_no_gpu, model_ids, directory, num_iters, save_directory)
     aggregated_results_gpu = get_data_models(name_gpu, aggregated_name_gpu, model_ids, directory, num_iters, save_directory)
 
