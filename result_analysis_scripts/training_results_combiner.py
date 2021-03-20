@@ -17,7 +17,7 @@ def combine_data(directory,it_ini, it_fin, model_ids):
 
 def plot_data(it_ini, it_fin, model_ids):
     os.chdir('../ray_results_gathered/{}_iters'.format(it_fin))
-    file_names = ['model{}_ppo_gpu_it_{}_{}.csv'.format(i,it_ini+1,it_fin) for i in[1,3,4]]
+    file_names = ['model{}_ppo_gpu_it_{}_{}.csv'.format(i,it_ini+1,it_fin) for i in model_ids]
     df_list = []
     for i in range(0,len(model_ids)):
         df_list.append(pd.read_csv(file_names[i]))
