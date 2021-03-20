@@ -51,10 +51,10 @@ def plot_bars_multiple(bars, values, name, save_name, labels):
     width = 0.8/len(values)
     for i in range (0, len(values)):
         ax.bar(pos + width*i, values[i], label = labels[i], width = width)
-    plt.xticks(pos + width/2, bars)
+    plt.xticks(pos + 0.1 + width/2, bars)
     ax.set_title(name, loc='center', wrap=True)
     plt.legend()
-    fig.autofmt_xdate()  
+    fig.autofmt_xdate(loc='upper center', bbox_to_anchor=(0.5,-0.05), ncol = len(values))  
     if os.path.exists(save_name):
         os.remove(save_name)
     plt.savefig(save_name)

@@ -74,8 +74,8 @@ def get_data(descriptions, model_ids, directory, num_iters):
         save_name_combined += (str(num_iters) + '_iters.png')
         plot_results.plot_bars_multiple(model_names, var_values_list, title_combined, save_name_combined, ['rollout {}'.format(desc) for desc in descriptions])
 
-    for i in range(0, len(descriptions)):
-        for j in range(i, len(descriptions)):
+    for i in range(0, len(descriptions)-1):
+        for j in range(i+1, len(descriptions)):
             speedups = []
             for k in range(0, len(model_ids)):
                 this_model_speedup = {}
