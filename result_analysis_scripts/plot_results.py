@@ -42,4 +42,20 @@ def plot_line_multiple(x_values, y_values, labels, title, save_name, num_plots):
     if os.path.exists(save_name):
         os.remove(save_name)
     plt.savefig(save_name)
-    print('Graph saved at ' + save_name)    
+    print('Graph saved at ' + save_name)
+
+def plot_bars_multiple(bars, values, name, save_name, labels):
+    plt.close('all')
+    fig, ax =plt.subplots()
+    pos =np.arange(len(bars))
+    width = 0.8/len(values)
+    for i in range (0, len(values)):
+        ax.bar(pos + width*i, values[i], label = labels[i], width = width)
+    plt.xticks(pos + width/2, bars)
+    ax.set_title(name, loc='center', wrap=True)
+    plt.legend()
+    fig.autofmt_xdate)()  
+    if os.path.exists(save_name):
+        os.remove(save_name)
+    plt.savefig(save_name)
+    print('Graph saved at ' + save_name)      
