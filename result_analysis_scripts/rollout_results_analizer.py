@@ -50,7 +50,7 @@ def get_data(desc1, desc2, model_ids, directory, num_iters):
     model_names = [aggregated_results1[i]['model'] for i in range(0, len(model_ids))]
     vars = ['average_model_time_per_episode', 'average_steps_per_episode', 'average_model_time_per_step', 'average_reward_per_episode', 'min_reward', 'max_reward']
 
-    # plot data for non gpu 
+
     for var in vars:
         var_values1=[aggregated_results1[i][var] for i in range(0, len(model_ids))]
         title1 = var + ' per model {} {} iters'.format(desc1, num_iters)
@@ -63,7 +63,7 @@ def get_data(desc1, desc2, model_ids, directory, num_iters):
         plot_results.plot_bars(model_names, var_values2, title2, save_name2)
 
         title_combined = var + ' per model {} and {} '.format(desc1, desc2)
-        save_name_combined = dir + '/result_analysis/rollout_results/graphs/' + str(num_iters) + '_iters/'+ var + '_per_model_' + str(num_workers_no_gpu) + '_workers_no_gpu_and_' + str(num_workers_gpu) + '_workers_gpu_' + str(num_iters) + '_iters.png'
+        save_name_combined = dir + '/result_analysis/rollout_results/graphs/' + str(num_iters) + '_iters/'+ var + '_per_model_' + desc1 + '_and_' + desc2 + '_' + str(num_iters) + '_iters.png'
         plot_results.plot_bars_double(model_names, var_values1, var_values2, title_combined, save_name_combined, 'rollout {}'.format(desc1), 'rollout {}'.format(desc2))
 
     speedups = []
