@@ -44,7 +44,7 @@ def get_data(desc1, desc2, model_ids, directory, num_iters):
     name2 = 'model{}_' + desc2 + '.csv'
     aggregated_name1 = 'results_{}_iters_{}.csv'.format(num_iters, desc1)
     aggregated_name2 = 'results_{}_iters_{}.csv'.format(num_iters, desc2)
-    aggregated_results1 = get_data_models(name2, aggregated_name2, model_ids, directory, num_iters, save_directory)
+    aggregated_results1 = get_data_models(name1, aggregated_name1, model_ids, directory, num_iters, save_directory)
     aggregated_results2 = get_data_models(name2, aggregated_name2, model_ids, directory, num_iters, save_directory)
 
     model_names = [aggregated_results1[i]['model'] for i in range(0, len(model_ids))]
