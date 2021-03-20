@@ -1,0 +1,7 @@
+model,average_model_time_per_episode,average_steps_per_episode,average_model_time_per_step,average_reward_per_episode,min_reward,max_reward
+model1,1.0,1.0,1.0,1.0,1.0,1.0
+model2,1.0,1.0,1.0,1.0,1.0,1.0
+model3,1.0,1.0,1.0,1.0,1.0,1.0
+model4,1.0,1.0,1.0,1.0,1.0,1.0
+model5,1.0,1.0,1.0,1.0,1.0,1.0
+model6,1.0,1.0,1.0,1.0,1.0,1.0
