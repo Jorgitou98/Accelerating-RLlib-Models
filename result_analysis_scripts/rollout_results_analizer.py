@@ -90,7 +90,7 @@ def get_data(descriptions, model_ids, directory, num_iters):
                 save_name = dir + '/result_analysis/rollout_results/' + str(num_iters) + '_iters/graphs/'+ var + '_speedup_' + descriptions[i] + '_vs_'+ descriptions[j] + '_' + str(num_iters) + '_iters.png'
                 plot_results.plot_bars(model_names, var_values_speedup, title, save_name)
  
-            with open(dir + '/result_analysis/rollout_results/{}_iters/results_speedup_{}_vs_{}_{}_iters.csv'.format(num_iters,desciptions[i], descriptions[j], num_iters), mode='w+') as csv_speedup_file:
+            with open(dir + '/result_analysis/rollout_results/{}_iters/results_speedup_{}_vs_{}_{}_iters.csv'.format(num_iters,descriptions[i], descriptions[j], num_iters), mode='w+') as csv_speedup_file:
                 fieldnames = list(speedups[0].keys())
                 writer = csv.DictWriter(csv_speedup_file, fieldnames=fieldnames)
                 writer.writeheader()
