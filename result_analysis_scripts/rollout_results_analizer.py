@@ -39,7 +39,9 @@ def get_data_models(name, aggregated_results_name, model_ids, directory, n_iters
 
 def get_data(descriptions, model_ids, directory, num_iters):
     dir = dirname(dirname(abspath(__file__)))
-    save_directory = dir + '/result_analysis/rollout_results'
+    save_directory = dir + '/result_analysis/rollout_results/{}_iters'.format(num_iters)
+    if not os.path.exists(save_directory):
+        os.mkdir(save_directory)
     names = ['model{}_' + i + '.csv' for i in descriptions]
     aggregated_names = ['results_{}_iters_{}.csv'.format(num_iters, i) for i in descriptions]
     aggregated_results = [get_data_models(names[i], aggregated_names[i], model_ids, directory, num_iters, save_directory) for i in range(0, len(descriptions))]
@@ -59,7 +61,7 @@ def get_data(descriptions, model_ids, directory, num_iters):
 
 
         title_combined = var + ' per model'
-        save_name_combined = dir + '/result_analysis/rollout_results/graphs/' + str(num_iters) + '_iters/'+ var + '_per_model_' 
+        save_name_combined = dir + '/result_analysis/rollout_results/' + str(num_iters) + '_iters/graphs/'+ var + '_per_model_' 
         for desc in range(0, len(descriptions)):
             if(des == len(descriptions)-1):
                 title_combined += (' and ' + descriptions[desc])
@@ -83,10 +85,12 @@ def get_data(descriptions, model_ids, directory, num_iters):
             for var in vars:
                 var_values_speedup = [speedups[m][var] for m in range(0,len(model_ids))]
                 title = var + ' speedup {} vs {}'.format(descriptions[i], descriptions[j])
-                save_name = dir + '/result_analysis/rollout_results/graphs/' + str(num_iters) + '_iters/'+ var + '_speedup_' + descriptions[i] + '_vs_'+ descriptions[j] + '_' + str(num_iters) + '_iters.png'
+                if not os.path.exist(dir + '/result_analysis/rollout_results/' + str(num_iters) + '_iters/graphs/'):
+                    os.mkdir(dir + '/result_analysis/rollout_results/' + str(num_iters) + '_iters/graphs/')
+                save_name = dir + '/result_analysis/rollout_results/' + str(num_iters) + '_iters/graphs/'+ var + '_speedup_' + descriptions[i] + '_vs_'+ descriptions[j] + '_' + str(num_iters) + '_iters.png'
                 plot_results.plot_bars(model_names, var_values_speedup, title, save_name)
  
-            with open(dir + '/result_analysis/rollout_results/results_speedup_{}_vs_{}_{}_iters.csv'.format(desciptions[i], descriptions[j], num_iters), mode='w+') as csv_speedup_file:
+            with open(dir + '/result_analysis/rollout_results/{}_iters/results_speedup_{}_vs_{}_{}_iters.csv'.format(num_iters,desciptions[i], descriptions[j], num_iters), mode='w+') as csv_speedup_file:
                 fieldnames = list(speedups[0].keys())
                 writer = csv.DictWriter(csv_speedup_file, fieldnames=fieldnames)
                 writer.writeheader()
