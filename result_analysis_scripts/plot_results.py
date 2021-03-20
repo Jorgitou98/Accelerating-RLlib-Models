@@ -32,10 +32,10 @@ def plot_bars_double(bars, values1, values2, name, save_name, label1, label2):
     plt.savefig(save_name)
     print('Graph saved at ' + save_name)    
 
-def plot_line_three(x_values, y_values, labels, title, save_name):
+def plot_line_multiple(x_values, y_values, labels, title, save_name, num_plots):
     plt.close('all')
     fig,ax = plt.subplots()
-    for i in range(0,3):
+    for i in range(0,num_plots):
         ax.plot(x_values,y_values[i], label = labels[i])
     plt.legend()
     ax.set_title(title, loc = 'center', wrap=True)

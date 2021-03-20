@@ -22,7 +22,7 @@ def plot_data(it_ini, it_fin, model_ids):
     for i in range(0,len(model_ids)):
         df_list.append(pd.read_csv(file_names[i]))
 
-    #Compare the three models results
+    #Compare all models results
     vars_to_compare = (['episode_reward_max','episode_reward_min','episode_reward_mean',
     'episode_len_mean','episodes_this_iter','timesteps_total','done','episodes_total',
     'training_iteration','time_this_iter_s','time_total_s','time_since_restore',
@@ -50,7 +50,7 @@ def plot_data(it_ini, it_fin, model_ids):
         title = 'Compare ' + var + models_str_title
         var_save_name = var.split('/')[len(var.split('/'))-1]
         save_name = 'graphs/compare_' + var_save_name + '_it_' + str(it_ini + 1) + '_' + str(it_fin) + models_str_save + '.png'
-        plot_results.plot_line_three(x_values, y_values, labels, title, save_name)
+        plot_results.plot_line_multiple(x_values, y_values, labels, title, save_name, len(model_ids))
 
     # See rewards evolution for each model
     for i in range(0,len(model_ids)):
@@ -60,7 +60,7 @@ def plot_data(it_ini, it_fin, model_ids):
         labels = ['max reward','min reward','average reward']
         title = 'Rewards Model {} iterations {} to {}'.format(model_ids[i], it_ini+1, it_fin)
         save_name = 'graphs/rewards_model_{}_it_{}_{}.png'.format(model_ids[i], it_ini+1, it_fin)
-        plot_results.plot_line_three(x_values, y_values, labels, title, save_name)
+        plot_results.plot_line_multiple(x_values, y_values, labels, title, save_name, len(model_ids))
 
 
 
