@@ -54,7 +54,7 @@ def plot_bars_multiple(bars, values, name, save_name, labels):
     plt.xticks(pos + 0.1 + width/2, bars)
     ax.set_title(name, loc='center', wrap=True)
     plt.legend(loc='upper center', bbox_to_anchor=(0.5,-0.1), ncol =2)
-    fig.autofmt_xdate()  
+    fig.autofmt_xdate(rotation=20)  
     if os.path.exists(save_name):
         os.remove(save_name)
     plt.savefig(save_name)
