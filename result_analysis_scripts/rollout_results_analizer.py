@@ -95,7 +95,7 @@ def main():
     num_iters = int(sys.argv[4])
     model_ids_str = sys.argv[5]
     model_ids = model_ids_str[1:len(model_ids_str)-1].split(',')
-    get_data(num_workers_no_gpu, num_workers_gpu, model_ids, directory, num_iters)         
+    get_data(desc1, desc2, model_ids, directory, num_iters)         
 
 if __name__ == "__main__":
     main()            
