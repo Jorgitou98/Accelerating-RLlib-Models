@@ -90,8 +90,8 @@ def get_data(desc1, desc2, model_ids, directory, num_iters):
 
 def main():
     directory = sys.argv[1]
-    desc1 = sys.argv[2])
-    desc2 = sys.argv[3])
+    desc1 = sys.argv[2]
+    desc2 = sys.argv[3]
     num_iters = int(sys.argv[4])
     model_ids_str = sys.argv[5]
     model_ids = model_ids_str[1:len(model_ids_str)-1].split(',')
