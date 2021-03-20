@@ -49,7 +49,9 @@ def get_data(descriptions, model_ids, directory, num_iters):
     model_names = ['model{}'.format(i) for i in model_ids]
     vars = ['average_model_time_per_episode', 'average_steps_per_episode', 'average_model_time_per_step', 'average_reward_per_episode', 'min_reward', 'max_reward']
 
-
+    if not os.path.exist(dir + '/result_analysis/rollout_results/' + str(num_iters) + '_iters/graphs/'):
+        os.mkdir(dir + '/result_analysis/rollout_results/' + str(num_iters) + '_iters/graphs/')
+        
     for var in vars:
         var_values_list = []
         for desc in range(0, len(descriptions)):
@@ -85,8 +87,6 @@ def get_data(descriptions, model_ids, directory, num_iters):
             for var in vars:
                 var_values_speedup = [speedups[m][var] for m in range(0,len(model_ids))]
                 title = var + ' speedup {} vs {}'.format(descriptions[i], descriptions[j])
-                if not os.path.exist(dir + '/result_analysis/rollout_results/' + str(num_iters) + '_iters/graphs/'):
-                    os.mkdir(dir + '/result_analysis/rollout_results/' + str(num_iters) + '_iters/graphs/')
                 save_name = dir + '/result_analysis/rollout_results/' + str(num_iters) + '_iters/graphs/'+ var + '_speedup_' + descriptions[i] + '_vs_'+ descriptions[j] + '_' + str(num_iters) + '_iters.png'
                 plot_results.plot_bars(model_names, var_values_speedup, title, save_name)
  
