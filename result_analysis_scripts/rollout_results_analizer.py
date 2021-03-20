@@ -65,7 +65,7 @@ def get_data(descriptions, model_ids, directory, num_iters):
         title_combined = var + ' per model'
         save_name_combined = dir + '/result_analysis/rollout_results/' + str(num_iters) + '_iters/graphs/'+ var + '_per_model_' 
         for desc in range(0, len(descriptions)):
-            if(des == len(descriptions)-1):
+            if(desc == len(descriptions)-1):
                 title_combined += (' and ' + descriptions[desc])
                 save_name_combined +=('_and_' + descriptions[desc])
             else:
