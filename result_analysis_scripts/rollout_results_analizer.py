@@ -56,7 +56,7 @@ def get_data(descriptions, model_ids, directory, num_iters):
             var_values=[aggregated_results[desc][i][var] for i in range(0, len(model_ids))]
             var_values_list.append(var_values)
             title = var + ' per model {} {} iters'.format(descriptions[desc], num_iters)
-            save_name= dir + '/result_analysis/rollout_results/graphs/'+ str(num_iters) + '_iters/' + var + '_per_model_' + description[desc] +'_' +str(num_iters) + '_iters.png'
+            save_name= dir + '/result_analysis/rollout_results/graphs/'+ str(num_iters) + '_iters/' + var + '_per_model_' + descriptions[desc] +'_' +str(num_iters) + '_iters.png'
             plot_results.plot_bars(model_names, var_values, title, save_name)
 
 
