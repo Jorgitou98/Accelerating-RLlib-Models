@@ -137,7 +137,6 @@ def create_parser(parser_creator=None):
         "--time-output", 
         type=str, 
         help="The output file to save timing results.")
-    parser.add_argument(
     return parser
 
 
