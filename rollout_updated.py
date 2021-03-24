@@ -17,7 +17,7 @@ import csv
 
 import ray
 import ray.cloudpickle as cloudpickle
-from ray.rllib.agents.registry import get_trainer_class
+#from ray.rllib.agents.registry import get_trainer_class
 from ray.rllib.env import MultiAgentEnv
 from ray.rllib.env.base_env import _DUMMY_AGENT_ID
 from ray.rllib.env.env_context import EnvContext
@@ -284,7 +284,7 @@ def run(args, parser):
                 "line!")
 
         # Use default config for given agent.
-        _, config = get_trainer_class(args.run, return_config=True)
+        #_, config = get_trainer_class(args.run, return_config=True)
 
     # Make sure worker 0 has an Env.
     config["create_env_on_driver"] = True
