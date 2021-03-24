@@ -23,8 +23,8 @@ physical_devices = tf.config.list_physical_devices('GPU')
 print("Num GPUs:", len(physical_devices))
 
 if model == 'model1':
-    save_file = './training_results/ppo/model1/model1_results_gpu'
-    checkpoint_root='./checkpoints/ppo/model1_gpu'
+    save_file = './training_results/ppo/model1/model1_results_gpu_prueba'
+    checkpoint_root='./checkpoints/ppo/model1_gpu_prueba'
 elif model == 'model2':
     config['model']['dim'] = 168
     config['model']['conv_filters'] = [[16, [16, 16], 8],[32, [4, 4], 2],[256, [11, 11], 1]]

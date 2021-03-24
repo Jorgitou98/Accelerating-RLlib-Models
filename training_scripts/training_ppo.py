@@ -17,7 +17,7 @@ def full_train(checkpoint_root, agent, n_iter, save_file, n_ini = 0, header = Tr
             return
         agent.restore(restore_dir)
     else:
-        shutil.rmtree(checkpoint_root, ignore_errors=True, onerror=None)
+        #shutil.rmtree(checkpoint_root, ignore_errors=True, onerror=None)
     results = []
     episode_data = []
     episode_json = []
