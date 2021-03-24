@@ -16,7 +16,7 @@ def full_train(checkpoint_root, agent, n_iter, save_file, n_ini = 0, header = Tr
             print("Error: you must specify a restore path")
             return
         agent.restore(restore_dir)
-    else:
+    #else:
         #shutil.rmtree(checkpoint_root, ignore_errors=True, onerror=None)
     results = []
     episode_data = []
