@@ -47,11 +47,6 @@ if(gpu_options == 'both'):
 #logical_devices = tf.config.list_logical_devices('GPU')
 #print("Available logical GPUs: {}".format(logical_devices))
 
-
-config['num_workers'] = num_workers
-config['num_gpus'] = 0.0001*num_gpus
-config['num_gpus_per_worker'] = (num_gpus-config['num_gpus'])/num_workers
-
 save_name = sys.argv[4]
 
 if model == 'model1':
