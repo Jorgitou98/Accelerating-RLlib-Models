@@ -12,6 +12,7 @@ import tensorflow as tf
 
 #shutil.rmtree('~/ray_results', ignore_errors = True, onerror = False)
 physical_devices = tf.config.list_physical_devices('GPU')
+tf.config.set_visible_devices(physical_devices, 'GPU')
 print("Available Physical GPUs: {}".format(physical_devices))
 gpu_options = sys.argv[1]
 ray.shutdown()
@@ -31,8 +32,8 @@ if(gpu_options == 'both'):
     ray.init(num_gpus=2)
     num_gpus=2
 
-logical_devices = tf.config.list_logical_devices('GPU')
-print("Available logical GPUs: {}".format(logical_devices))
+#logical_devices = tf.config.list_logical_devices('GPU')
+#print("Available logical GPUs: {}".format(logical_devices))
 
 model = sys.argv[2]
 config = ppo.DEFAULT_CONFIG.copy()
