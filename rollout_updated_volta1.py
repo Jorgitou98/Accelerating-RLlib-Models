@@ -298,8 +298,8 @@ def run(args, parser):
         config["evaluation_num_workers"] = config.get("num_workers", 0)	
     if not config.get("evaluation_num_episodes"):	
         config["evaluation_num_episodes"] = 1	
-    config["render_env"] = not args.no_render	
-    config["record_env"] = args.video_dir
+    #config["render_env"] = not args.no_render	
+    #config["record_env"] = args.video_dir
     ##################################################
 
 
