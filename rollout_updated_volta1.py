@@ -418,7 +418,7 @@ def rollout(agent,
             results_this_episode['total_model_time'] = this_episode_time
             results_this_episode['num_steps'] = steps_this_episode
             results_this_episode['average_model_time_per_step'] = this_episode_time/steps_this_episode
-            results_this_episode['reward'] = reward_total
+            results_this_episode['reward'] = eval_result["episode_reward_mean"]
         
             results.append(results_this_episode)
          ########################
