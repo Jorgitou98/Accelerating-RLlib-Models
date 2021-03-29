@@ -272,8 +272,8 @@ def run(args, parser):
             config = cloudpickle.load(f)
 
     # Set num_workers to be at least 2.
-    if "num_workers" in config:
-        config["num_workers"] = max(2, config["num_workers"])
+    #if "num_workers" in config:
+        #config["num_workers"] = max(2, config["num_workers"])
 
     # Make sure worker 0 has an Env.
     config["create_env_on_driver"] = True
