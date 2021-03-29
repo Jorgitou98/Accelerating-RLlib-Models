@@ -10,11 +10,6 @@ import os
 from pathlib import Path
 import shelve
 
-##############
-import time
-import csv
-##############
-
 import ray
 import ray.cloudpickle as cloudpickle
 from ray.rllib.env import MultiAgentEnv
@@ -26,6 +21,11 @@ from ray.rllib.utils.deprecation import deprecation_warning
 from ray.rllib.utils.spaces.space_utils import flatten_to_single_ndarray
 from ray.tune.utils import merge_dicts
 from ray.tune.registry import get_trainable_cls, _global_registry, ENV_CREATOR
+
+##############
+import time
+import csv
+##############
 
 EXAMPLE_USAGE = """
 Example Usage via RLlib CLI:
@@ -292,6 +292,18 @@ def run(args, parser):
             parser.error("the following arguments are required: --env")
         args.env = config.get("env")
 
+    #################################################
+    # Make sure we have evaluation workers.	
+    if not config.get("evaluation_num_workers"):	
+        config["evaluation_num_workers"] = config.get("num_workers", 0)	
+    if not config.get("evaluation_num_episodes"):	
+        config["evaluation_num_episodes"] = 1	
+    config["render_env"] = not args.no_render	
+    config["record_env"] = args.video_dir
+    ##################################################
+
+
+
     ray.init()
 
     # Create the Trainer from config.
@@ -362,7 +374,71 @@ def rollout(agent,
     if saver is None:
         saver = RolloutSaver()
 
-    if hasattr(agent, "workers") and isinstance(agent.workers, WorkerSet):
+    ########################################################
+
+    # Normal case: Agent was setup correctly with an evaluation WorkerSet,	
+    # which we will now use to rollout.	
+    if hasattr(agent, "evaluation_workers") and isinstance(	
+            agent.evaluation_workers, WorkerSet):	
+        steps = 0	
+        episodes = 0
+        model_times_totals_per_episode = []
+        steps_per_episode =[]
+        results = []	
+        while keep_going(steps, num_steps, episodes, num_episodes):	
+            saver.begin_rollout()
+            results_this_episode = {}
+            ################
+            t0 = time.time()
+            ################
+            	
+            eval_result = agent._evaluate()["evaluation"]
+
+            ########################
+            t1 = time.time()
+            this_episode_time = (t1-t0)
+            ########################
+            	
+            # Increase timestep and episode counters.	
+            eps = agent.config["evaluation_num_episodes"]	
+            episodes += eps	
+            steps_this_episode = eps * eval_result["episode_len_mean"]
+            steps += eps * eval_result["episode_len_mean"]	
+            # Print out results and continue.	
+            print("Episode #{}: reward: {}".format(episodes, eval_result["episode_reward_mean"]))	
+            saver.end_rollout()
+
+            print("Episode #{}: model_time: {}".format(episodes, this_episode_time))
+            print("Episode #{}: steps: {}".format(episodes, steps_this_episode))
+            print("Episode #{}: average model time per step: {}".format(episodes, (this_episode_time/steps_this_episode)))
+            print("-------------------------------------------------------------")
+            model_times_totals_per_episode.append(this_episode_time)
+            steps_per_episode.append(steps_this_episode)
+            results_this_episode['episode']=episodes
+            results_this_episode['total_model_time'] = this_episode_time
+            results_this_episode['num_steps'] = steps_this_episode
+            results_this_episode['average_model_time_per_step'] = this_episode_time/steps_this_episode
+            results_this_episode['reward'] = reward_total
+        
+            results.append(results_this_episode)
+         ########################
+        print("Episodes times:")
+        print(model_times_totals_per_episode)
+        print("Total model time: {}".format(sum(model_times_totals_per_episode)))
+        print("Average model time per episode: {}".format(sum(model_times_totals_per_episode)/episodes))
+        print("Average model time per step: {}".format(sum(model_times_totals_per_episode)/sum(steps_per_episode)))
+        print("Average steps per episode: {}".format(sum(steps_per_episode)/episodes))
+
+        with open(args.time_output, mode='w') as time_outfile:
+            fieldnames = ['episode', 'total_model_time','num_steps', 'average_model_time_per_step', 'reward']
+            writer = csv.DictWriter(time_outfile, fieldnames = fieldnames)
+            writer.writeheader()
+            for row in results:
+                writer.writerow(row)	
+        return	
+    # Agent has no evaluation workers, but RolloutWorkers.
+
+    elif hasattr(agent, "workers") and isinstance(agent.workers, WorkerSet):
         env = agent.workers.local_worker().env
         multiagent = isinstance(env, MultiAgentEnv)
         if agent.workers.local_worker().multiagent:
@@ -409,12 +485,10 @@ def rollout(agent,
 
     steps = 0
     episodes = 0
-    ######################################
     model_times_totals_per_episode = []
     steps_per_episode =[]
     model_times_per_episode = []
     results = []
-    ######################################
     while keep_going(steps, num_steps, episodes, num_episodes):
         mapping_cache = {}  # in case policy_agent_mapping is stochastic
         saver.begin_rollout()
@@ -426,12 +500,10 @@ def rollout(agent,
         prev_rewards = collections.defaultdict(lambda: 0.)
         done = False
         reward_total = 0.0
-        ###################################
         this_episode_time = 0.0
         steps_this_episode = 0
         model_times_this_episode = []
         results_this_episode = {}
-        ###################################
         while not done and keep_going(steps, num_steps, episodes,
                                       num_episodes):
             multi_obs = obs if multiagent else {_DUMMY_AGENT_ID: obs}
@@ -441,12 +513,13 @@ def rollout(agent,
                     policy_id = mapping_cache.setdefault(
                         agent_id, policy_agent_mapping(agent_id))
                     p_use_lstm = use_lstm[policy_id]
+
                     # Aqui es donde empezamos a aplicar el modelo para ver que accion tomar.
                     
                     ################
                     t0 = time.time()
                     ################
-                    
+
                     if p_use_lstm:
                         a_action, p_state, _ = agent.compute_action(
                             a_obs,
@@ -467,9 +540,10 @@ def rollout(agent,
                     model_times_this_episode.append(t1-t0)
                     this_episode_time += (t1-t0)
                     ########################
+
                     a_action = flatten_to_single_ndarray(a_action)
                     action_dict[agent_id] = a_action
-                    prev_actions[agent_id] = a_action
+                    prev_actions[agent_id] = a_action       
             action = action_dict
 
             action = action if multiagent else action[_DUMMY_AGENT_ID]
@@ -512,7 +586,6 @@ def rollout(agent,
        
         results.append(results_this_episode)
         ####################################################################
-        
         if done:
             episodes += 1
 
@@ -530,6 +603,7 @@ def rollout(agent,
         writer.writeheader()
         for row in results:
             writer.writerow(row)
+
 
 if __name__ == "__main__":
     parser = create_parser()
