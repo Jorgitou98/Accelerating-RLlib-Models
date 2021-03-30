@@ -605,7 +605,7 @@ def rollout(agent,
         for row in results:
             writer.writerow(row)
 
-    ray.timeline('~/tmp/timeline.json')
+    ray.timeline('timeline.json')
 
 
 if __name__ == "__main__":
