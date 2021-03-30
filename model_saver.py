@@ -3,6 +3,7 @@ import ray.cloudpickle as cloudpickle
 import tensorflow as tf
 import ray.rllib.agents.ppo as ppo
 import sys
+import os
 
 checkpoint_dir=sys.argv[1]
 export_name = sys.argv[2]
