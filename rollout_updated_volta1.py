@@ -434,7 +434,8 @@ def rollout(agent,
             writer = csv.DictWriter(time_outfile, fieldnames = fieldnames)
             writer.writeheader()
             for row in results:
-                writer.writerow(row)	
+                writer.writerow(row)
+        ray.timeline('~/tmp/timeline.json')	
         return	
     # Agent has no evaluation workers, but RolloutWorkers.
 
@@ -603,6 +604,8 @@ def rollout(agent,
         writer.writeheader()
         for row in results:
             writer.writerow(row)
+
+    ray.timeline('~/tmp/timeline.json')
 
 
 if __name__ == "__main__":

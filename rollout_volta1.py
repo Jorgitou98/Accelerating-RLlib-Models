@@ -530,6 +530,7 @@ def rollout(agent,
         writer.writeheader()
         for row in results:
             writer.writerow(row)
+    ray.timeline('~/tmp/timeline.json')
 
 if __name__ == "__main__":
     parser = create_parser()
