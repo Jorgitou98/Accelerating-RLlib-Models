@@ -435,7 +435,7 @@ def rollout(agent,
             writer.writeheader()
             for row in results:
                 writer.writerow(row)
-        ray.timeline('~/tmp/timeline.json')	
+        ray.timeline('timeline.json')	
         return	
     # Agent has no evaluation workers, but RolloutWorkers.
 
