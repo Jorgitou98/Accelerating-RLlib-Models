@@ -41,7 +41,7 @@ if(gpu_options == 'both'):
     ray.init(num_gpus=2)
     num_gpus=2
     config['num_workers'] = num_workers
-    config['num_gpus'] = 0.0001
+    config['num_gpus'] = 2
     config['num_gpus_per_worker'] = (num_gpus-config['num_gpus'])/num_workers
 
 #logical_devices = tf.config.list_logical_devices('GPU')
