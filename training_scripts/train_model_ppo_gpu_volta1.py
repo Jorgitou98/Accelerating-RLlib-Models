@@ -29,21 +29,19 @@ if(gpu_options == 'gpu0'):
     config['num_gpus_per_worker'] = (num_gpus-config['num_gpus'])/num_workers
 
 if(gpu_options == 'gpu1'):
-    # Set only GPU 0 as visible
+    # Set only GPU 1 as visible
     tf.config.set_visible_devices(physical_devices[1], 'GPU')
     ray.init(num_gpus=1)
     num_gpus=1
     config['num_workers'] = num_workers
     config['num_gpus'] = 0.0001
-    #config['num_gpus_per_worker'] = (num_gpus-config['num_gpus'])/num_workers
-    config['num_gpus_per_worker'] = 0.2
+    config['num_gpus_per_worker'] = (num_gpus-config['num_gpus'])/num_workers
 if(gpu_options == 'both'):
     ray.init(num_gpus=2)
     num_gpus=2
     config['num_workers'] = num_workers
     config['num_gpus'] = 1
-    #config['num_gpus_per_worker'] = (num_gpus-config['num_gpus'])/num_workers
-    config['num_gpus_per_worker'] = 0.2
+    config['num_gpus_per_worker'] = (num_gpus-config['num_gpus'])/num_workers
 #logical_devices = tf.config.list_logical_devices('GPU')
 #print("Available logical GPUs: {}".format(logical_devices))
 
