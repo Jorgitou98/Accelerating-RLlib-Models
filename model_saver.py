@@ -18,7 +18,8 @@ with open(config_path, "rb") as f:
     config = cloudpickle.load(f)
 print(config)
 '''
-agent = ppo.PPOTrainer(env='Pong-v0')
+config = ppo.DEFAULT_CONFIG.copy()
+agent = ppo.PPOTrainer(config=config,env='Pong-v0')
 agent.restore(checkpoint_dir)
 agent.export_policy_model(export_name)
 ray.shutdown()
