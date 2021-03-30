@@ -1,9 +1,10 @@
 import ray
 #import ray.cloudpickle as cloudpickle
-import tensorflow as tf
 import ray.rllib.agents.ppo as ppo
 import sys
 import os
+import tensorflow as tf
+from tensorflow import keras
 
 ray.shutdown()
 ray.init()
