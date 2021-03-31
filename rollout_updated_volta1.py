@@ -197,7 +197,7 @@ def create_parser(parser_creator=None):
         "--gpu",
         default='both',
         type=str,
-        choices=['gpu0, gpu1, both'],
+        choices=['gpu0', 'gpu1', 'both'],
         help="Select which GPU set as available.")
     parser.add_argument(
         "--no-render",
