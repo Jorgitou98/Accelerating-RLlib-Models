@@ -29,19 +29,17 @@ config = ppo.DEFAULT_CONFIG.copy()
 if(gpu_options == 'gpu0'):
     # Set only GPU 0 as visible
     tf.config.set_visible_devices(physical_devices[0], 'GPU')
-    ray.init(num_gpus=1)
     num_gpus = 1
     
 elif(gpu_options == 'gpu1'):
     # Set only GPU 1 as visible
     tf.config.set_visible_devices(physical_devices[1], 'GPU')
-    ray.init(num_gpus=1)
     num_gpus=1
 
 elif(gpu_options == 'both'):
-    ray.init(num_gpus=2)
     num_gpus=2
-    
+
+ray.init()    
 #logical_devices = tf.config.list_logical_devices('GPU')
 #print("Available logical GPUs: {}".format(logical_devices))
 config['num_workers'] = num_workers
