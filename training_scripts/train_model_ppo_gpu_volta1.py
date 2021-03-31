@@ -27,17 +27,17 @@ ray.shutdown()
 if(gpu_options == 'gpu0'):
     # Set only GPU 0 as visible
     #tf.config.set_visible_devices(physical_devices[0], 'GPU')
-    os.environ["CUDA_VISIBLE_DEVICES"]="0"
+    os.system('export "CUDA_VISIBLE_DEVICES"="0"')
     num_gpus = 1
     
 elif(gpu_options == 'gpu1'):
     # Set only GPU 1 as visible
     #tf.config.set_visible_devices(physical_devices[1], 'GPU')
-    os.environ["CUDA_VISIBLE_DEVICES"]="1"
+    os.system('export "CUDA_VISIBLE_DEVICES"="1"')
     num_gpus=1
 
 elif(gpu_options == 'both'):
-    os.environ["CUDA_VISIBLE_DEVICES"]="0,1"
+    os.system('export "CUDA_VISIBLE_DEVICES"="0,1"')
     num_gpus=2
 
 config = ppo.DEFAULT_CONFIG.copy()
