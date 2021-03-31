@@ -201,10 +201,10 @@ def create_parser(parser_creator=None):
         const=True,
         help="Suppress rendering of the environment.")
     parser.add_argument(
-        "--gpu"
+        "--gpu",
         default='both',
-        type=str
-        choices=['gpu0, gpu1, both']
+        type=str,
+        choices=['gpu0, gpu1, both'],
         help="Select which GPU set as available.")
     parser.add_argument(
         "--monitor",
