@@ -24,17 +24,15 @@ n_iter = int(sys.argv[6])
 
 ray.shutdown()
 
-config = ppo.DEFAULT_CONFIG.copy()
-
 if(gpu_options == 'gpu0'):
     # Set only GPU 0 as visible
-    tf.config.set_visible_devices(physical_devices[0], 'GPU')
+    #tf.config.set_visible_devices(physical_devices[0], 'GPU')
     os.environ["CUDA_VISIBLE_DEVICES"]="0"
     num_gpus = 1
     
 elif(gpu_options == 'gpu1'):
     # Set only GPU 1 as visible
-    tf.config.set_visible_devices(physical_devices[1], 'GPU')
+    #tf.config.set_visible_devices(physical_devices[1], 'GPU')
     os.environ["CUDA_VISIBLE_DEVICES"]="1"
     num_gpus=1
 
@@ -42,6 +40,7 @@ elif(gpu_options == 'both'):
     os.environ["CUDA_VISIBLE_DEVICES"]="0,1"
     num_gpus=2
 
+config = ppo.DEFAULT_CONFIG.copy()
 ray.init()    
 #logical_devices = tf.config.list_logical_devices('GPU')
 #print("Available logical GPUs: {}".format(logical_devices))
