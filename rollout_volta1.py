@@ -26,6 +26,7 @@ from ray.rllib.utils.deprecation import deprecation_warning
 from ray.rllib.utils.spaces.space_utils import flatten_to_single_ndarray
 from ray.tune.utils import merge_dicts
 from ray.tune.registry import get_trainable_cls, _global_registry, ENV_CREATOR
+import tensorflow as tf
 
 EXAMPLE_USAGE = """
 Example Usage via RLlib CLI:
@@ -200,6 +201,12 @@ def create_parser(parser_creator=None):
         const=True,
         help="Suppress rendering of the environment.")
     parser.add_argument(
+        "--gpu"
+        default='both',
+        type=str
+        choices=['gpu0, gpu1, both']
+        help="Select which GPU set as available.")
+    parser.add_argument(
         "--monitor",
         default=False,
         action="store_true",
@@ -250,6 +257,14 @@ def create_parser(parser_creator=None):
 
 
 def run(args, parser):
+
+    physical_devices = tf.config.list_physical_devices('GPU')
+    tf.config.set_visible_devices(physical_devices, 'GPU')
+    print("Available Physical GPUs: {}".format(physical_devices))
+    if(args.gpu == 'gpu0'):
+        tf.config.set_visible_devices(physical_devices[0], 'GPU')
+    elif(args.gpu == 'gpu1'):
+        tf.config.set_visible_devices(physical_devices[1], 'GPU')
     # Load configuration from checkpoint file.
     config_dir = os.path.dirname(args.checkpoint)
     config_path = os.path.join(config_dir, "params.pkl")
@@ -291,6 +306,7 @@ def run(args, parser):
         if not config.get("env"):
             parser.error("the following arguments are required: --env")
         args.env = config.get("env")
+
 
     ray.init()
 

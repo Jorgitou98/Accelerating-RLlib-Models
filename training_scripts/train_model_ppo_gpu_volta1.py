@@ -14,38 +14,40 @@ import tensorflow as tf
 physical_devices = tf.config.list_physical_devices('GPU')
 tf.config.set_visible_devices(physical_devices, 'GPU')
 print("Available Physical GPUs: {}".format(physical_devices))
+
 gpu_options = sys.argv[1]
+gpus_driver = float(sys.argv[2])
+model = sys.argv[3]
+num_workers = int(sys.argv[4])
+save_name = sys.argv[5]
+n_iter = int(sys.argv[6])
+
 ray.shutdown()
-model = sys.argv[2]
+
 config = ppo.DEFAULT_CONFIG.copy()
-num_workers = int(sys.argv[3])
+
 if(gpu_options == 'gpu0'):
     # Set only GPU 0 as visible
     tf.config.set_visible_devices(physical_devices[0], 'GPU')
     ray.init(num_gpus=1)
     num_gpus = 1
-    config['num_workers'] = num_workers
-    config['num_gpus'] = 0.0001
-    config['num_gpus_per_worker'] = (num_gpus-config['num_gpus'])/num_workers
-
-if(gpu_options == 'gpu1'):
+    
+elif(gpu_options == 'gpu1'):
     # Set only GPU 1 as visible
     tf.config.set_visible_devices(physical_devices[1], 'GPU')
     ray.init(num_gpus=1)
     num_gpus=1
-    config['num_workers'] = num_workers
-    config['num_gpus'] = 0.0001
-    config['num_gpus_per_worker'] = (num_gpus-config['num_gpus'])/num_workers
-if(gpu_options == 'both'):
+
+elif(gpu_options == 'both'):
     ray.init(num_gpus=2)
     num_gpus=2
-    config['num_workers'] = num_workers
-    config['num_gpus'] = 1
-    config['num_gpus_per_worker'] = (num_gpus-config['num_gpus'])/num_workers
+    
 #logical_devices = tf.config.list_logical_devices('GPU')
 #print("Available logical GPUs: {}".format(logical_devices))
+config['num_workers'] = num_workers
+config['num_gpus'] = gpus_driver
+config['num_gpus_per_worker'] = (num_gpus-config['num_gpus'])/num_workers
 
-save_name = sys.argv[4]
 
 if model == 'model1':
     save_file = './training_results/ppo/model1/' + save_name
@@ -85,7 +87,6 @@ print("Configuración del agente:\n\n" + str(config))
 print("\nConfiguración del modelo del agente:\n\n" + str(config["model"]))
 
 t0 = time.time()
-n_iter = int(sys.argv[5])
 training.full_train(checkpoint_root, agent, n_iter, save_file)
 t1 = time.time()-t0
 print("Total time for the " + str(n_iter) + " training iterations: " + str(t1))

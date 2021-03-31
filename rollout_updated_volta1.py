@@ -194,6 +194,12 @@ def create_parser(parser_creator=None):
     required_named.add_argument(
         "--time-output", type=str, help="The output file to save timing results.")
     parser.add_argument(
+        "--gpu"
+        default='both',
+        type=str
+        choices=['gpu0, gpu1, both']
+        help="Select which GPU set as available.")
+    parser.add_argument(
         "--no-render",
         default=False,
         action="store_const",
@@ -250,6 +256,13 @@ def create_parser(parser_creator=None):
 
 
 def run(args, parser):
+    physical_devices = tf.config.list_physical_devices('GPU')
+    tf.config.set_visible_devices(physical_devices, 'GPU')
+    print("Available Physical GPUs: {}".format(physical_devices))
+    if(args.gpu == 'gpu0'):
+        tf.config.set_visible_devices(physical_devices[0], 'GPU')
+    elif(args.gpu == 'gpu1'):
+        tf.config.set_visible_devices(physical_devices[1], 'GPU')
     # Load configuration from checkpoint file.
     config_dir = os.path.dirname(args.checkpoint)
     config_path = os.path.join(config_dir, "params.pkl")
