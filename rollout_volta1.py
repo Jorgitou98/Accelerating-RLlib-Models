@@ -258,13 +258,15 @@ def create_parser(parser_creator=None):
 
 def run(args, parser):
 
-    physical_devices = tf.config.list_physical_devices('GPU')
-    tf.config.set_visible_devices(physical_devices, 'GPU')
-    print("Available Physical GPUs: {}".format(physical_devices))
     if(args.gpu == 'gpu0'):
-        tf.config.set_visible_devices(physical_devices[0], 'GPU')
+        os.environ["CUDA_VISIBLE_DEVICES"]="0"
+        os.system('export "CUDA_VISIBLE_DEVICES"="0"')
     elif(args.gpu == 'gpu1'):
-        tf.config.set_visible_devices(physical_devices[1], 'GPU')
+        os.environ["CUDA_VISIBLE_DEVICES"]="0"
+        os.system('export "CUDA_VISIBLE_DEVICES"="0"')
+    elif(args.gpu == 'both'):
+        os.environ["CUDA_VISIBLE_DEVICES"]="0,1"
+        os.system('export "CUDA_VISIBLE_DEVICES"="0,1"')
     # Load configuration from checkpoint file.
     config_dir = os.path.dirname(args.checkpoint)
     config_path = os.path.join(config_dir, "params.pkl")
