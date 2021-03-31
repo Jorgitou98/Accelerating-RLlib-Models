@@ -262,8 +262,8 @@ def run(args, parser):
         os.environ["CUDA_VISIBLE_DEVICES"]="0"
         os.system('export "CUDA_VISIBLE_DEVICES"="0"')
     elif(args.gpu == 'gpu1'):
-        os.environ["CUDA_VISIBLE_DEVICES"]="0"
-        os.system('export "CUDA_VISIBLE_DEVICES"="0"')
+        os.environ["CUDA_VISIBLE_DEVICES"]="1"
+        os.system('export "CUDA_VISIBLE_DEVICES"="1"')
     elif(args.gpu == 'both'):
         os.environ["CUDA_VISIBLE_DEVICES"]="0,1"
         os.system('export "CUDA_VISIBLE_DEVICES"="0,1"')
