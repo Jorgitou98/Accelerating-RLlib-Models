@@ -83,8 +83,8 @@ policy=agent.get_policy()
 print(policy.model.model_config)
 print(policy.model.base_model.summary())
 
-print("Configuración del agente:\n\n" + str(config))
-print("\nConfiguración del modelo del agente:\n\n" + str(config["model"]))
+print("Configuracion del agente:\n\n" + str(config))
+print("\nConfiguracion del modelo del agente:\n\n" + str(config["model"]))
 
 t0 = time.time()
 training.full_train(checkpoint_root, agent, n_iter, save_file)
