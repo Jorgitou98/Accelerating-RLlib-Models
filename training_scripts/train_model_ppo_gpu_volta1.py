@@ -11,8 +11,8 @@ from ray import tune
 import tensorflow as tf
 
 #shutil.rmtree('~/ray_results', ignore_errors = True, onerror = False)
-physical_devices = tf.config.list_physical_devices('GPU')
-tf.config.set_visible_devices(physical_devices, 'GPU')
+#physical_devices = tf.config.list_physical_devices('GPU')
+#tf.config.set_visible_devices(physical_devices, 'GPU')
 print("Available Physical GPUs: {}".format(physical_devices))
 
 gpu_options = sys.argv[1]
@@ -27,16 +27,19 @@ ray.shutdown()
 if(gpu_options == 'gpu0'):
     # Set only GPU 0 as visible
     #tf.config.set_visible_devices(physical_devices[0], 'GPU')
+    os.emviron["CUDA_VISIBLE_DEVICES"]="0"
     os.system('export "CUDA_VISIBLE_DEVICES"="0"')
     num_gpus = 1
     
 elif(gpu_options == 'gpu1'):
     # Set only GPU 1 as visible
     #tf.config.set_visible_devices(physical_devices[1], 'GPU')
+    os.emviron["CUDA_VISIBLE_DEVICES"]="1"
     os.system('export "CUDA_VISIBLE_DEVICES"="1"')
     num_gpus=1
 
 elif(gpu_options == 'both'):
+    os.emviron["CUDA_VISIBLE_DEVICES"]="0,1"
     os.system('export "CUDA_VISIBLE_DEVICES"="0,1"')
     num_gpus=2
 
