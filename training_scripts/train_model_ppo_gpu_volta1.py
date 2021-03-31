@@ -13,7 +13,7 @@ import tensorflow as tf
 #shutil.rmtree('~/ray_results', ignore_errors = True, onerror = False)
 #physical_devices = tf.config.list_physical_devices('GPU')
 #tf.config.set_visible_devices(physical_devices, 'GPU')
-print("Available Physical GPUs: {}".format(physical_devices))
+#print("Available Physical GPUs: {}".format(physical_devices))
 
 gpu_options = sys.argv[1]
 gpus_driver = float(sys.argv[2])
