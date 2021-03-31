@@ -194,10 +194,10 @@ def create_parser(parser_creator=None):
     required_named.add_argument(
         "--time-output", type=str, help="The output file to save timing results.")
     parser.add_argument(
-        "--gpu"
+        "--gpu",
         default='both',
-        type=str
-        choices=['gpu0, gpu1, both']
+        type=str,
+        choices=['gpu0, gpu1, both'],
         help="Select which GPU set as available.")
     parser.add_argument(
         "--no-render",
