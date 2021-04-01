@@ -54,32 +54,32 @@ config['num_gpus_per_worker'] = (num_gpus-config['num_gpus'])/num_workers
 
 if model == 'model1':
     save_file = './training_results/ppo/model1/' + save_name
-    checkpoint_root='./checkpoints/ppo/' + save_name
+    checkpoint_root='./checkpoints/ppo/volta1/' + save_name
 elif model == 'model2':
     config['model']['dim'] = 168
     config['model']['conv_filters'] = [[16, [16, 16], 8],[32, [4, 4], 2],[256, [11, 11], 1]]
     save_file = './training_results/ppo/model2/' + save_name
-    checkpoint_root='./checkpoints/ppo/' + save_name
+    checkpoint_root='./checkpoints/ppo/volta1/' + save_name
 elif model == 'model3':
     config['model']['dim'] = 252
     config['model']['conv_filters'] = [[16, [8, 8], 4],[16, [8, 8], 4], [32, [4, 4], 2], [256, [8, 8], 1]]
     save_file = './training_results/ppo/model3/' + save_name
-    checkpoint_root='./checkpoints/ppo/' + save_name
+    checkpoint_root='./checkpoints/ppo/volta1/' + save_name
 elif model == 'model4':
     config['model']['dim'] = 168
     config['model']['conv_filters'] = [[16, [8, 8], 4],[32, [4, 4], 2],[32, [4, 4], 2], [256, [11, 11], 1]]
     save_file = './training_results/ppo/model4/'+ save_name
-    checkpoint_root='./checkpoints/ppo/' + save_name
+    checkpoint_root='./checkpoints/ppo/volta1/' + save_name
 elif model == 'model5':
     config['model']['dim'] = 252
     config['model']['conv_filters'] = [[16, [8, 8], 4],[32, [4, 4], 2], [32, [4, 4], 2], [256, [16, 16], 1]]
     save_file = './training_results/ppo/model5/' + save_name
-    checkpoint_root='./checkpoints/ppo/' + save_name
+    checkpoint_root='./checkpoints/ppo/volta1/' + save_name
 elif model == 'model6':
     config['model']['dim'] = 168
     config['model']['conv_filters'] = [[16, [8, 8], 4],[32, [4, 4], 2],[256, [21, 21], 1]]
     save_file = './training_results/ppo/model6/'+ save_name
-    checkpoint_root='./checkpoints/ppo/' + save_name
+    checkpoint_root='./checkpoints/ppo/volta1/' + save_name
 
 agent = ppo.PPOTrainer(config, env='Pong-v0')
 policy=agent.get_policy()
