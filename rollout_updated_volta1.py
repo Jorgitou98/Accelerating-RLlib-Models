@@ -324,14 +324,14 @@ def run(args, parser):
 
     # Create the Trainer from config.
     cls = get_trainable_cls(args.run)
+    agent = cls(env=args.env, config=config)
+    # Load state from checkpoint.
+    agent.restore(args.checkpoint)
     print("Configuración del agente")
     print(agent.config)
     print("Configuración del modelo")
     print(agent.get_policy().model.model_config)
     print(agent.get_policy().model.base_model.summary())
-    agent = cls(env=args.env, config=config)
-    # Load state from checkpoint.
-    agent.restore(args.checkpoint)
     num_steps = int(args.steps)
     num_episodes = int(args.episodes)
 
