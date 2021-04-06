@@ -197,7 +197,7 @@ def create_parser(parser_creator=None):
         "--gpu",
         default='both',
         type=str,
-        choices=['gpu0', 'gpu1', 'both'],
+        choices=['gpu0', 'gpu1', 'both', 'none'],
         help="Select which GPU set as available.")
     parser.add_argument(
         "--no-render",
@@ -266,6 +266,9 @@ def run(args, parser):
     elif(args.gpu == 'both'):
         os.environ["CUDA_VISIBLE_DEVICES"]="0,1"
         os.system('export "CUDA_VISIBLE_DEVICES"="0,1"')
+    elif(args.gpu == 'none'):
+        os.environ["CUDA_VISIBLE_DEVICES"]=""
+        os.system('export "CUDA_VISIBLE_DEVICES"=""')
     # Load configuration from checkpoint file.
     config_dir = os.path.dirname(args.checkpoint)
     config_path = os.path.join(config_dir, "params.pkl")
