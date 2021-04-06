@@ -292,7 +292,7 @@ def run(args, parser):
         #config["num_workers"] = max(2, config["num_workers"])
 
     # Make sure worker 0 has an Env.
-    #config["create_env_on_driver"] = True
+    config["create_env_on_driver"] = True
 
     # Merge with `evaluation_config` (first try from command line, then from
     # pkl file).
@@ -324,6 +324,11 @@ def run(args, parser):
 
     # Create the Trainer from config.
     cls = get_trainable_cls(args.run)
+    print("Configuración del agente")
+    print(agent.config)
+    print("Configuración del modelo")
+    print(agent.get_policy().model.model_config)
+    print(agent.get_policy().model.base_model.summary())
     agent = cls(env=args.env, config=config)
     # Load state from checkpoint.
     agent.restore(args.checkpoint)
