@@ -293,7 +293,7 @@ def run(args, parser):
         #config["num_workers"] = max(2, config["num_workers"])
 
     # Make sure worker 0 has an Env.
-    config["create_env_on_driver"] = True
+    #config["create_env_on_driver"] = True
 
     # Merge with `evaluation_config` (first try from command line, then from
     # pkl file).
