@@ -53,7 +53,7 @@ def get_data(trained_model_descr, model_ids, directory, num_iters):
     vars = ['average_model_time_per_episode', 'average_steps_per_episode', 'average_model_time_per_step', 'average_reward_per_episode', 'min_reward', 'max_reward']
 
     if not os.path.exists(dir + '/result_analysis/rollout_results/volta1_{}_iters/graphs/'.format(num_iters)):
-        os.mkdir(dir + '/result_analysis/rollout_results/volta1_{}_iters/graphs/').format(num_iters)
+        os.mkdir(dir + '/result_analysis/rollout_results/volta1_{}_iters/graphs/'.format(num_iters))
 
     for var in vars:
         var_values_list = []
