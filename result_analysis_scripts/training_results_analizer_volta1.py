@@ -60,7 +60,7 @@ def get_data(directory, model_names, model_names_short, model, it_ini, it_fin):
     
     for var in vars:
         var_values = [aggregated_results[i][var] for i in range(0,len(model_names))]
-        titl= var + ' model {}'.format(model)
+        title= var + ' model {}'.format(model)
         save_name = dir + '/result_analysis/training_results/volta1/graphs/' + var + '_model{}_it_'.format(model) + str(it_ini) + '_'+ str(it_fin) + '.png'
         plot_results.plot_bars(model_names_short, var_values, title, save_name)
 
