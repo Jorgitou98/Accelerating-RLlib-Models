@@ -101,7 +101,7 @@ def main():
     directory = sys.argv[1]
     descriptions_str = sys.argv[2]
     descriptions = descriptions_str[1:len(descriptions_str)-1].split(',')
-    num_iters = int(sys.argv[3])
+    num_iters = sys.argv[3]
     model_ids_str = sys.argv[4]
     model_ids = model_ids_str[1:len(model_ids_str)-1].split(',')
     get_data(descriptions, model_ids, directory, num_iters)         
