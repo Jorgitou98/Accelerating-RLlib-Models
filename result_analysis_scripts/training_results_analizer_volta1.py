@@ -52,7 +52,7 @@ def get_data_models(directory, model_names, model_names_short, aggregated_result
 def get_data(directory, model_names, model_names_short, model, it_ini, it_fin):
     dir = dirname(dirname(abspath(__file__)))
     print(dir)
-    save_directory = '../result_analysis/training_results/volta1'
+    save_directory = '../../result_analysis/training_results/volta1'
     aggregated_results_name = 'results_model_{}_it_{}_{}.csv'.format(model, it_ini, it_fin)
     aggregated_results = get_data_models(directory, model_names, model_names_short, aggregated_results_name, save_directory)
     
@@ -70,7 +70,7 @@ def plot_data(directory, model_names, model_names_short, model, it_ini, it_fin):
     for i in range(0,len(model_names)):
         df_list.append(pd.read_csv(model_names[i] + '/progress.csv'))
 
-    os.chdir('../result_analysis/training_results/volta1')
+    os.chdir('../../result_analysis/training_results/volta1')
     #Compare all models results
     vars_to_compare = (['episode_reward_max','episode_reward_min','episode_reward_mean',
     'episode_len_mean','episodes_this_iter','timesteps_total','done','episodes_total',
