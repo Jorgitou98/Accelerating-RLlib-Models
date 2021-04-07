@@ -102,7 +102,7 @@ def main():
     directory = sys.argv[1]
     num_iters = sys.argv[2]
     trained_model_descr_str = sys.argv[3]
-    trained_model_descr= trained_model_desc_str[1:len(trained_model_descr_str)-1].split(',')
+    trained_model_descr= trained_model_descr_str[1:len(trained_model_descr_str)-1].split(',')
     model_ids_str = sys.argv[4]
     model_ids = model_ids_str[1:len(model_ids_str)-1].split(',')
     get_data(trained_model_descr, model_ids, directory, num_iters)         
