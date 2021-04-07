@@ -14,7 +14,7 @@ def plot_bars(bars, values, name, save_name):
     fig.autofmt_xdate()
     if os.path.exists(save_name):
         os.remove(save_name)
-    plt.savefig(save_name)
+    plt.savefig(save_name, bbox_inches='tight')
     print('Graph saved at ' + save_name)
 
 def plot_bars_double(bars, values1, values2, name, save_name, label1, label2):
@@ -29,7 +29,7 @@ def plot_bars_double(bars, values1, values2, name, save_name, label1, label2):
     fig.autofmt_xdate()
     if os.path.exists(save_name):
         os.remove(save_name)
-    plt.savefig(save_name)
+    plt.savefig(save_name, bbox_inches='tight')
     print('Graph saved at ' + save_name)    
 
 def plot_line_multiple(x_values, y_values, labels, title, save_name, num_plots):
