@@ -13,8 +13,9 @@ import plot_results
 def get_data_models(name, aggregated_results_name, trained_model_descr, model_ids, directory, n_iters, save_directory):
     os.chdir(directory)
     aggregated_results = []
+    cont = 0
     for i in model_ids:
-        model_name = name.format(trained_model_descr[i], i)
+        model_name = name.format(trained_model_descr[cont], i)
         df = pd.read_csv(model_name)
         aggregated_data_this_model ={}
         aggregated_data_this_model['model'] = i
@@ -26,6 +27,7 @@ def get_data_models(name, aggregated_results_name, trained_model_descr, model_id
         aggregated_data_this_model['min_reward'] = df['reward'].min()
         aggregated_data_this_model['max_reward'] = df['reward'].max()
         aggregated_results.append(aggregated_data_this_model)
+        cont+=1
     
     os.chdir(save_directory)
     with open(aggregated_results_name, mode='w+') as csv_agg_file:
