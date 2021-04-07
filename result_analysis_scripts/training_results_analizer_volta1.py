@@ -84,7 +84,7 @@ def plot_data(directory, model_names, model_names_short, model, it_ini, it_fin):
     'info/learner/default_policy/vf_loss','info/learner/default_policy/vf_explained_var',
     'info/learner/default_policy/kl','info/learner/default_policy/entropy',
     'info/learner/default_policy/entropy_coeff'])
-    x_values = [i for i in range(it_ini+1, it_fin+1)]
+    x_values = [i for i in range(it_ini, it_fin+1)]
     for var in vars_to_compare:
         y_values = []
         for i in range(0,len(model_names)):
@@ -92,7 +92,7 @@ def plot_data(directory, model_names, model_names_short, model, it_ini, it_fin):
 
         title = 'Compare ' + var + ' model {}'.format(model)
         var_save_name = var.split('/')[len(var.split('/'))-1]
-        save_name = 'graphs/compare_' + var_save_name + '_it_' + str(it_ini + 1) + '_' + str(it_fin) + '_model'.format(model) + '.png'
+        save_name = 'graphs/compare_' + var_save_name + '_it_' + str(it_ini) + '_' + str(it_fin) + '_model{}'.format(model) + '.png'
         plot_results.plot_line_multiple(x_values, y_values, model_names_short, title, save_name, len(model_names))
 
     # See rewards evolution for each model
@@ -101,7 +101,7 @@ def plot_data(directory, model_names, model_names_short, model, it_ini, it_fin):
         for var in ['episode_reward_max','episode_reward_min','episode_reward_mean']:
             y_values.append(list(df_list[i][var]))
         labels = ['max reward','min reward','average reward']
-        title = 'Rewards Model {} {} iterations {} to {}'.format(model, model_names_short[i], it_ini+1, it_fin)
+        title = 'Rewards Model {} {} iterations {} to {}'.format(model, model_names_short[i], it_ini, it_fin)
         save_name = 'graphs/rewards_{}.png'.format(model_names[i])
         plot_results.plot_line_multiple(x_values, y_values, labels, title, save_name, 3)
     
