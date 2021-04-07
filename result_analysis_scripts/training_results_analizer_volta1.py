@@ -19,8 +19,6 @@ def get_data_models(directory, model_names, model_names_short, aggregated_result
         df.dropna(inplace = True)
         aggregated_data_this_model = {}
         aggregated_data_this_model['model'] = model_names_short[i]
-        aggregated_data_this_model['iter_ini'] = it_ini
-        aggregated_data_this_model['iter_fin'] = it_fin
         aggregated_data_this_model['reward_mean_last_iter'] = df[df['training_iteration'] == df['training_iteration'].max()]['episode_reward_mean'].values[0]
         aggregated_data_this_model['len_mean_last_iter'] = df[df['training_iteration'] == df['training_iteration'].max()]['episode_len_mean'].values[0]
         aggregated_data_this_model['mean_learn_time_ms'] = df['timers/learn_time_ms'].mean()
