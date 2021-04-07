@@ -41,7 +41,7 @@ def plot_line_multiple(x_values, y_values, labels, title, save_name, num_plots):
     ax.set_title(title, loc = 'center', wrap=True)
     if os.path.exists(save_name):
         os.remove(save_name)
-    plt.savefig(save_name)
+    plt.savefig(save_name, bbox_inches='tight')
     print('Graph saved at ' + save_name)
 
 def plot_bars_multiple(bars, values, name, save_name, labels):
