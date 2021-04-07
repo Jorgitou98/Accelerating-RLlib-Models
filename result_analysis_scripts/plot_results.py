@@ -51,7 +51,7 @@ def plot_bars_multiple(bars, values, name, save_name, labels):
     width = 0.8/len(values)
     for i in range (0, len(values)):
         ax.bar(pos + width*i, values[i], label = labels[i], width = width)
-    plt.xticks(pos + 0.1 + width/2, bars)
+    plt.xticks(pos + len(values)*width/2, bars)
     ax.set_title(name, loc='center', wrap=True)
     plt.legend(loc='upper center', bbox_to_anchor=(0.5,-0.1), ncol =2)
     fig.autofmt_xdate(rotation=15)  

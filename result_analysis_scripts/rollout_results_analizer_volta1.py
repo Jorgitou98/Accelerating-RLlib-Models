@@ -65,16 +65,8 @@ def get_data(trained_model_descr, model_ids, directory, num_iters):
             plot_results.plot_bars(model_names, var_values, title, save_name)
 
 
-        title_combined = var + ' per model'
-        save_name_combined = dir + '/result_analysis/rollout_results/volta1_' + str(num_iters) + '_iters/graphs/'+ var + '_per_model_' 
-        for desc in range(0, len(descriptions)):
-            if(desc == len(descriptions)-1):
-                title_combined += (' and ' + descriptions[desc])
-                save_name_combined +=('_and_' + descriptions[desc])
-            else:
-                title_combined += (', ' + descriptions[desc])
-                save_name_combined +=('_' + descriptions[desc])
-        save_name_combined += (str(num_iters) + '_iters.png')
+        title_combined = var + ' per model all configurations'
+        save_name_combined = dir + '/result_analysis/rollout_results/volta1_' + str(num_iters) + '_iters/graphs/'+ var + '_per_model_all_descr.png' 
         plot_results.plot_bars_multiple(model_names, var_values_list, title_combined, save_name_combined, ['rollout {}'.format(desc) for desc in descriptions])
 
     for i in range(0, len(descriptions)-1):
