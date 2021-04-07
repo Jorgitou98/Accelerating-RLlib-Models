@@ -49,7 +49,7 @@ def get_data(trained_model_descr, model_ids, directory, num_iters):
     aggregated_names = ['results_volta1_{}_iters_{}.csv'.format(num_iters, i) for i in descriptions]
     aggregated_results = [get_data_models(names[i], aggregated_names[i], trained_model_descr, model_ids, directory, num_iters, save_directory) for i in range(0, len(descriptions))]
 
-    model_names = [i for i in model_ids]
+    model_names = ['model {}'.format(i) for i in model_ids]
     vars = ['average_model_time_per_episode', 'average_steps_per_episode', 'average_model_time_per_step', 'average_reward_per_episode', 'min_reward', 'max_reward']
 
     if not os.path.exists(dir + '/result_analysis/rollout_results/volta1_{}_iters/graphs/'.format(num_iters)):
