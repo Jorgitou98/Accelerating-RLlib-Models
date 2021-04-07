@@ -57,5 +57,5 @@ def plot_bars_multiple(bars, values, name, save_name, labels):
     fig.autofmt_xdate(rotation=15)  
     if os.path.exists(save_name):
         os.remove(save_name)
-    plt.savefig(save_name)
+    plt.savefig(save_name, bbox_inches='tight')
     print('Graph saved at ' + save_name)      
