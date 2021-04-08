@@ -22,3 +22,4 @@ def restore_saved_model(export_dir):
             print(meta_graph_def.signature_def[signature_key])
             print("You can inspect the model using TensorFlow SavedModel CLI.")
             print("https://www.tensorflow.org/guide/saved_model")
+            return meta_graph_def
