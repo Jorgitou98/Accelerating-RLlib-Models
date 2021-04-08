@@ -40,7 +40,7 @@ def get_data_models(name, aggregated_results_name, trained_model_descr, model_id
     return aggregated_results
 
 def get_data(trained_model_descr, model_ids, directory, num_iters):
-    descriptions = ['8_workers_gpu0', '8_workers_gpu1', '8_workers_both_gpus', '16_workers_both_gpus', '0_workers_gpu0', '0_workers_gpu1', '0_workers_both_gpus', '0_workers_no_gpus']
+    descriptions = ['8_workers_gpu0', '8_workers_gpu1', '8_workers_both_gpus', '8_workers_no_gpus']
     dir = dirname(dirname(abspath(__file__)))
     save_directory = dir + '/result_analysis/rollout_results/volta1_updated_{}_iters'.format(num_iters)
     if not os.path.exists(save_directory):
