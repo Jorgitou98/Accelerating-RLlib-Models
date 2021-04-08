@@ -1,0 +1,204 @@
+Thu Apr  8 20:05:51 2021       
++-----------------------------------------------------------------------------+
+| NVIDIA-SMI 455.32.00    Driver Version: 455.32.00    CUDA Version: 11.1     |
+|-------------------------------+----------------------+----------------------+
+| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+|                               |                      |               MIG M. |
+|===============================+======================+======================|
+|   0  GeForce RTX 3090    On   | 00000000:3B:00.0 Off |                  N/A |
+|  0%   50C    P2   139W / 350W |  16830MiB / 24268MiB |     21%      Default |
+|                               |                      |                  N/A |
++-------------------------------+----------------------+----------------------+
+|   1  Tesla V100-PCIE...  On   | 00000000:86:00.0 Off |                    0 |
+| N/A   56C    P0    31W / 250W |      0MiB / 32510MiB |      0%      Default |
+|                               |                      |                  N/A |
++-------------------------------+----------------------+----------------------+
+                                                                               
++-----------------------------------------------------------------------------+
+| Processes:                                                                  |
+|  GPU   GI   CI        PID   Type   Process name                  GPU Memory |
+|        ID   ID                                                   Usage      |
+|=============================================================================|
+|    0   N/A  N/A     29267      C   ...gpus_per_worker":0.09999}     1711MiB |
+|    0   N/A  N/A     29472      C   ...:RolloutWorker.__init__()     1519MiB |
+|    0   N/A  N/A     29475      C   ...:RolloutWorker.__init__()     1521MiB |
+|    0   N/A  N/A     29482      C   ...:RolloutWorker.__init__()     1519MiB |
+|    0   N/A  N/A     29485      C   ...:RolloutWorker.__init__()     1521MiB |
+|    0   N/A  N/A     29486      C   ...:RolloutWorker.__init__()     1521MiB |
+|    0   N/A  N/A     29489      C   ...:RolloutWorker.__init__()     1519MiB |
+|    0   N/A  N/A     29492      C   ...:RolloutWorker.__init__()     1435MiB |
+|    0   N/A  N/A     29495      C   ...:RolloutWorker.__init__()     1519MiB |
+|    0   N/A  N/A     29499      C   ...:RolloutWorker.__init__()     1519MiB |
+|    0   N/A  N/A     29505      C   ...:RolloutWorker.__init__()     1521MiB |
++-----------------------------------------------------------------------------+
+Thu Apr  8 20:05:54 2021       
++-----------------------------------------------------------------------------+
+| NVIDIA-SMI 455.32.00    Driver Version: 455.32.00    CUDA Version: 11.1     |
+|-------------------------------+----------------------+----------------------+
+| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+|                               |                      |               MIG M. |
+|===============================+======================+======================|
+|   0  GeForce RTX 3090    On   | 00000000:3B:00.0 Off |                  N/A |
+|  0%   48C    P2   111W / 350W |  17748MiB / 24268MiB |     13%      Default |
+|                               |                      |                  N/A |
++-------------------------------+----------------------+----------------------+
+|   1  Tesla V100-PCIE...  On   | 00000000:86:00.0 Off |                    0 |
+| N/A   56C    P0    31W / 250W |      0MiB / 32510MiB |      0%      Default |
+|                               |                      |                  N/A |
++-------------------------------+----------------------+----------------------+
+                                                                               
++-----------------------------------------------------------------------------+
+| Processes:                                                                  |
+|  GPU   GI   CI        PID   Type   Process name                  GPU Memory |
+|        ID   ID                                                   Usage      |
+|=============================================================================|
+|    0   N/A  N/A     29267      C   ...gpus_per_worker":0.09999}     1711MiB |
+|    0   N/A  N/A     29472      C   ...:RolloutWorker.__init__()     1583MiB |
+|    0   N/A  N/A     29475      C   ...:RolloutWorker.__init__()     1585MiB |
+|    0   N/A  N/A     29482      C   ...:RolloutWorker.__init__()     1711MiB |
+|    0   N/A  N/A     29485      C   ...:RolloutWorker.__init__()     1521MiB |
+|    0   N/A  N/A     29486      C   ...:RolloutWorker.__init__()     1713MiB |
+|    0   N/A  N/A     29489      C   ...:RolloutWorker.__init__()     1583MiB |
+|    0   N/A  N/A     29492      C   ...:RolloutWorker.__init__()     1585MiB |
+|    0   N/A  N/A     29495      C   ...:RolloutWorker.__init__()     1583MiB |
+|    0   N/A  N/A     29499      C   ...:RolloutWorker.__init__()     1583MiB |
+|    0   N/A  N/A     29505      C   ...:RolloutWorker.__init__()     1713MiB |
++-----------------------------------------------------------------------------+
+Thu Apr  8 20:05:56 2021       
++-----------------------------------------------------------------------------+
+| NVIDIA-SMI 455.32.00    Driver Version: 455.32.00    CUDA Version: 11.1     |
+|-------------------------------+----------------------+----------------------+
+| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+|                               |                      |               MIG M. |
+|===============================+======================+======================|
+|   0  GeForce RTX 3090    On   | 00000000:3B:00.0 Off |                  N/A |
+|  0%   49C    P2   110W / 350W |  18836MiB / 24268MiB |      7%      Default |
+|                               |                      |                  N/A |
++-------------------------------+----------------------+----------------------+
+|   1  Tesla V100-PCIE...  On   | 00000000:86:00.0 Off |                    0 |
+| N/A   56C    P0    31W / 250W |      0MiB / 32510MiB |      0%      Default |
+|                               |                      |                  N/A |
++-------------------------------+----------------------+----------------------+
+                                                                               
++-----------------------------------------------------------------------------+
+| Processes:                                                                  |
+|  GPU   GI   CI        PID   Type   Process name                  GPU Memory |
+|        ID   ID                                                   Usage      |
+|=============================================================================|
+|    0   N/A  N/A     29267      C   ...gpus_per_worker":0.09999}     1711MiB |
+|    0   N/A  N/A     29472      C   ...:RolloutWorker.__init__()     1711MiB |
+|    0   N/A  N/A     29475      C   ...:RolloutWorker.__init__()     1713MiB |
+|    0   N/A  N/A     29482      C   ...:RolloutWorker.__init__()     1711MiB |
+|    0   N/A  N/A     29485      C   ...:RolloutWorker.__init__()     1713MiB |
+|    0   N/A  N/A     29486      C   ...:RolloutWorker.__init__()     1713MiB |
+|    0   N/A  N/A     29489      C   ...:RolloutWorker.__init__()     1711MiB |
+|    0   N/A  N/A     29492      C   ...:RolloutWorker.__init__()     1713MiB |
+|    0   N/A  N/A     29495      C   ...:RolloutWorker.__init__()     1711MiB |
+|    0   N/A  N/A     29499      C   ...:RolloutWorker.__init__()     1711MiB |
+|    0   N/A  N/A     29505      C   ...:RolloutWorker.__init__()     1713MiB |
++-----------------------------------------------------------------------------+
+Thu Apr  8 20:05:58 2021       
++-----------------------------------------------------------------------------+
+| NVIDIA-SMI 455.32.00    Driver Version: 455.32.00    CUDA Version: 11.1     |
+|-------------------------------+----------------------+----------------------+
+| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+|                               |                      |               MIG M. |
+|===============================+======================+======================|
+|   0  GeForce RTX 3090    On   | 00000000:3B:00.0 Off |                  N/A |
+|  0%   49C    P2   110W / 350W |  19092MiB / 24268MiB |      5%      Default |
+|                               |                      |                  N/A |
++-------------------------------+----------------------+----------------------+
+|   1  Tesla V100-PCIE...  On   | 00000000:86:00.0 Off |                    0 |
+| N/A   56C    P0    31W / 250W |      0MiB / 32510MiB |      0%      Default |
+|                               |                      |                  N/A |
++-------------------------------+----------------------+----------------------+
+                                                                               
++-----------------------------------------------------------------------------+
+| Processes:                                                                  |
+|  GPU   GI   CI        PID   Type   Process name                  GPU Memory |
+|        ID   ID                                                   Usage      |
+|=============================================================================|
+|    0   N/A  N/A     29267      C   ...gpus_per_worker":0.09999}     1711MiB |
+|    0   N/A  N/A     29472      C   ...:RolloutWorker.__init__()     1711MiB |
+|    0   N/A  N/A     29475      C   ...:RolloutWorker.__init__()     1713MiB |
+|    0   N/A  N/A     29482      C   ...:RolloutWorker.__init__()     1711MiB |
+|    0   N/A  N/A     29485      C   ...:RolloutWorker.__init__()     1713MiB |
+|    0   N/A  N/A     29486      C   ...:RolloutWorker.__init__()     1713MiB |
+|    0   N/A  N/A     29489      C   ...:RolloutWorker.__init__()     1711MiB |
+|    0   N/A  N/A     29492      C   ...:RolloutWorker.__init__()     1969MiB |
+|    0   N/A  N/A     29495      C   ...:RolloutWorker.__init__()     1711MiB |
+|    0   N/A  N/A     29499      C   ...:RolloutWorker.__init__()     1711MiB |
+|    0   N/A  N/A     29505      C   ...:RolloutWorker.__init__()     1713MiB |
++-----------------------------------------------------------------------------+
+Thu Apr  8 20:06:00 2021       
++-----------------------------------------------------------------------------+
+| NVIDIA-SMI 455.32.00    Driver Version: 455.32.00    CUDA Version: 11.1     |
+|-------------------------------+----------------------+----------------------+
+| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+|                               |                      |               MIG M. |
+|===============================+======================+======================|
+|   0  GeForce RTX 3090    On   | 00000000:3B:00.0 Off |                  N/A |
+|  0%   49C    P2   110W / 350W |  19092MiB / 24268MiB |      7%      Default |
+|                               |                      |                  N/A |
++-------------------------------+----------------------+----------------------+
+|   1  Tesla V100-PCIE...  On   | 00000000:86:00.0 Off |                    0 |
+| N/A   56C    P0    31W / 250W |      0MiB / 32510MiB |      0%      Default |
+|                               |                      |                  N/A |
++-------------------------------+----------------------+----------------------+
+                                                                               
++-----------------------------------------------------------------------------+
+| Processes:                                                                  |
+|  GPU   GI   CI        PID   Type   Process name                  GPU Memory |
+|        ID   ID                                                   Usage      |
+|=============================================================================|
+|    0   N/A  N/A     29267      C   ...gpus_per_worker":0.09999}     1711MiB |
+|    0   N/A  N/A     29472      C   ...:RolloutWorker.__init__()     1711MiB |
+|    0   N/A  N/A     29475      C   ...:RolloutWorker.__init__()     1713MiB |
+|    0   N/A  N/A     29482      C   ...:RolloutWorker.__init__()     1711MiB |
+|    0   N/A  N/A     29485      C   ...:RolloutWorker.__init__()     1713MiB |
+|    0   N/A  N/A     29486      C   ...:RolloutWorker.__init__()     1713MiB |
+|    0   N/A  N/A     29489      C   ...:RolloutWorker.__init__()     1711MiB |
+|    0   N/A  N/A     29492      C   ...:RolloutWorker.__init__()     1969MiB |
+|    0   N/A  N/A     29495      C   ...:RolloutWorker.__init__()     1711MiB |
+|    0   N/A  N/A     29499      C   ...:RolloutWorker.__init__()     1711MiB |
+|    0   N/A  N/A     29505      C   ...:RolloutWorker.__init__()     1713MiB |
++-----------------------------------------------------------------------------+
+Thu Apr  8 20:06:02 2021       
++-----------------------------------------------------------------------------+
+| NVIDIA-SMI 455.32.00    Driver Version: 455.32.00    CUDA Version: 11.1     |
+|-------------------------------+----------------------+----------------------+
+| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+|                               |                      |               MIG M. |
+|===============================+======================+======================|
+|   0  GeForce RTX 3090    On   | 00000000:3B:00.0 Off |                  N/A |
+|  0%   49C    P2   110W / 350W |  19092MiB / 24268MiB |      2%      Default |
+|                               |                      |                  N/A |
++-------------------------------+----------------------+----------------------+
+|   1  Tesla V100-PCIE...  On   | 00000000:86:00.0 Off |                    0 |
+| N/A   56C    P0    31W / 250W |      0MiB / 32510MiB |      0%      Default |
+|                               |                      |                  N/A |
++-------------------------------+----------------------+----------------------+
+                                                                               
++-----------------------------------------------------------------------------+
+| Processes:                                                                  |
+|  GPU   GI   CI        PID   Type   Process name                  GPU Memory |
+|        ID   ID                                                   Usage      |
+|=============================================================================|
+|    0   N/A  N/A     29267      C   ...gpus_per_worker":0.09999}     1711MiB |
+|    0   N/A  N/A     29472      C   ...:RolloutWorker.__init__()     1711MiB |
+|    0   N/A  N/A     29475      C   ...:RolloutWorker.__init__()     1713MiB |
+|    0   N/A  N/A     29482      C   ...:RolloutWorker.__init__()     1711MiB |
+|    0   N/A  N/A     29485      C   ...:RolloutWorker.__init__()     1713MiB |
+|    0   N/A  N/A     29486      C   ...:RolloutWorker.__init__()     1713MiB |
+|    0   N/A  N/A     29489      C   ...:RolloutWorker.__init__()     1711MiB |
+|    0   N/A  N/A     29492      C   ...:RolloutWorker.__init__()     1969MiB |
+|    0   N/A  N/A     29495      C   ...:RolloutWorker.__init__()     1711MiB |
+|    0   N/A  N/A     29499      C   ...:RolloutWorker.__init__()     1711MiB |
+|    0   N/A  N/A     29505      C   ...:RolloutWorker.__init__()     1713MiB |
++-----------------------------------------------------------------------------+
