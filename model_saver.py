@@ -25,4 +25,3 @@ agent = ppo.PPOTrainer(config, env='Pong-v0')
 agent.restore(checkpoint_dir)
 agent.export_policy_model(export_name)
 ray.shutdown()
-
