@@ -10,7 +10,10 @@ ray.shutdown()
 ray.init()
 checkpoint_dir=sys.argv[1]
 export_name = sys.argv[2]
+
+#Para evitar un warning que me da luego al cargarlo (?)
 tf.compat.v1.enable_resource_variables()
+
 config = ppo.DEFAULT_CONFIG.copy()
 print(config)
 
