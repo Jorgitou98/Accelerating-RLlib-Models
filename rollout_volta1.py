@@ -313,7 +313,7 @@ def run(args, parser):
         args.env = config.get("env")
 
 
-    ray.init(num_cpus=0)
+    ray.init()
 
     # Create the Trainer from config.
     cls = get_trainable_cls(args.run)
