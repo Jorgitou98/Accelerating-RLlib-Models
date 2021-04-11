@@ -94,6 +94,6 @@ print("Configuracion del agente:\n\n" + str(config))
 print("\nConfiguracion del modelo del agente:\n\n" + str(config["model"]))
 
 t0 = time.time()
-training.full_train(checkpoint_root, agent, n_iter, save_file)
+training.full_train(checkpoint_root, agent, n_iter, save_file).remote()
 t1 = time.time()-t0
 print("Total time for the " + str(n_iter) + " training iterations: " + str(t1))
