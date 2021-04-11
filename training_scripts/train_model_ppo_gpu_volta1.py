@@ -43,6 +43,11 @@ elif(gpu_options == 'both'):
     os.system('export "CUDA_VISIBLE_DEVICES"="0,1"')
     num_gpus=2
 
+elif(gpu_options == 'none'):
+    os.environ["CUDA_VISIBLE_DEVICES"]=""
+    os.system('export "CUDA_VISIBLE_DEVICES"=""')
+    num_gpus=0
+
 config = ppo.DEFAULT_CONFIG.copy()
 ray.init()    
 #logical_devices = tf.config.list_logical_devices('GPU')
