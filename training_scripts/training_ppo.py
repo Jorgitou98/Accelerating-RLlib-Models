@@ -11,7 +11,7 @@ import csv
 
 #@ray.remote(num_cpus=0)
 def full_train(checkpoint_root, agent, n_iter, save_file, n_ini = 0, header = True, restore = False, restore_dir = None):
-    s = "{:3d} reward {:6.2f}/{:6.2f}/{:6.2f} len {:6.2f} learn_time_ms {:6.2f} saved {}"
+    s = "{:3d} reward {:6.2f}/{:6.2f}/{:6.2f} len {:6.2f} learn_time_ms {:6.2f} total_train_time_s {:6.2f} saved {}"
     if(restore):
         if restore_dir == None:
             print("Error: you must specify a restore path")
@@ -25,14 +25,17 @@ def full_train(checkpoint_root, agent, n_iter, save_file, n_ini = 0, header = Tr
 
     total_learn_time = 0
     for n in range(n_iter):
+        t0 = time.time()
         result = agent.train()
+        t1 = time.time()-t0
         results.append(result)
         episode = {'n': n_ini + n + 1,
                    'episode_reward_min': result['episode_reward_min'],
                    'episode_reward_mean': result['episode_reward_mean'],
                    'episode_reward_max': result['episode_reward_max'],
                    'episode_len_mean': result['episode_len_mean'],
-                   'learn_time_ms': result['timers']['learn_time_ms']
+                   'learn_time_ms': result['timers']['learn_time_ms'],
+                   'total_train_time_s': t1
                    }
         episode_data.append(episode)
         episode_json.append(json.dumps(episode))
@@ -44,6 +47,7 @@ def full_train(checkpoint_root, agent, n_iter, save_file, n_ini = 0, header = Tr
         result["episode_reward_max"],
         result["episode_len_mean"],
         result["timers"]["learn_time_ms"],
+        t1,
         file_name
        ))
         total_learn_time+= result["timers"]["learn_time_ms"]
@@ -55,7 +59,7 @@ def full_train(checkpoint_root, agent, n_iter, save_file, n_ini = 0, header = Tr
         json.dump(episode_json, outfile)
 
     with open(save_file + '.csv', mode='a') as csv_file:
-        fieldnames = ['n', 'episode_reward_min', 'episode_reward_mean', 'episode_reward_max', 'episode_len_mean', 'learn_time_ms']
+        fieldnames = ['n', 'episode_reward_min', 'episode_reward_mean', 'episode_reward_max', 'episode_len_mean', 'learn_time_ms','total_learn_time_s']
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
         if header:
             writer.writeheader()
