@@ -59,7 +59,7 @@ def full_train(checkpoint_root, agent, n_iter, save_file, n_ini = 0, header = Tr
         json.dump(episode_json, outfile)
 
     with open(save_file + '.csv', mode='a') as csv_file:
-        fieldnames = ['n', 'episode_reward_min', 'episode_reward_mean', 'episode_reward_max', 'episode_len_mean', 'learn_time_ms','total_learn_time_s']
+        fieldnames = ['n', 'episode_reward_min', 'episode_reward_mean', 'episode_reward_max', 'episode_len_mean', 'learn_time_ms','total_train_time_s']
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
         if header:
             writer.writeheader()
