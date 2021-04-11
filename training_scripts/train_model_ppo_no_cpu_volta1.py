@@ -45,7 +45,7 @@ elif(gpu_options == 'both'):
     num_gpus=2
 
 config = ppo.DEFAULT_CONFIG.copy()
-ray.init(num_cpus=1)    
+ray.init(num_cpus=0)    
 #logical_devices = tf.config.list_logical_devices('GPU')
 #print("Available logical GPUs: {}".format(logical_devices))
 config['num_workers'] = num_workers
@@ -53,7 +53,7 @@ config['num_gpus'] = gpus_driver
 config['num_gpus_per_worker'] = (num_gpus-config['num_gpus'])/num_workers
 config['num_cpus_for_driver'] = 0
 config['num_cpus_per_worker'] = 0
-config['tf_session_args']['device_count'] ={'CPU':1, 'GPU':num_gpus}
+config['tf_session_args']['device_count'] ={'CPU':0, 'GPU':num_gpus}
 
 
 if model == 'model1':
