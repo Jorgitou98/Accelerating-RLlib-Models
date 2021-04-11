@@ -9,7 +9,7 @@ from tensorflow import keras
 from ray import tune
 import csv
 
-@ray.remote(num_cpus=0, num_gpus=1)
+@ray.remote(num_cpus=0)
 def full_train(checkpoint_root, agent, n_iter, save_file, n_ini = 0, header = True, restore = False, restore_dir = None):
     s = "{:3d} reward {:6.2f}/{:6.2f}/{:6.2f} len {:6.2f} learn_time_ms {:6.2f} saved {}"
     if(restore):
@@ -61,3 +61,5 @@ def full_train(checkpoint_root, agent, n_iter, save_file, n_ini = 0, header = Tr
             writer.writeheader()
         for row in episode_data:
             writer.writerow(row)
+
+    return results
