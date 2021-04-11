@@ -45,7 +45,7 @@ elif(gpu_options == 'both'):
     num_gpus=2
 
 config = ppo.DEFAULT_CONFIG.copy()
-ray.init(num_cpus=0)    
+ray.init(num_cpus=0, num_gpus=num_gpus)    
 #logical_devices = tf.config.list_logical_devices('GPU')
 #print("Available logical GPUs: {}".format(logical_devices))
 config['num_workers'] = num_workers
@@ -94,7 +94,7 @@ print("Configuracion del agente:\n\n" + str(config))
 print("\nConfiguracion del modelo del agente:\n\n" + str(config["model"]))
 
 t0 = time.time()
-results=training.full_train.remote(checkpoint_root, agent, n_iter, save_file)
+training.full_train(checkpoint_root, agent, n_iter, save_file)
 print(ray.get(results))
 t1 = time.time()-t0
 print("Total time for the " + str(n_iter) + " training iterations: " + str(t1))
