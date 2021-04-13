@@ -61,7 +61,7 @@ def get_data(directory, model_names, model_names_short, model, it_ini, it_fin):
     y_labels=['time(s)', 'time(ms)', None, 'time(ms)', None, 'time(ms)', None, 'time(ms)', '% util', '% util']
     
     for i in range(len(vars)):
-        var_values = [aggregated_results[i][vars[i]] for i in range(0,len(model_names))]
+        var_values = [aggregated_results[j][vars[i]] for j in range(0,len(model_names))]
         title= vars[i] + ' model {}'.format(model)
         save_name = dir + '/result_analysis/training_results/volta1_def/graphs/' + vars[i] + '_model{}_it_'.format(model) + str(it_ini) + '_'+ str(it_fin) + '.png'
         plot_results.plot_bars(model_names_short, var_values, title, save_name, y_label=y_labels[i])
