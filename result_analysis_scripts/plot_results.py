@@ -9,7 +9,7 @@ def plot_bars(bars, values, name, save_name):
     fig, ax = plt.subplots()
     pos = np.arange(len(bars))
     rects=ax.bar(pos, values)
-    ax.bar_labels(rects, padding=3)
+    ax.bar_label(rects, padding=3)
     plt.xticks(pos, bars)
     ax.set_title(name, loc='center', wrap=True)
     fig.autofmt_xdate()
