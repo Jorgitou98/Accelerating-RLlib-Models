@@ -15,6 +15,7 @@ def plot_bars(bars, values, name, save_name):
     fig.autofmt_xdate()
     if os.path.exists(save_name):
         os.remove(save_name)
+    fig.tight_layout()
     plt.savefig(save_name, bbox_inches='tight')
     print('Graph saved at ' + save_name)
 
@@ -32,6 +33,7 @@ def plot_bars_double(bars, values1, values2, name, save_name, label1, label2):
     fig.autofmt_xdate()
     if os.path.exists(save_name):
         os.remove(save_name)
+    fig.tight_layout()
     plt.savefig(save_name, bbox_inches='tight')
     print('Graph saved at ' + save_name)    
 
@@ -44,6 +46,7 @@ def plot_line_multiple(x_values, y_values, labels, title, save_name, num_plots):
     ax.set_title(title, loc = 'center', wrap=True)
     if os.path.exists(save_name):
         os.remove(save_name)
+    fig.tight_layout()
     plt.savefig(save_name, bbox_inches='tight')
     print('Graph saved at ' + save_name)
 
@@ -61,5 +64,6 @@ def plot_bars_multiple(bars, values, name, save_name, labels):
     fig.autofmt_xdate(rotation=15)  
     if os.path.exists(save_name):
         os.remove(save_name)
+    fig.tight_layout()
     plt.savefig(save_name, bbox_inches='tight')
     print('Graph saved at ' + save_name)      
