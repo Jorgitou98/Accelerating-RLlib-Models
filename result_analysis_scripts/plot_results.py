@@ -4,7 +4,7 @@ import matplotlib.ticker as ticker
 import numpy as np
 import os
 
-def plot_bars(bars, values, name, save_name):
+def plot_bars(bars, values, name, save_name, y_label=None):
     plt.close('all')
     fig, ax = plt.subplots()
     pos = np.arange(len(bars))
@@ -13,13 +13,15 @@ def plot_bars(bars, values, name, save_name):
     plt.xticks(pos, bars)
     ax.set_title(name, loc='center', wrap=True)
     fig.autofmt_xdate()
+    if y_label is not None:
+        ax.set_ylabel(y_label)
+    fig.tight_layout()
     if os.path.exists(save_name):
         os.remove(save_name)
-    fig.tight_layout()
     plt.savefig(save_name, bbox_inches='tight')
     print('Graph saved at ' + save_name)
 
-def plot_bars_double(bars, values1, values2, name, save_name, label1, label2):
+def plot_bars_double(bars, values1, values2, name, save_name, label1, label2, y_label=None):
     plt.close('all')
     fig, ax = plt.subplots()
     pos = np.arange(len(bars))
@@ -31,9 +33,11 @@ def plot_bars_double(bars, values1, values2, name, save_name, label1, label2):
     ax.set_title(name, loc='center', wrap=True)
     plt.legend()
     fig.autofmt_xdate()
+    if y_label is not None:
+        ax.set_ylabel(y_label)
+    fig.tight_layout()
     if os.path.exists(save_name):
         os.remove(save_name)
-    fig.tight_layout()
     plt.savefig(save_name, bbox_inches='tight')
     print('Graph saved at ' + save_name)    
 
@@ -50,7 +54,7 @@ def plot_line_multiple(x_values, y_values, labels, title, save_name, num_plots):
     plt.savefig(save_name, bbox_inches='tight')
     print('Graph saved at ' + save_name)
 
-def plot_bars_multiple(bars, values, name, save_name, labels):
+def plot_bars_multiple(bars, values, name, save_name, labels,y_label=None):
     plt.close('all')
     fig, ax =plt.subplots()
     pos =np.arange(len(bars))
@@ -61,9 +65,11 @@ def plot_bars_multiple(bars, values, name, save_name, labels):
     plt.xticks(pos + len(values)*width/2-width/2, bars)
     ax.set_title(name, loc='center', wrap=True)
     plt.legend(loc='upper center', bbox_to_anchor=(0.5,-0.1), ncol =2)
-    fig.autofmt_xdate(rotation=15)  
+    fig.autofmt_xdate(rotation=15)
+    if y_label is not None:
+        ax.set_ylabel(y_label)
+    fig.tight_layout()
     if os.path.exists(save_name):
         os.remove(save_name)
-    fig.tight_layout()
     plt.savefig(save_name, bbox_inches='tight')
     print('Graph saved at ' + save_name)      

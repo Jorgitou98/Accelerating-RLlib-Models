@@ -58,12 +58,13 @@ def get_data(directory, model_names, model_names_short, model, it_ini, it_fin):
     aggregated_results = get_data_models(directory, model_names, model_names_short, aggregated_results_name, save_directory)
     
     vars = ['mean_time_this_iter_s','mean_sample_time_ms','mean_sample_throughput','mean_load_time_ms','mean_load_throughput','mean_learn_time_ms','mean_learn_throughput','mean_update_time_ms', 'mean_ram_util_percent', 'mean_cpu_util_percent']
+    y_labels['time(s)', 'time(ms)', None, 'time(ms)', None, 'time(ms)', None, 'time(ms)', '% util', '% util']
     
-    for var in vars:
-        var_values = [aggregated_results[i][var] for i in range(0,len(model_names))]
-        title= var + ' model {}'.format(model)
-        save_name = dir + '/result_analysis/training_results/volta1_def/graphs/' + var + '_model{}_it_'.format(model) + str(it_ini) + '_'+ str(it_fin) + '.png'
-        plot_results.plot_bars(model_names_short, var_values, title, save_name)
+    for i in range(len(vars)):
+        var_values = [aggregated_results[i][vars[i]] for i in range(0,len(model_names))]
+        title= vars[i] + ' model {}'.format(model)
+        save_name = dir + '/result_analysis/training_results/volta1_def/graphs/' + vars[i] + '_model{}_it_'.format(model) + str(it_ini) + '_'+ str(it_fin) + '.png'
+        plot_results.plot_bars(model_names_short, var_values, title, save_name, y_label=y_labels[i])
 
 def plot_data(directory, model_names, model_names_short, model, it_ini, it_fin):
     os.chdir(directory)
