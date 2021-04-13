@@ -69,7 +69,7 @@ def plot_data(directory, model_names, model_names_short, model, it_ini, it_fin):
     os.chdir(directory)
     df_list = []
     for i in range(0,len(model_names)):
-        df = pd.read_csv(model_names[i] + '/progress.csv'))
+        df = pd.read_csv(model_names[i] + '/progress.csv')
         df.dropna(inplace = True)
         df_list.append(df)
 
