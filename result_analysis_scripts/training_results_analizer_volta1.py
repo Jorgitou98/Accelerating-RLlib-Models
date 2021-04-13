@@ -21,6 +21,7 @@ def get_data_models(directory, model_names, model_names_short, aggregated_result
         aggregated_data_this_model['model'] = model_names_short[i]
         aggregated_data_this_model['reward_mean_last_iter'] = df[df['training_iteration'] == df['training_iteration'].max()]['episode_reward_mean'].values[0]
         aggregated_data_this_model['len_mean_last_iter'] = df[df['training_iteration'] == df['training_iteration'].max()]['episode_len_mean'].values[0]
+        aggregated_data_this_model['mean_time_this_iter_s'] = df['time_this_iter_s'].mean()
         aggregated_data_this_model['mean_learn_time_ms'] = df['timers/learn_time_ms'].mean()
         aggregated_data_this_model['mean_learn_throughput'] = df['timers/learn_throughput'].mean()
         aggregated_data_this_model['mean_sample_time_ms'] = df['timers/sample_time_ms'].mean()
@@ -52,16 +53,16 @@ def get_data_models(directory, model_names, model_names_short, aggregated_result
 def get_data(directory, model_names, model_names_short, model, it_ini, it_fin):
     dir = dirname(dirname(abspath(__file__)))
     print(dir)
-    save_directory = '../../result_analysis/training_results/volta1'
+    save_directory = '../../result_analysis/training_results/volta1_def'
     aggregated_results_name = 'results_model_{}_it_{}_{}.csv'.format(model, it_ini, it_fin)
     aggregated_results = get_data_models(directory, model_names, model_names_short, aggregated_results_name, save_directory)
     
-    vars = ['mean_sample_time_ms','mean_sample_throughput','mean_load_time_ms','mean_load_throughput','mean_learn_time_ms','mean_learn_throughput','mean_update_time_ms', 'mean_ram_util_percent', 'mean_cpu_util_percent']
+    vars = ['mean_time_this_iter_s','mean_sample_time_ms','mean_sample_throughput','mean_load_time_ms','mean_load_throughput','mean_learn_time_ms','mean_learn_throughput','mean_update_time_ms', 'mean_ram_util_percent', 'mean_cpu_util_percent']
     
     for var in vars:
         var_values = [aggregated_results[i][var] for i in range(0,len(model_names))]
         title= var + ' model {}'.format(model)
-        save_name = dir + '/result_analysis/training_results/volta1/graphs/' + var + '_model{}_it_'.format(model) + str(it_ini) + '_'+ str(it_fin) + '.png'
+        save_name = dir + '/result_analysis/training_results/volta1_def/graphs/' + var + '_model{}_it_'.format(model) + str(it_ini) + '_'+ str(it_fin) + '.png'
         plot_results.plot_bars(model_names_short, var_values, title, save_name)
 
 def plot_data(directory, model_names, model_names_short, model, it_ini, it_fin):
@@ -70,7 +71,7 @@ def plot_data(directory, model_names, model_names_short, model, it_ini, it_fin):
     for i in range(0,len(model_names)):
         df_list.append(pd.read_csv(model_names[i] + '/progress.csv'))
 
-    os.chdir('../../result_analysis/training_results/volta1')
+    os.chdir('../../result_analysis/training_results/volta1_def')
     #Compare all models results
     vars_to_compare = (['episode_reward_max','episode_reward_min','episode_reward_mean',
     'episode_len_mean','episodes_this_iter','timesteps_total','done','episodes_total',
