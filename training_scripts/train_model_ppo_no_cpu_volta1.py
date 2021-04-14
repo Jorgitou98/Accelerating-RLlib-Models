@@ -22,6 +22,7 @@ num_workers = int(sys.argv[4])
 save_name = sys.argv[5]
 n_iter = int(sys.argv[6])
 
+os.sched_setaffinity(0,{0})
 
 ray.shutdown()
 
