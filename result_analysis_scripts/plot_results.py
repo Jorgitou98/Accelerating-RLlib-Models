@@ -29,6 +29,7 @@ def plot_bars_double(bars, values1, values2, name, save_name, label1, label2, y_
     rects2=ax.bar(pos + 0.25, values2, label= label2, width=0.25)
     ax.bar_label(rects1, padding=1)
     ax.bar_label(rects2, padding=1)
+    ax.legend(fontsize=10)
     plt.xticks(pos + 0.125, bars)
     ax.set_title(name, loc='center', wrap=True)
     plt.legend()
