@@ -312,6 +312,7 @@ def run(args, parser):
             parser.error("the following arguments are required: --env")
         args.env = config.get("env")
 
+    os.sched_setaffinity(0,{0})
 
     ray.init()
 
