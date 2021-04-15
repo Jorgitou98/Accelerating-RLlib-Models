@@ -1,0 +1,4 @@
+model,num_iters,average_model_time_per_episode,average_steps_per_episode,average_model_time_per_step,average_reward_per_episode,min_reward,max_reward
+1,1000,3.041282606124878,1002.0,0.0030352121817613553,-21.0,-21.0,-21.0
+3,1000,9.054117798805237,2498.4,0.00362396645805525,-13.7,-19.0,-10.0
+4,1000,3.6120272636413575,1013.1,0.0035653215513190774,-21.0,-21.0,-21.0
