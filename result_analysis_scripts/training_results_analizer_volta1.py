@@ -61,8 +61,8 @@ def get_data(directory, model_names, model_names_short, model, it_ini, it_fin):
     aggregated_results_name = 'results_model_{}_it_{}_{}.csv'.format(model, it_ini, it_fin)
     aggregated_results = get_data_models(directory, model_names, model_names_short, aggregated_results_name, save_directory)
     
-    vars = ['mean_time_this_iter_s','mean_sample_time_ms','mean_sample_throughput','mean_load_time_ms','mean_load_throughput','mean_learn_time_ms','mean_learn_throughput','mean_update_time_ms', 'mean_ram_util_percent', 'mean_cpu_util_percent']
-    y_labels=['time(s)', 'time(ms)', None, 'time(ms)', None, 'time(ms)', None, 'time(ms)', '% util', '% util']
+    vars = ['mean_time_this_iter_s','mean_sample_time_ms','mean_sample_throughput','mean_load_time_ms','mean_load_throughput','mean_learn_time_ms','mean_learn_throughput','mean_update_time_ms', 'mean_ram_util_percent', 'mean_cpu_util_percent', 'mean_gpu_util_percent0', 'mean_vram_util_percent0', 'mean_gpu_util_percent1', 'mean_vram_util_percent1']
+    y_labels=['time(s)', 'time(ms)', None, 'time(ms)', None, 'time(ms)', None, 'time(ms)', '% util', '% util', '% util', '% util', '% util', '% util']
     
     for i in range(len(vars)):
         var_values = [aggregated_results[j][vars[i]] for j in range(0,len(model_names))]
