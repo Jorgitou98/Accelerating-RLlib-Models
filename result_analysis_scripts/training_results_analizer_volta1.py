@@ -32,7 +32,7 @@ def get_data_models(directory, model_names, model_names_short, aggregated_result
         aggregated_data_this_model['mean_cpu_util_percent'] = df['perf/cpu_util_percent'].mean()
         aggregated_data_this_model['mean_ram_util_percent'] = df['perf/ram_util_percent'].mean()
         aggregated_data_this_model['mean_gpu_util_percent0'] = df['perf/gpu_util_percent0'].mean()
-        aggregated_data_this_model['mean_vram_util_percent0'] = df['pref/vram_util_percent0'].mean()
+        aggregated_data_this_model['mean_vram_util_percent0'] = df['perf/vram_util_percent0'].mean()
         aggregated_data_this_model['mean_gpu_util_percent1'] = df['perf/gpu_util_percent1'].mean()
         aggregated_data_this_model['mean_vram_util_percent1'] = df['pref/vram_util_percent1'].mean()
         
