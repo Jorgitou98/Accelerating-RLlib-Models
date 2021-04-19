@@ -31,6 +31,10 @@ def get_data_models(directory, model_names, model_names_short, aggregated_result
         aggregated_data_this_model['mean_update_time_ms'] = df['timers/update_time_ms'].mean()
         aggregated_data_this_model['mean_cpu_util_percent'] = df['perf/cpu_util_percent'].mean()
         aggregated_data_this_model['mean_ram_util_percent'] = df['perf/ram_util_percent'].mean()
+        aggregated_data_this_model['mean_gpu_util_percent0'] = df['perf/gpu_util_percent0'].mean()
+        aggregated_data_this_model['mean_vram_util_percent0'] = df['pref/vram_util_percent0'].mean()
+        aggregated_data_this_model['mean_gpu_util_percent1'] = df['perf/gpu_util_percent1'].mean()
+        aggregated_data_this_model['mean_vram_util_percent1'] = df['pref/vram_util_percent1'].mean()
         
         aggregated_results.append(aggregated_data_this_model)
 
@@ -81,6 +85,7 @@ def plot_data(directory, model_names, model_names_short, model, it_ini, it_fin):
     'timers/sample_throughput','timers/load_time_ms','timers/load_throughput','timers/learn_time_ms',
     'timers/learn_throughput','timers/update_time_ms',
     'info/num_steps_sampled','info/num_steps_trained','perf/cpu_util_percent','perf/ram_util_percent',
+    'perf/gpu_util_percent0', 'perf/vram_util_percent0', 'perf/gpu_util_percent1', 'perf/vram_util_percent1',
     'info/learner/default_policy/cur_kl_coeff','info/learner/default_policy/cur_lr',
     'info/learner/default_policy/total_loss','info/learner/default_policy/policy_loss',
     'info/learner/default_policy/vf_loss','info/learner/default_policy/vf_explained_var',
