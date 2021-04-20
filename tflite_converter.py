@@ -1,4 +1,4 @@
-import temsorflow as tf
+import tensorflow as tf
 import sys
 
 h5dir = sys.argv[1]
