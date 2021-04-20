@@ -5,7 +5,7 @@ import sys
 import os
 import tensorflow as tf
 from tensorflow import keras
-#tf.compat.v1.enable_eager_execution()
+
 
 ray.shutdown()
 ray.init()
@@ -36,6 +36,7 @@ agent.restore(checkpoint_dir)
 with agent.get_policy().get_session().graph.as_default():
     export_model = agent.get_policy().model.base_model.save(export_name + '.h5')
 
+tf.compat.v1.enable_eager_execution()
 converter = tf.lite.TFLiteConverter.from_keras_model(agent.get_policy().model.base_model)
 model = converter.convert()
 
