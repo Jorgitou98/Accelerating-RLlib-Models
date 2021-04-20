@@ -65,9 +65,9 @@ def plot_bars_multiple(bars, values, name, save_name, labels,y_label=None):
         #ax.bar_label(rects, padding=1)
     plt.xticks(pos + len(values)*width/2-width/2, bars)
     ax.set_title(name, loc='center', wrap=True)
-    #plt.legend(loc='upper center', bbox_to_anchor=(0.5,-0.1), ncol =2)
-    plt.legend(loc='best')
-    fig.autofmt_xdate(rotation=30)
+    plt.legend(loc='upper center', bbox_to_anchor=(0.5,-0.3), ncol =3)
+    #plt.legend(loc='best')
+    fig.autofmt_xdate(rotation=20)
     if y_label is not None:
         ax.set_ylabel(y_label)
     fig.tight_layout()
