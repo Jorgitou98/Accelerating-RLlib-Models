@@ -3,11 +3,9 @@ import ray.cloudpickle as cloudpickle
 import ray.rllib.agents.ppo as ppo
 import sys
 import os
-#import tensorflow as tf
-
-import tensorflow.compat.v1 as tf
-tf.disable_v2_behavior()
+import tensorflow as tf
 from tensorflow import keras
+tf.compat.v1.enable_eager_execution
 
 ray.shutdown()
 ray.init()
