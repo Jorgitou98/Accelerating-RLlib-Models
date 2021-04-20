@@ -33,6 +33,12 @@ agent = ppo.PPOTrainer(config, env='Pong-v0')
 agent.restore(checkpoint_dir)
 
 with agent.get_policy().get_session().graph.as_default():
-    export_model = agent.get_policy().model.base_model.save(export_name)
+    export_model = agent.get_policy().model.base_model.save(export_name + '.h5')
+
+    converter = tf.lite.TFLiteConverter.from_keras_model(agent.get_policy().model.base_model)
+    model = converter.convert()
+
+    file = open(export_name + '.tflite' , 'wb' )
+    file.write(model)
     
 ray.shutdown()
