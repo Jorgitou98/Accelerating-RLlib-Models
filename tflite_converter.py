@@ -1,7 +1,7 @@
 import tensorflow as tf
 import sys
 
-h5dir = sys.argv[1]
+h5_dir = sys.argv[1]
 tflite_dir = sys.argv[2]
 
 model = tf.keras.models.load_model(h5_dir, custom_objects={'tf':tf})
