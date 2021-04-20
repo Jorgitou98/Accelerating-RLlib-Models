@@ -5,7 +5,7 @@ import sys
 import os
 import tensorflow as tf
 from tensorflow import keras
-tf.compat.v1.enable_eager_execution()
+#tf.compat.v1.enable_eager_execution()
 
 ray.shutdown()
 ray.init()
