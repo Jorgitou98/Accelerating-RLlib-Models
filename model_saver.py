@@ -38,11 +38,11 @@ with agent.get_policy().get_session().graph.as_default():
 
 
 
-converter = tf.lite.TFLiteConverter.from_keras_model(agent.get_policy().model.base_model)
-tf.compat.v1.enable_eager_execution()
-model = converter.convert()
+    converter = tf.lite.TFLiteConverter.from_keras_model(agent.get_policy().model.base_model)
+    tf.compat.v1.enable_eager_execution()
+    model = converter.convert()
 
-file = open(export_name + '.tflite' , 'wb' )
-file.write(model)
+    file = open(export_name + '.tflite' , 'wb' )
+    file.write(model)
     
 ray.shutdown()
