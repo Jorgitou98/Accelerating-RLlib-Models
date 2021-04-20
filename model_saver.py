@@ -13,7 +13,7 @@ checkpoint_dir=sys.argv[1]
 export_name = sys.argv[2]
 
 #Para evitar un warning que me da luego al cargarlo (?)
-tf.compat.v1.disable_resource_variables()
+#tf.compat.v1.disable_resource_variables()
 
 config = ppo.DEFAULT_CONFIG.copy()
 print(config)
@@ -36,7 +36,10 @@ agent.restore(checkpoint_dir)
 with agent.get_policy().get_session().graph.as_default():
     export_model = agent.get_policy().model.base_model.save(export_name + '.h5')
 
+
+
 converter = tf.lite.TFLiteConverter.from_keras_model(agent.get_policy().model.base_model)
+tf.compat.v1.enable_eager_execution()
 model = converter.convert()
 
 file = open(export_name + '.tflite' , 'wb' )
