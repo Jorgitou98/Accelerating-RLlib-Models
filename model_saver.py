@@ -33,13 +33,13 @@ config['num_gpus_per_worker'] = 0
 agent = ppo.PPOTrainer(config, env='Pong-v0')
 agent.restore(checkpoint_dir)
 
+tf.compat.v1.enable_eager_execution()
 with agent.get_policy().get_session().graph.as_default():
     export_model = agent.get_policy().model.base_model.save(export_name + '.h5')
 
 
 
 converter = tf.lite.TFLiteConverter.from_keras_model(agent.get_policy().model.base_model)
-print(tf.executing_eagerly())
 model = converter.convert()
 
 file = open(export_name + '.tflite' , 'wb' )
