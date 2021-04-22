@@ -22,7 +22,6 @@ with open('prueba.npy', 'wb') as f:
 ray.shutdown()
 
 
-
 #open(tflite_dir, "wb").write(tflite_model)
 
 
