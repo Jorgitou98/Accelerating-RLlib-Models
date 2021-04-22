@@ -1,12 +1,15 @@
 import sys
-h5_dir = sys.argv[1]
+
+dataset_dir = sys.argv[1]
+h5_dir = sys.argv[2]
+tflite_dir= sys.argv[3]
 
 images = []
 import numpy as np
-with open('prueba.npy', 'rb') as f:
+with open(dataset_dir, 'rb') as f:
     for _ in range(100):
         images.append(np.load(f))
-
+print("Loaded images shape: ", images[20].shape)
 import tensorflow as tf 
 def representative_data_gen():
     for data in tf.data.Dataset.from_tensor_slices((images)).batch(1).take(100):
@@ -26,3 +29,6 @@ input_type = interpreter.get_input_details()[0]['dtype']
 print('input: ', input_type)
 output_type = interpreter.get_output_details()[0]['dtype']
 print('output: ', output_type)
+
+open(tflite_dir, "wb").write(tflite_model_quant)
+
