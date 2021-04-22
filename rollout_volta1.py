@@ -473,7 +473,7 @@ def rollout(agent,
                     ################
                     t0 = time.time()
                     ################
-                    
+                    print(a_obs.shape)
                     if p_use_lstm:
                         a_action, p_state, _ = agent.compute_action(
                             a_obs,
