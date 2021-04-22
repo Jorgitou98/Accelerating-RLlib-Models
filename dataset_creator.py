@@ -21,7 +21,7 @@ agent = ppo.PPOTrainer(env='Pong-v0', config = config)
 
 env = agent.workers.local_worker().env
 obs = env.reset()
-print("Observations size: ", obs)
+print("Observations shape: ", obs.shape)
 with open(dataset_name + '.npy', 'wb') as f:
     for _ in range(101):
         np.save(f, obs)
