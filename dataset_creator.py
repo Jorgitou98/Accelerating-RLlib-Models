@@ -6,8 +6,8 @@ import numpy as np
 ray.init()
 config = ppo.DEFAULT_CONFIG.copy()
 config['create_env_on_driver'] = True
-config['model']['dim'] = 252
-config['model']['conv_filters'] = [[16, [8, 8], 4],[16, [8, 8], 4], [32, [4, 4], 2], [256, [8, 8], 1]]
+config['model']['dim'] = 84
+#config['model']['conv_filters'] = [[16, [8, 8], 4],[16, [8, 8], 4], [32, [4, 4], 2], [256, [8, 8], 1]]
 agent = ppo.PPOTrainer(env='Pong-v0', config = config)
 
 env = agent.workers.local_worker().env
