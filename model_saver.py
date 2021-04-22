@@ -32,7 +32,7 @@ config['num_gpus_per_worker'] = 0
 
 agent = ppo.PPOTrainer(config, env='Pong-v0')
 agent.restore(checkpoint_dir)
-
+print(agent.get_policy().model.base_model.summary())
 
 with agent.get_policy().get_session().graph.as_default():
     export_model = agent.get_policy().model.base_model.save(export_name + '.h5')
