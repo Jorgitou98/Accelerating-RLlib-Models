@@ -40,7 +40,7 @@ def get_data_models(directory, model_names, model_names_short, aggregated_result
 
     
     
-
+    '''
     os.chdir(save_directory)
     with open(aggregated_results_name, mode='w+') as csv_agg_file:
         fieldnames = list(aggregated_results[0].keys())
@@ -51,7 +51,7 @@ def get_data_models(directory, model_names, model_names_short, aggregated_result
 
 
     return aggregated_results
-   
+   '''
 
         
 def get_data(directory, model_names, model_names_short, model, it_ini, it_fin):
@@ -124,7 +124,7 @@ def main():
     model_names_short_str = sys.argv[6]
     model_names_short = model_names_short_str[1:len(model_names_short_str)-1].split(',')
     get_data(directory, model_names, model_names_short, model, it_ini, it_fin)
-    plot_data(directory, model_names, model_names_short, model, it_ini, it_fin)         
+    #plot_data(directory, model_names, model_names_short, model, it_ini, it_fin)         
 
 if __name__ == "__main__":
     main()        
