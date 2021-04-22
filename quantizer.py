@@ -2,6 +2,7 @@ import sys
 h5_dir = sys.argv[1]
 
 images = []
+import numpy as np
 with open('prueba.npy', 'rb') as f:
     for _ in range(100):
         images.append(np.load(f))
