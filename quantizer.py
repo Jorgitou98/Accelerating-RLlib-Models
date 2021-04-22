@@ -9,7 +9,7 @@ with open('prueba.npy', 'rb') as f:
 
 import tensorflow as tf 
 def representative_data_gen():
-    for data in tf.data.Dataset.from_tensor_slices((image)).batch(1).take(100):
+    for data in tf.data.Dataset.from_tensor_slices((images)).batch(1).take(100):
         yield[tf.dtypes.cast(data, tf.float32)]
 
 model = tf.keras.models.load_model(h5_dir, custom_objects={'tf':tf})
