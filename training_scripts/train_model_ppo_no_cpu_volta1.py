@@ -23,7 +23,6 @@ save_name = sys.argv[5]
 n_iter = int(sys.argv[6])
 
 #os.sched_setaffinity(0,{0,1,2})
-
 ray.shutdown()
 
 if(gpu_options == 'gpu0'):
