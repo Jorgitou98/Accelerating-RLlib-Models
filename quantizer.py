@@ -1,4 +1,4 @@
-import tensorflow as tf 
+
 import ray
 import ray.rllib.agents.ppo as ppo
 import numpy as np
@@ -19,7 +19,9 @@ for _ in range(100):
     obs, _, _, _ = env.step(action)
 
 h5_dir = sys.argv[1]
+ray.shutdown()
 
+import tensorflow as tf 
 model = tf.keras.models.load_model(h5_dir, custom_objects={'tf':tf})
 converter = tf.lite.TFLiteConverter.from_keras_model(model)
 converter.optimizations = [tf.lite.Optimize.DEFAULT]
