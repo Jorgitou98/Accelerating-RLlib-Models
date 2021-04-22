@@ -18,8 +18,10 @@ for _ in range(100):
     action = env.action_space.sample()
     obs, _, _, _ = env.step(action)
 
-h5_dir = sys.argv[1]
+
 ray.shutdown()
+import sys
+h5_dir = sys.argv[1]
 
 import tensorflow as tf 
 model = tf.keras.models.load_model(h5_dir, custom_objects={'tf':tf})
