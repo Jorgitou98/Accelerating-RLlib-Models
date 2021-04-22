@@ -26,7 +26,7 @@ h5_dir = sys.argv[1]
 
 import tensorflow as tf 
 def representative_dataset():
-    for data in tf.data.Dataset.from_tensor_slices((images)).batch(1).take(100):
+    for data in tf.data.Dataset.from_tensor_slices((image)).batch(1).take(100):
         yield[tf.dtypes.cast(data, tf.float32)]
 model = tf.keras.models.load_model(h5_dir, custom_objects={'tf':tf})
 converter = tf.lite.TFLiteConverter.from_keras_model(model)
