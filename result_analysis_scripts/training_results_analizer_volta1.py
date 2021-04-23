@@ -49,9 +49,8 @@ def get_data_models(directory, model_names, model_names_short, aggregated_result
         for row in aggregated_results:
             writer.writerow(row)  
 
-
+    '''
     return aggregated_results
-   '''
 
         
 def get_data(directory, model_names, model_names_short, model, it_ini, it_fin):

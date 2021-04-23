@@ -22,7 +22,7 @@ num_workers = int(sys.argv[4])
 save_name = sys.argv[5]
 n_iter = int(sys.argv[6])
 
-#os.sched_setaffinity(0,{0,1,2})
+#os.sched_setaffinity(0,{0,1})
 ray.shutdown()
 
 if(gpu_options == 'gpu0'):
@@ -45,7 +45,8 @@ elif(gpu_options == 'both'):
     num_gpus=2
 
 config = ppo.DEFAULT_CONFIG.copy()
-ray.init(num_cpus=3, num_gpus=num_gpus)    
+#ray.init(num_cpus=3, num_gpus=num_gpus)
+ray.init()    
 #logical_devices = tf.config.list_logical_devices('GPU')
 #print("Available logical GPUs: {}".format(logical_devices))
 config['num_workers'] = num_workers
