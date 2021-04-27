@@ -390,7 +390,7 @@ def rollout(agent,
         saver = RolloutSaver()
 
     if hasattr(agent, "workers") and isinstance(agent.workers, WorkerSet):
-        env = agent.workers.local_worker().en
+        env = agent.workers.local_worker().env
         print(type(env))
         multiagent = isinstance(env, MultiAgentEnv)
         if agent.workers.local_worker().multiagent:
