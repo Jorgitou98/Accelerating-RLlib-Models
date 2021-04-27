@@ -36,6 +36,9 @@ import tflite_runtime.interpreter as tflite
 import numpy as np
 import platform
 
+import ray.rllib.env.atari_wrappers as wrappers
+import gym
+
 EDGETPU_SHARED_LIB = {
   'Linux': 'libedgetpu.so.1',
   'Darwin': 'libedgetpu.1.dylib',
@@ -67,6 +70,7 @@ def main():
       help='Number of times to run inference')
   args = parser.parse_args()
 
+  # Create TFLite interpreter
   interpreter = make_interpreter(args.model)
   interpreter.allocate_tensors()
 
@@ -75,20 +79,31 @@ def main():
   input_details = interpreter.get_input_details()
   output_details = interpreter.get_output_details()
 
-  print(input_details)
-  print(output_details)
+  print('Input details: ', input_details)
+  print('Output details: ', output_details)
 
+  # Get image dim
+  dim = input_details[0]['shape'][1]
+
+  # Create env
+  env = wrappers.wrap_deepmind(gym.make('Pong-v0'), dim = dim)
+
+  '''
   image=np.load( "../datasets/dataset_model3.npy" )
   image = image[np.newaxis, ...]
-  print(image)
-  print(image.shape)
+  '''
+
+  image = env.reset()
+
+  #print(image)
+  print('Images shape: ', image.shape)
 
   if input_details[0]['dtype'] == np.float32:
     image=np.float32(image)
   if input_details[0]['dtype'] == np.uint8:
     image=np.uint8(image)
 
-  interpreter.set_tensor( input_details[0]['index'], image )
+  interpreter.set_tensor(input_details[0]['index'], image)
 
   print('----INFERENCE TIME----')
   print('Note: The first inference on Edge TPU is slow because it includes',
@@ -100,6 +115,8 @@ def main():
 
     print('---- output[0] ----')
     output_data = interpreter.get_tensor(output_details[0]['index'])
+
+    action = np.argmax(output_data)
 
     if output_details[0]['dtype'] == np.uint8:
       print("INT8 DATA")
@@ -127,6 +144,9 @@ def main():
     print('---- end ----')
 
     print('%.1fms' % (inference_time * 1000))
+
+    image, reward, done, info = env.step(action)
+    print("Reward: ", reward)
 
   print('-------RESULTS--------')
 
