@@ -55,6 +55,12 @@ def make_interpreter(model_file):
                                {'device': device[0]} if device else {})
       ])
 
+def keep_going(steps, num_steps, episodes, num_episodes):
+  if num_episodes:
+    return episodes < num_episodes
+  if num_steps:
+    return steps < num_steps
+  return True
 
 def main():
   parser = argparse.ArgumentParser(
@@ -66,8 +72,11 @@ def main():
   parser.add_argument(
       '-l', '--labels', help='File path of labels file.')
   parser.add_argument(
-      '-c', '--count', type=int, default=5,
-      help='Number of times to run inference')
+      '-s', '--steps', type=int, default=0,
+      help='Number of times to run inference (overwriten by --episodes')
+  parser.add_argument(
+      '-e', '--episodes', type=int, default=100000,
+      help='Number of complete episodes to run (overrides --steps)')
   args = parser.parse_args()
 
   # Create TFLite interpreter
@@ -93,66 +102,90 @@ def main():
   image = image[np.newaxis, ...]
   '''
 
-  image = env.reset()
-  image = image[np.newaxis, ...]
+  
 
-  #print(image)
-  print('Images shape: ', image.shape)
-
-  if input_details[0]['dtype'] == np.float32:
-    image=np.float32(image)
-  if input_details[0]['dtype'] == np.uint8:
-    image=np.uint8(image)
-
-  interpreter.set_tensor(input_details[0]['index'], image)
-
-  reward_total=0.0
+  
   print('----INFERENCE TIME----')
   print('Note: The first inference on Edge TPU is slow because it includes',
         'loading the model into Edge TPU memory.')
-  for _ in range(args.count):
-    start = time.perf_counter()
-    interpreter.invoke()
-    inference_time = time.perf_counter() - start
 
-    print('---- output[0] ----')
-    output_data = interpreter.get_tensor(output_details[0]['index'])
+  steps=0
+  episodes = 0
+  while keep_going(steps, args.steps, episodes, args.episodes):
+    reward_total=0.0
+    done = False
 
-    action = np.argmax(output_data)
-
-    if output_details[0]['dtype'] == np.uint8:
-      print("INT8 DATA")
-      #print(output_data)
-      scale, zero_point = output_details[0]['quantization']
-      #print(scale, zero_point)
-      print( scale * ( np.float32(output_data) - zero_point ) )
-    else:
-      print("FLOAT DATA")
-      print(output_data)
-
-    print('---- output[1] ----')
-    output_data = interpreter.get_tensor(output_details[1]['index'])
-
-    if output_details[1]['dtype'] == np.uint8:
-      print("INT8 DATA")
-      #print(output_data)
-      scale, zero_point = output_details[1]['quantization']
-      #print(scale, zero_point)
-      print( scale * ( np.float32(output_data) - zero_point ) )
-    else:
-      print("FLOAT DATA")
-      print(output_data)
-
-    print('---- end ----')
-
-    print('%.1fms' % (inference_time * 1000))
-
-    image, reward, done, info = env.step(action)
+    image = env.reset()
     image = image[np.newaxis, ...]
-    reward_total+=reward
-    
-  print("Reward: ", reward_total)
-  print('-------RESULTS--------')
+
+    #print(image)
+    #print('Images shape: ', image.shape)
+
+    if input_details[0]['dtype'] == np.float32:
+      image=np.float32(image)
+    if input_details[0]['dtype'] == np.uint8:
+      image=np.uint8(image)
+
+    interpreter.set_tensor(input_details[0]['index'], image)
+    while not done and keep_going(steps, args.steps, episodes, args.episodes):
+
+      start = time.perf_counter()
+      interpreter.invoke()
+      inference_time = time.perf_counter() - start
+
+      print('---- output[0] ----')
+      output_data = interpreter.get_tensor(output_details[0]['index'])
+
+      action = np.argmax(output_data)
+
+      if output_details[0]['dtype'] == np.uint8:
+        print("INT8 DATA")
+        #print(output_data)
+        scale, zero_point = output_details[0]['quantization']
+        #print(scale, zero_point)
+        print( scale * ( np.float32(output_data) - zero_point ) )
+      else:
+        print("FLOAT DATA")
+        print(output_data)
+
+      print('---- output[1] ----')
+      output_data = interpreter.get_tensor(output_details[1]['index'])
+
+      if output_details[1]['dtype'] == np.uint8:
+        print("INT8 DATA")
+        #print(output_data)
+        scale, zero_point = output_details[1]['quantization']
+        #print(scale, zero_point)
+        print( scale * ( np.float32(output_data) - zero_point ) )
+      else:
+        print("FLOAT DATA")
+        print(output_data)
+
+      print('---- end ----')
+
+      print('%.1fms' % (inference_time * 1000))
+
+      # Step environment and get reward and done information
+      image, reward, done, _ = env.step(action)
+
+      # Place new image as the new model's input
+      image = image[np.newaxis, ...]
+      if input_details[0]['dtype'] == np.float32:
+        image=np.float32(image)
+      if input_details[0]['dtype'] == np.uint8:
+        image=np.uint8(image)
+
+      interpreter.set_tensor(input_details[0]['index'], image)
+
+      # Get cummulative episode reward
+      reward_total+=reward
+
+      steps+=1
+    print("Reward: ", reward_total)
+    print('-------RESULTS--------')
+
+    if done:
+      episodes +=1
 
 if __name__ == '__main__':
   main()
