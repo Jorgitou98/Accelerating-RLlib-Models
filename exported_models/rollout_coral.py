@@ -79,6 +79,9 @@ def main():
   parser.add_argument(
       '-e', '--episodes', type=int, default=100000,
       help='Number of complete episodes to run (overrides --steps)')
+  parser.add_argument(
+      '-o', '--output', default = None,
+      help= 'CSV file to store timing results')
   args = parser.parse_args()
 
   # Create TFLite interpreter
@@ -113,7 +116,10 @@ def main():
 
   steps=0
   episodes = 0
+  timing_results=[]
   while keep_going(steps, args.steps, episodes, args.episodes):
+    this_episode_timing_results ={}
+    this_episode_timing_results['episode'] = episodes
     reward_total=0.0
     done = False
 
@@ -193,8 +199,21 @@ def main():
     if done:
       episodes +=1
 
-    print("Episode {}, Reward: {}, Mean step time: {:.2f}".format(episodes, reward_total, mean(episode_times[1:])*1000))
+    step_time_ms = mean(episode_times[1:])*1000
+    print("Episode {}, Reward: {}, Mean step time: {:.2f}".format(episodes, reward_total, step_time_ms))
+    this_episode_timing_results['step_time_ms'] = step_time_ms
+    this_episode_timing_results['steps'] = steps_this_episode
+    this_episode_timing_results['reward'] = reward_total
+    timing_results.append(this_episode_timing_results)
     print('-------RESULTS--------')
+  
+  if args.output is not None:
+    with open(args.output, mode='w') as f:
+      fieldnames = list(timing_results[0].keys())
+      writer = csv.DictWriter(f, fieldnames=fieldnames)
+      writer.writeheader()
+      for row in results:
+        writer.writerow(row)
 
 if __name__ == '__main__':
   main()
