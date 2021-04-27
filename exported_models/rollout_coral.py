@@ -94,6 +94,7 @@ def main():
   '''
 
   image = env.reset()
+  image = image[np.newaxis, ...]
 
   #print(image)
   print('Images shape: ', image.shape)
@@ -146,6 +147,7 @@ def main():
     print('%.1fms' % (inference_time * 1000))
 
     image, reward, done, info = env.step(action)
+    image = image[np.newaxis, ...]
     print("Reward: ", reward)
 
   print('-------RESULTS--------')
