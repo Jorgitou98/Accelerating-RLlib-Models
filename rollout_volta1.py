@@ -474,7 +474,6 @@ def rollout(agent,
                     ################
                     t0 = time.time()
                     ################
-                    print(a_obs.shape)
                     if p_use_lstm:
                         a_action, p_state, _ = agent.compute_action(
                             a_obs,
@@ -489,21 +488,17 @@ def rollout(agent,
                             prev_action=prev_actions[agent_id],
                             prev_reward=prev_rewards[agent_id],
                             policy_id=policy_id)
-                    print(a_action)
                     ########################
                     t1 = time.time()
                     model_times_this_episode.append(t1-t0)
                     this_episode_time += (t1-t0)
                     ########################
                     a_action = flatten_to_single_ndarray(a_action)
-                    print(a_action)
                     action_dict[agent_id] = a_action
                     prev_actions[agent_id] = a_action
             action = action_dict
-            print(action)
 
             action = action if multiagent else action[_DUMMY_AGENT_ID]
-            print(action)
             next_obs, reward, done, info = env.step(action)
             if multiagent:
                 for agent_id, r in reward.items():
