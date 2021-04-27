@@ -193,7 +193,7 @@ def main():
     if done:
       episodes +=1
 
-    print("Episode {}, Reward: {}, Mean step time: ".format(episodes, reward_total, mean(episode_times[1:])))
+    print("Episode {}, Reward: {}, Mean step time: {}".format(episodes, reward_total, mean(episode_times[1:])))
     print('-------RESULTS--------')
 
 if __name__ == '__main__':
