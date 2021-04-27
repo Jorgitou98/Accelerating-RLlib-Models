@@ -39,6 +39,8 @@ import platform
 import ray.rllib.env.atari_wrappers as wrappers
 import gym
 
+from statistics import mean
+
 EDGETPU_SHARED_LIB = {
   'Linux': 'libedgetpu.so.1',
   'Darwin': 'libedgetpu.1.dylib',
@@ -126,12 +128,15 @@ def main():
     if input_details[0]['dtype'] == np.uint8:
       image=np.uint8(image)
 
+    episode_times = []
+    steps_this_episode = 0
     interpreter.set_tensor(input_details[0]['index'], image)
     while not done and keep_going(steps, args.steps, episodes, args.episodes):
 
       start = time.perf_counter()
       interpreter.invoke()
       inference_time = time.perf_counter() - start
+      episode_times.append(inference_time)
 
       #print('---- output[0] ----')
       output_data = interpreter.get_tensor(output_details[0]['index'])
@@ -182,12 +187,13 @@ def main():
       reward_total+=reward
 
       steps+=1
+      steps_this_episode+=1
     
 
     if done:
       episodes +=1
 
-    print("Episode {}, Reward: {}".format(episodes, reward_total))
+    print("Episode {}, Reward: {}, Mean step time: ".format(episodes, reward_total, mean(episode_times[1:])))
     print('-------RESULTS--------')
 
 if __name__ == '__main__':
