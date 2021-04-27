@@ -133,11 +133,12 @@ def main():
       interpreter.invoke()
       inference_time = time.perf_counter() - start
 
-      print('---- output[0] ----')
+      #print('---- output[0] ----')
       output_data = interpreter.get_tensor(output_details[0]['index'])
 
       action = np.argmax(output_data)
 
+      '''
       if output_details[0]['dtype'] == np.uint8:
         print("INT8 DATA")
         #print(output_data)
@@ -147,7 +148,7 @@ def main():
       else:
         print("FLOAT DATA")
         print(output_data)
-
+      
       print('---- output[1] ----')
       output_data = interpreter.get_tensor(output_details[1]['index'])
 
@@ -160,10 +161,10 @@ def main():
       else:
         print("FLOAT DATA")
         print(output_data)
+      '''
+      #print('---- end ----')
 
-      print('---- end ----')
-
-      print('%.1fms' % (inference_time * 1000))
+      #print('%.1fms' % (inference_time * 1000))
 
       # Step environment and get reward and done information
       image, reward, done, _ = env.step(action)
@@ -181,11 +182,13 @@ def main():
       reward_total+=reward
 
       steps+=1
-    print("Reward: ", reward_total)
-    print('-------RESULTS--------')
+    
 
     if done:
       episodes +=1
+
+    print("Episode {}, Reward: {}".format(episodes, reward_total))
+    print('-------RESULTS--------')
 
 if __name__ == '__main__':
   main()
