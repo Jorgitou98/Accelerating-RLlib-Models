@@ -106,6 +106,7 @@ def main():
 
   interpreter.set_tensor(input_details[0]['index'], image)
 
+  reward_total=0.0
   print('----INFERENCE TIME----')
   print('Note: The first inference on Edge TPU is slow because it includes',
         'loading the model into Edge TPU memory.')
@@ -148,8 +149,9 @@ def main():
 
     image, reward, done, info = env.step(action)
     image = image[np.newaxis, ...]
-    print("Reward: ", reward)
-
+    reward_total+=reward
+    
+  print("Reward: ", reward_total)
   print('-------RESULTS--------')
 
 if __name__ == '__main__':
