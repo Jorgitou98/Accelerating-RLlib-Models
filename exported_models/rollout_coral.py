@@ -40,6 +40,7 @@ import ray.rllib.env.atari_wrappers as wrappers
 import gym
 
 from statistics import mean
+import csv
 
 EDGETPU_SHARED_LIB = {
   'Linux': 'libedgetpu.so.1',
