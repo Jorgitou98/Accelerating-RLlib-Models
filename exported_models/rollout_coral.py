@@ -213,7 +213,7 @@ def main():
       fieldnames = list(timing_results[0].keys())
       writer = csv.DictWriter(f, fieldnames=fieldnames)
       writer.writeheader()
-      for row in results:
+      for row in timing_results:
         writer.writerow(row)
 
 if __name__ == '__main__':
