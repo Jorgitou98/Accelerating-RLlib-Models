@@ -46,7 +46,7 @@ elif(gpu_options == 'both'):
 
 config = ppo.DEFAULT_CONFIG.copy()
 #ray.init(num_cpus=3, num_gpus=num_gpus)
-ray.init(num_cpus=9)    
+ray.init()    
 #logical_devices = tf.config.list_logical_devices('GPU')
 #print("Available logical GPUs: {}".format(logical_devices))
 config['num_workers'] = num_workers
