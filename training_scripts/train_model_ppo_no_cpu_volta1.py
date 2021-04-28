@@ -22,7 +22,7 @@ num_workers = int(sys.argv[4])
 save_name = sys.argv[5]
 n_iter = int(sys.argv[6])
 
-os.sched_setaffinity(0,{0,1,2,3,4,5,6,7,8})
+#os.sched_setaffinity(0,{0,1,2,3,4,5,6,7,8})
 ray.shutdown()
 
 if(gpu_options == 'gpu0'):
