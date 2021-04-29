@@ -44,9 +44,7 @@ import csv
 
 
 def make_interpreter(model_file):
-  model_file, *device = model_file.split('@')
-  return tflite.Interpreter(
-      model_path=model_file)
+  return tflite.Interpreter(model_path=model_file)
 
 def keep_going(steps, num_steps, episodes, num_episodes):
   if num_episodes:
