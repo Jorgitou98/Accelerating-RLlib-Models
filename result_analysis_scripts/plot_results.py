@@ -65,9 +65,9 @@ def plot_bars_multiple(bars, values, name, save_name, labels,y_label=None):
         #ax.bar_label(rects, padding=1)
     plt.xticks(pos + len(values)*width/2-width/2, bars)
     ax.set_title(name, loc='center', wrap=True)
-    plt.legend(loc='upper center', bbox_to_anchor=(0.5,-0.3), ncol =3)
+    plt.legend(loc='upper center', bbox_to_anchor=(0.8,-0.3), ncol =1)
     #plt.legend(loc='best')
-    fig.autofmt_xdate(rotation=20)
+    fig.autofmt_xdate(rotation=25)
     if y_label is not None:
         ax.set_ylabel(y_label)
     fig.tight_layout()
@@ -85,8 +85,8 @@ def plot_bars_stacked(bars, values, name, save_name, labels, y_label=None):
         ax.bar(pos, values[i], label = labels[i], bottom=[sum([values[j][k] for j in range(i)]) for k in range(len(values[0]))])
     plt.xticks(pos , bars)
     ax.set_title(name, loc='center', wrap=True)
-    plt.legend(loc='upper center', bbox_to_anchor=(0.5,-0.25), ncol =2)
-    fig.autofmt_xdate(rotation=15)
+    plt.legend(loc='upper center', bbox_to_anchor=(0.85,-0.4), ncol =1)
+    fig.autofmt_xdate(rotation=25)
     if y_label is not None:
         ax.set_ylabel(y_label)
     fig.tight_layout()

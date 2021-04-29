@@ -118,10 +118,19 @@ def main():
     it_ini = int(sys.argv[2])
     it_fin = int(sys.argv[3])
     model = int(sys.argv[4])
+    '''
     model_names_str = sys.argv[5]
     model_names = model_names_str[1:len(model_names_str)-1].split(',')
     model_names_short_str = sys.argv[6]
     model_names_short = model_names_short_str[1:len(model_names_short_str)-1].split(',')
+    '''
+    model_options_str = sys.argv[5]
+    model_options = model_options_str[1:len(model_options_str)-1].split(',')
+    model_names_short = []
+    for gpu in ['gpu0', 'gpu1', 'both_gpus']:
+        for option in model_options:
+            model_names_short.append('{}_{}'.format(gpu, option))
+    model_names = ['model{}_{}'.format(model, i) for i in model_names_short]
     get_data(directory, model_names, model_names_short, model, it_ini, it_fin)
     #plot_data(directory, model_names, model_names_short, model, it_ini, it_fin)         
 

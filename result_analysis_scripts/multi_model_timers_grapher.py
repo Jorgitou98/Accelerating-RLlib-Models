@@ -26,10 +26,10 @@ def get_data_models(directory, model_names, model_names_short):
         aggregated_data_this_model['mean_load_time_ms'] = df['timers/load_time_ms'].mean()
         aggregated_data_this_model['mean_update_time_ms'] = df['timers/update_time_ms'].mean()
 
-        '''
+        
         aggregated_data_this_model['mean_cpu_util_percent'] = df['perf/cpu_util_percent'].mean()
         aggregated_data_this_model['mean_ram_util_percent'] = df['perf/ram_util_percent'].mean()
-        '''
+        
         aggregated_results.append(aggregated_data_this_model)
 
     
@@ -57,8 +57,12 @@ def main():
     it_fin = int(sys.argv[3])
     model_ids_str = sys.argv[4]
     model_ids = model_ids_str[1:len(model_ids_str)-1].split(',')
-    model_names_short_str = sys.argv[5]
-    model_names_short = model_names_short_str[1:len(model_names_short_str)-1].split(',')
+    model_options_str = sys.argv[5]
+    model_options= model_options_str[1:len(model_options_str)-1].split(',')
+    model_names_short=[]
+    for gpu in ['gpu0', 'gpu1', 'both_gpus']:
+        for option in model_options:
+            model_names_short.append('{}_{}'.format(gpu, option))
     get_data(directory, model_names_short, model_ids, it_ini, it_fin)        
 
 if __name__ == "__main__":
