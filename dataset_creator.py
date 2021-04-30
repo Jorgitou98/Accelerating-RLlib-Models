@@ -4,35 +4,21 @@ import ray.rllib.agents.ppo as ppo
 import numpy as np
 import sys
 
-model = sys.argv[1]
+import ray.rllib.env.atari_wrappers as wrappers
+
+dim = int(sys.argv[1])
 dataset_name = sys.argv[2]
-ray.init()
-config = ppo.DEFAULT_CONFIG.copy()
-config['create_env_on_driver'] = True
-if model == 'model3':
-    config['model']['dim'] = 252
-    config['model']['conv_filters'] = [[16, [8, 8], 4],[16, [8, 8], 4], [32, [4, 4], 2], [256, [8, 8], 1]]
-elif model == 'model4':
-    config['model']['dim'] = 168
-    config['model']['conv_filters'] = [[16, [8, 8], 4],[32, [4, 4], 2],[32, [4, 4], 2], [256, [11, 11], 1]]
 
-
-agent = ppo.PPOTrainer(env='Pong-v0', config = config)
-
-env = agent.workers.local_worker().env
+env = wrappers.wrap_deepmind(gym.make('Pong-v0'), dim = dim)
 obs = env.reset()
 print("Observations shape: ", obs.shape)
 with open(dataset_name + '.npy', 'wb') as f:
-    for _ in range(101):
+    for _ in range(500):
         np.save(f, obs)
         action = env.action_space.sample()
         obs, _, _, _ = env.step(action)
 
 
-ray.shutdown()
-
-
-#open(tflite_dir, "wb").write(tflite_model)
 
 
 

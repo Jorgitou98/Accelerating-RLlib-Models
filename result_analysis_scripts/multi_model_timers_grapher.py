@@ -20,11 +20,13 @@ def get_data_models(directory, model_names, model_names_short):
         aggregated_data_this_model = {}
         aggregated_data_this_model['model'] = model_names_short[i]
         
+        '''
         aggregated_data_this_model['mean_time_this_iter_s'] = df['time_this_iter_s'].mean()
         aggregated_data_this_model['mean_learn_time_ms'] = df['timers/learn_time_ms'].mean()
         aggregated_data_this_model['mean_sample_time_ms'] = df['timers/sample_time_ms'].mean()
         aggregated_data_this_model['mean_load_time_ms'] = df['timers/load_time_ms'].mean()
         aggregated_data_this_model['mean_update_time_ms'] = df['timers/update_time_ms'].mean()
+        '''
 
         
         aggregated_data_this_model['mean_cpu_util_percent'] = df['perf/cpu_util_percent'].mean()
@@ -40,10 +42,10 @@ def get_data(directory, model_names_short, model_ids, it_ini, it_fin):
     model_names = [['model{}_{}'.format(model_ids[j], model_names_short[i]) for i in range(0, len(model_names_short))] for j in range(0, len(model_ids))]
     aggregated_results_list = [get_data_models(directory, model_names[i], model_names_short) for i in range(0, len(model_ids))]
     
-    vars = ['mean_time_this_iter_s','mean_sample_time_ms','mean_load_time_ms','mean_learn_time_ms','mean_update_time_ms']
-    y_labels=['time(s)', 'time(ms)', 'time(ms)', 'time(ms)', 'time(ms)']
-    #vars = ['mean_cpu_util_percent', 'mean_ram_util_percent']
-    #y_labels = ['% util', '% util']
+    #vars = ['mean_time_this_iter_s','mean_sample_time_ms','mean_load_time_ms','mean_learn_time_ms','mean_update_time_ms']
+    #y_labels=['time(s)', 'time(ms)', 'time(ms)', 'time(ms)', 'time(ms)']
+    vars = ['mean_cpu_util_percent', 'mean_ram_util_percent']
+    y_labels = ['% util', '% util']
     
     for i in range(len(vars)):
         var_values = [[aggregated_results_list[k][j][vars[i]] for j in range(0,len(model_names_short))] for k in range(0, len(model_ids))]
