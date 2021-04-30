@@ -7,7 +7,7 @@ tflite_dir= sys.argv[3]
 images = []
 import numpy as np
 with open(dataset_dir, 'rb') as f:
-    for _ in range(100):
+    for _ in range(500):
         images.append(np.load(f))
 print("Loaded images shape: ", images[20].shape)
 import tensorflow as tf 
