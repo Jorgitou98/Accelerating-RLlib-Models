@@ -5,6 +5,7 @@ import numpy as np
 import sys
 
 import ray.rllib.env.atari_wrappers as wrappers
+import gym
 
 dim = int(sys.argv[1])
 dataset_name = sys.argv[2]
