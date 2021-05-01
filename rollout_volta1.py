@@ -500,6 +500,8 @@ def rollout(agent,
 
             action = action if multiagent else action[_DUMMY_AGENT_ID]
             next_obs, reward, done, info = env.step(action)
+            print(action)
+            print(info)
             if multiagent:
                 for agent_id, r in reward.items():
                     prev_rewards[agent_id] = r
