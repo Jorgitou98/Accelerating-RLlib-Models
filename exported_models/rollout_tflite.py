@@ -139,7 +139,7 @@ def main():
       action = np.argmax(output_data)
       print(output_data)
       print(action)
-      print(obs)
+      print(image)
 
       '''
       if output_details[0]['dtype'] == np.uint8:
