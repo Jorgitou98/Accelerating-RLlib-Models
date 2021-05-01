@@ -125,6 +125,7 @@ def main():
 
     episode_times = []
     steps_this_episode = 0
+    print(input_details)
     interpreter.set_tensor(input_details[0]['index'], image)
     while not done and keep_going(steps, args.steps, episodes, args.episodes):
 
