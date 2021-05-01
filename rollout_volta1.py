@@ -482,6 +482,7 @@ def rollout(agent,
                             prev_reward=prev_rewards[agent_id],
                             policy_id=policy_id)
                         agent_states[agent_id] = p_state
+                        print(obs)
                     else:
                         a_action = agent.compute_action(
                             a_obs,
