@@ -63,10 +63,10 @@ def main():
   parser.add_argument(
       '-l', '--labels', help='File path of labels file.')
   parser.add_argument(
-      '-s', '--steps', type=int, default=0,
+      '-s', '--steps', type=int, default=10000,
       help='Number of times to run inference (overwriten by --episodes')
   parser.add_argument(
-      '-e', '--episodes', type=int, default=100000,
+      '-e', '--episodes', type=int, default=0,
       help='Number of complete episodes to run (overrides --steps)')
   parser.add_argument(
       '-o', '--output', default = None,
