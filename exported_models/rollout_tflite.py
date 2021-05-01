@@ -137,9 +137,11 @@ def main():
       output_data = interpreter.get_tensor(output_details[0]['index'])
 
       action = np.argmax(output_data)
+      '''
       print(output_data)
       print(action)
       print(image)
+      '''
 
       '''
       if output_details[0]['dtype'] == np.uint8:
