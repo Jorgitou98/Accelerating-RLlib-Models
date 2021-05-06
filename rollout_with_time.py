@@ -263,7 +263,7 @@ def create_parser(parser_creator=None):
     parser.add_argument(
         "--num-cpus-ray",
         default=0,
-        tyype=int,
+        type=int,
         help="The number of CPUs to initializate Ray with"
     )
     ################################################################
