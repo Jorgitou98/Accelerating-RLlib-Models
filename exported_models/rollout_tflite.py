@@ -125,7 +125,7 @@ def main():
 
     episode_times = []
     steps_this_episode = 0
-    print(input_details)
+    #print(input_details)
     interpreter.set_tensor(input_details[0]['index'], image)
     while not done and keep_going(steps, args.steps, episodes, args.episodes):
 
@@ -202,7 +202,7 @@ def main():
     this_episode_timing_results['steps'] = steps_this_episode
     this_episode_timing_results['reward'] = reward_total
     timing_results.append(this_episode_timing_results)
-    print('-------RESULTS--------')
+    print('-----------------------')
   
   if args.output is not None:
     with open(args.output, mode='w') as f:
