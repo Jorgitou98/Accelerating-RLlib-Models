@@ -490,7 +490,6 @@ def rollout(agent,
                     policy_id = mapping_cache.setdefault(
                         agent_id, policy_agent_mapping(agent_id))
                     p_use_lstm = use_lstm[policy_id]
-                    print(a_obs)
                     # Aqui es donde empezamos a aplicar el modelo para ver que accion tomar.
                     
                     ################
@@ -522,8 +521,6 @@ def rollout(agent,
 
             action = action if multiagent else action[_DUMMY_AGENT_ID]
             next_obs, reward, done, info = env.step(action)
-            print(action)
-            print(info)
             if multiagent:
                 for agent_id, r in reward.items():
                     prev_rewards[agent_id] = r
