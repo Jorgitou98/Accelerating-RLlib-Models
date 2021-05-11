@@ -137,9 +137,9 @@ def main():
         '-i', '--iters', required = True, type=int, default=10, help= 'Number of training iters to run')
     parser.add_argument(
         '-c', '--cpus', required = False, type=int, default=None, help='Number of CPUs available to use when calling ray.init()')
-    parser.add_option(
-        '-a', '--set-affinity', required = True, type=set, default = {}, help='CPUs to run executions only on them.')
-    parser.add_option(
+    parser.add_argument(
+        '-a', '--set-affinity', required = False, type=set, default = {}, help='CPUs to run executions only on them.')
+    parser.add_argument(
         '-r', '--restore-dir', required = False, type =str, default=None, help='Checkpoint directory to restore model from it.'
     )
     args = parser.parse_args()
