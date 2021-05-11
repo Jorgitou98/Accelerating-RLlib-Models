@@ -161,7 +161,7 @@ def main():
 
     # Set agent config
     config = get_config(args.model)   
-    config['num_workers'] = args.wrokers
+    config['num_workers'] = args.workers
     config['num_gpus'] = args.driver_gpus
     config['num_gpus_per_worker'] = (num_gpus-config['num_gpus'])/args.workers
 
