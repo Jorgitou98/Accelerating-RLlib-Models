@@ -154,7 +154,7 @@ def main():
     num_gpus=gpu_options(args.gpu)
 
     # Init Ray with or without CPU limitation
-    if num_cpus is not None:
+    if args.cpus is not None:
         ray.init(num_cpus=args.cpus)
     else:
         ray.init() 
