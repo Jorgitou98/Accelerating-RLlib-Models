@@ -7,7 +7,6 @@ import pprint
 import time
 import shelve
 import argparse
-import string
 from tensorflow import keras
 from ray import tune
 
@@ -127,7 +126,7 @@ def main():
     parser.add_argument(
         '-m', '--model', required=True, type=int, choices=[i for i in range(1,7)], help='Integer indicating the model to create. It must be an integer value between 1 and 6. Run python train_model.available_models() to see the description of available models.')
     parser.add_argument(
-        '-g', '--gpu', required=False, type = string, default='none', choices =['none','gpu0','gpu1','both'], help='GPU options (if available)')
+        '-g', '--gpu', required=False, type = str, default='none', choices =['none','gpu0','gpu1','both'], help='GPU options (if available)')
     parser.add_argument(
         '-d', '--driver-gpus', required = False, type=float, default = 0.0, help='Bumber of GPUs to asign to the driver. It can be a decimal number')
     parser.add_argument(
