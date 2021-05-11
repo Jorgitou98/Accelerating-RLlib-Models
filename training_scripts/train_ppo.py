@@ -190,7 +190,7 @@ def main():
         t0 = time.time()
         full_train(checkpoint_root, agent, args.iters, save_file)
         t1 = time.time()-t0
-    print("Total time for the " + str(args.iter) + " training iterations: " + str(t1))
+    print("Total time for the " + str(args.iters) + " training iterations: " + str(t1))
 
     # Ray results are by default saved in ~/ray_results/ dir. So we take
     # the corresponding files (that belongs to the last modified directory in ~/ray_results)
