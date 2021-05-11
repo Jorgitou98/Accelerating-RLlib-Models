@@ -202,11 +202,11 @@ def main():
 
     if(not os.path.exists(actual_dir + '/ray_results/'+args.save_name)):
         os.mkdir(actual_dir + '/ray_results/'+args.save_name)
-    system("cp -r {}/* {}".format(ray_results_dir, actual_dir + '/ray_results/'+args.save_name))
+    os.system("cp -r {}/* {}".format(ray_results_dir, actual_dir + '/ray_results/'+args.save_name))
     os.chdir(actual_dir)
 
     # Copy params.pkl to checkpoint dir for rollouts
-    system("cp ray_results/{}/params.pkl {}/".format(args.save_name, checkpoint_root))
+    os.system("cp ray_results/{}/params.pkl {}/".format(args.save_name, checkpoint_root))
 
 if __name__== '__main__':
     main()
