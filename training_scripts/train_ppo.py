@@ -199,6 +199,7 @@ def main():
     os.chdir('../ray_results')
     ray_results_list=os.listdir()
     ray_results_list.sort(key=os.path.getctime)
+    ray_results_dir=ray_results_list(len(ray_results_list)-1)
 
     if(not os.path.exists(actual_dir + '/ray_results/'+args.save_name)):
         os.mkdir(actual_dir + '/ray_results/'+args.save_name)
