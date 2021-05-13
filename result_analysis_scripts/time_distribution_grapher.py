@@ -81,7 +81,7 @@ def main():
     model_names = model_names_str[1:len(model_names_str)-1].split(',')
     model_names_short_str = sys.argv[6]
     model_names_short = model_names_short_str[1:len(model_names_short_str)-1].split(',')
-    '''
+    
     model_options_str = sys.argv[5]
     model_options = model_options_str[1:len(model_options_str)-1].split(',')
     model_names_short = []
@@ -89,8 +89,12 @@ def main():
         for option in model_options:
             model_names_short.append('{}_{}'.format(gpu, option))
     model_names = ['model{}_{}'.format(model, i) for i in model_names_short]
+    '''
+    model_names_short_str = sys.argv[5]
+    model_names_short = model_names_short_str[1:len(model_names_short_str)-1].split(',')
+    model_names = ['model{}_{}'.format(model, i) for i in model_names_short]
 
-    get_data_percent(directory, model_names, model_names_short, model, it_ini, it_fin)  
+    get_data(directory, model_names, model_names_short, model, it_ini, it_fin)  
 
 if __name__ == "__main__":
     main()        

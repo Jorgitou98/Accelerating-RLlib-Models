@@ -34,6 +34,6 @@ agent.restore(checkpoint_dir)
 print(agent.get_policy().model.base_model.summary())
 
 with agent.get_policy().get_session().graph.as_default():
-    export_model = agent.get_policy().model.base_model.save(export_name + '.h5')
+    export_model = agent.get_policy().model.base_model.save_weights(export_name + '.h5')
 
 ray.shutdown()

@@ -51,10 +51,12 @@ def main():
     it_ini = int(sys.argv[2])
     it_fin = int(sys.argv[3])
     model = int(sys.argv[4])
-    model_names_str = sys.argv[5]
-    model_names = model_names_str[1:len(model_names_str)-1].split(',')
-    model_names_short_str = sys.argv[6]
+    #model_names_str = sys.argv[5]
+    #model_names = model_names_str[1:len(model_names_str)-1].split(',')
+    model_names_short_str = sys.argv[5]
     model_names_short = model_names_short_str[1:len(model_names_short_str)-1].split(',')
+    model_names_short = model_names_short_str[1:len(model_names_short_str)-1].split(',')
+    model_names = ['model{}_{}'.format(model, i) for i in model_names_short]
     get_data(directory, model_names, model_names_short, model, it_ini, it_fin)
 
 if __name__ == "__main__":
