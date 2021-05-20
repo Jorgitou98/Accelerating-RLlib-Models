@@ -1,4 +1,4 @@
-episode,total_model_time,num_steps,average_model_time_per_step,reward
+episode,total_model_time,steps,step_time_ms,reward
 0,4.201542854309082,3250,0.0012927824167104868,-10.0
 1,4.012015104293823,3115,0.0012879663256159947,-10.0
 2,4.230953693389893,3266,0.0012954542845651845,-8.0
