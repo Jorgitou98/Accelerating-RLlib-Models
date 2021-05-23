@@ -20,9 +20,9 @@ def get_data_models(name, aggregated_results_name, trained_model_descr, model_id
         aggregated_data_this_model ={}
         aggregated_data_this_model['model'] = i
         aggregated_data_this_model['num_iters'] = n_iters
-        aggregated_data_this_model['average_model_time_per_episode'] = df['total_model_time'].mean()
+        aggregated_data_this_model['average_model_time_per_episode_ms'] = 1000*df['total_model_time'].mean()
         aggregated_data_this_model['average_steps_per_episode'] = df['num_steps'].mean()
-        aggregated_data_this_model['average_model_time_per_step'] = (df['total_model_time'].sum())/(df['num_steps'].sum())
+        aggregated_data_this_model['average_model_time_per_step_ms'] = 1000*(df['total_model_time'].sum())/(df['num_steps'].sum())
         aggregated_data_this_model['average_reward_per_episode'] = df['reward'].mean()
         aggregated_data_this_model['min_reward'] = df['reward'].min()
         aggregated_data_this_model['max_reward'] = df['reward'].max()
@@ -40,7 +40,7 @@ def get_data_models(name, aggregated_results_name, trained_model_descr, model_id
     return aggregated_results
 
 def get_data(trained_model_descr, model_ids, directory, num_iters):
-    descriptions = ['8_workers_gpu0', '8_workers_gpu1', '8_workers_both_gpus', '16_workers_both_gpus', '0_workers_gpu0', '0_workers_gpu1', '0_workers_both_gpus', '0_workers_gpu0_one_cpu', '0_workers_gpu1_one_cpu', '0_workers_both_gpus_one_cpu', '0_workers_no_gpus']
+    descriptions = ['8_workers_gpu0', '8_workers_gpu1', '8_workers_both_gpus', '16_workers_both_gpus', '0_workers_gpu0', '0_workers_gpu1', '0_workers_both_gpus', '0_workers_no_gpus']
     dir = dirname(dirname(abspath(__file__)))
     save_directory = dir + '/result_analysis/rollout_results/volta1_{}_iters'.format(num_iters)
     if not os.path.exists(save_directory):
@@ -50,7 +50,7 @@ def get_data(trained_model_descr, model_ids, directory, num_iters):
     aggregated_results = [get_data_models(names[i], aggregated_names[i], trained_model_descr, model_ids, directory, num_iters, save_directory) for i in range(0, len(descriptions))]
 
     model_names = ['model {}'.format(i) for i in model_ids]
-    vars = ['average_model_time_per_episode', 'average_steps_per_episode', 'average_model_time_per_step', 'average_reward_per_episode', 'min_reward', 'max_reward']
+    vars = ['average_model_time_per_episode_ms', 'average_steps_per_episode', 'average_model_time_per_step_ms', 'average_reward_per_episode', 'min_reward', 'max_reward']
 
     if not os.path.exists(dir + '/result_analysis/rollout_results/volta1_{}_iters/graphs/'.format(num_iters)):
         os.mkdir(dir + '/result_analysis/rollout_results/volta1_{}_iters/graphs/'.format(num_iters))
@@ -62,13 +62,14 @@ def get_data(trained_model_descr, model_ids, directory, num_iters):
             var_values_list.append(var_values)
             title = var + ' per model {} {} iters'.format(descriptions[desc], num_iters)
             save_name= dir + '/result_analysis/rollout_results/volta1_'+ str(num_iters) + '_iters/graphs/' + var + '_per_model_' + descriptions[desc] +'_' +str(num_iters) + '_iters.png'
-            plot_results.plot_bars(model_names, var_values, title, save_name)
+            #plot_results.plot_bars(model_names, var_values, title, save_name, y_label='time (ms)')
 
 
         title_combined = var + ' per model all configurations'
         save_name_combined = dir + '/result_analysis/rollout_results/volta1_' + str(num_iters) + '_iters/graphs/'+ var + '_per_model_all_descr.png' 
-        plot_results.plot_bars_multiple(model_names, var_values_list, title_combined, save_name_combined, ['rollout {}'.format(desc) for desc in descriptions])
+        plot_results.plot_bars_multiple(model_names, var_values_list, title_combined, save_name_combined, ['rollout {}'.format(desc) for desc in descriptions], y_label ='time (ms)')
 
+    '''
     for i in range(0, len(descriptions)-1):
         for j in range(i+1, len(descriptions)):
             speedups = []
@@ -91,7 +92,7 @@ def get_data(trained_model_descr, model_ids, directory, num_iters):
                 writer.writeheader()
                 for row in speedups:
                     writer.writerow(row)  
-
+    '''
 def main():
     directory = sys.argv[1]
     num_iters = sys.argv[2]

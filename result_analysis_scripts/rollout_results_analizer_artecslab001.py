@@ -10,7 +10,7 @@ import numpy as np
 from os.path import dirname, abspath
 import plot_results
 
-def get_data_models(name, aggregated_results_name, model_ids, directory, save_directory):
+def get_data_models(name, aggregated_results_name, model_ids, directory, save_directory, mil=False):
     os.chdir(directory)
     aggregated_results = []
     cont = 0
@@ -20,7 +20,11 @@ def get_data_models(name, aggregated_results_name, model_ids, directory, save_di
         aggregated_data_this_model ={}
         aggregated_data_this_model['model'] = i
         aggregated_data_this_model['average_steps_per_episode'] = df['steps'].mean()
-        aggregated_data_this_model['average_time_per_step_ms'] = df['step_time_ms'].mean()
+        if mil:
+            aggregated_data_this_model['average_time_per_step_ms'] = 1000*df['step_time_ms'].mean()
+        else:
+            aggregated_data_this_model['average_time_per_step_ms'] = df['step_time_ms'].mean()
+        
         aggregated_data_this_model['average_reward_per_episode'] = df['reward'].mean()
         aggregated_data_this_model['min_reward'] = df['reward'].min()
         aggregated_data_this_model['max_reward'] = df['reward'].max()
@@ -38,14 +42,15 @@ def get_data_models(name, aggregated_results_name, model_ids, directory, save_di
     return aggregated_results
 
 def get_data(model_ids, directory):
-    descriptions = ['edgetpu', 'quant_tflite', 'tflite']
+    descriptions = ['edgetpu', 'tflite', 'rllib']
     dir = dirname(dirname(abspath(__file__)))
     save_directory = dir + '/result_analysis/rollout_results/artecslab001'
     if not os.path.exists(save_directory):
         os.mkdir(save_directory)
     names = ['model{}_' + i + '.csv' for i in descriptions]
     aggregated_names = ['results_artecslab001_{}.csv'.format(i) for i in descriptions]
-    aggregated_results = [get_data_models(names[i], aggregated_names[i], model_ids, directory, save_directory) for i in range(0, len(descriptions))]
+    aggregated_results = [get_data_models(names[i], aggregated_names[i], model_ids, directory, save_directory) for i in range(0, len(descriptions)-1)]
+    aggregated_results.append(get_data_models(names[2], aggregated_names[2], model_ids, directory, save_directory, mil=True))
 
     model_names = ['model {}'.format(i) for i in model_ids]
     vars = list(aggregated_results[0][0].keys())
@@ -65,7 +70,7 @@ def get_data(model_ids, directory):
 
         title_combined = var + ' per model all configurations'
         save_name_combined = dir + '/result_analysis/rollout_results/artecslab001/graphs/'+ var + '_per_model_all_descr.png' 
-        plot_results.plot_bars_multiple(model_names, var_values_list, title_combined, save_name_combined, ['edgetpu (int8)', 'quant_tflite (int8)', 'tflite (float32)'], y_label='Time(ms)')
+        plot_results.plot_bars_multiple(model_names, var_values_list, title_combined, save_name_combined, ['edgetpu (int8)', 'tflite (float32)', 'RLlib (0 workers no gpus)'], y_label='Time(ms)')
 
     '''
     for i in range(0, len(descriptions)-1):

@@ -62,10 +62,10 @@ def plot_bars_multiple(bars, values, name, save_name, labels,y_label=None):
     width = 0.8/len(values)
     for i in range (0, len(values)):
         rects=ax.bar(pos + width*i, values[i], label = labels[i], width = width)
-        #ax.bar_label(rects, labels=['{:.2f}'.format(float(j)) for j in values[i]], padding=1)
+        ax.bar_label(rects, labels=['{:.2f}'.format(float(j)) for j in values[i]], padding=1)
     plt.xticks(pos + len(values)*width/2-width/2, bars)
     ax.set_title(name, loc='center', wrap=True)
-    plt.legend(loc='upper center', bbox_to_anchor=(0.85,-0.3), ncol =1)
+    plt.legend(loc='upper center', bbox_to_anchor=(0.5,-0.2), ncol =3)
     #plt.legend(loc='best')
     fig.autofmt_xdate(rotation=25)
     if y_label is not None:
