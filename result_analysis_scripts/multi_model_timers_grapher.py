@@ -20,14 +20,11 @@ def get_data_models(directory, model_names, model_names_short):
         aggregated_data_this_model = {}
         aggregated_data_this_model['model'] = model_names_short[i]
         
-        
         aggregated_data_this_model['mean_time_this_iter_s'] = df['time_this_iter_s'].mean()
         aggregated_data_this_model['mean_learn_time_s'] = 0.001*df['timers/learn_time_ms'].mean()
         aggregated_data_this_model['mean_sample_time_ms'] = df['timers/sample_time_ms'].mean()
         aggregated_data_this_model['mean_load_time_ms'] = df['timers/load_time_ms'].mean()
         aggregated_data_this_model['mean_update_time_ms'] = df['timers/update_time_ms'].mean()
-        
-
         
         aggregated_data_this_model['mean_cpu_util_percent'] = df['perf/cpu_util_percent'].mean()
         aggregated_data_this_model['mean_ram_util_percent'] = df['perf/ram_util_percent'].mean()
@@ -44,8 +41,6 @@ def get_data(directory, model_names_short, model_ids, it_ini, it_fin):
     
     vars = ['mean_time_this_iter_s','mean_sample_time_ms','mean_load_time_ms','mean_learn_time_s','mean_update_time_ms', 'mean_cpu_util_percent', 'mean_ram_util_percent']
     y_labels=['time(s)', 'time(ms)', 'time(ms)', 'time(s)', 'time(ms)', '% util', '% util']
-    #vars = ['mean_cpu_util_percent', 'mean_ram_util_percent']
-    #y_labels = []
     
     for i in range(len(vars)):
         var_values = [[aggregated_results_list[k][j][vars[i]] for j in range(0,len(model_names_short))] for k in range(0, len(model_ids))]
@@ -57,15 +52,12 @@ def main():
     directory = sys.argv[1]
     it_ini = int(sys.argv[2])
     it_fin = int(sys.argv[3])
+
+    # List with model ids (for example, '[1,3,4]')
     model_ids_str = sys.argv[4]
     model_ids = model_ids_str[1:len(model_ids_str)-1].split(',')
-    #model_options_str = sys.argv[5]
-    #model_options= model_options_str[1:len(model_options_str)-1].split(',')
-    #model_names_short=[]
-    #for gpu in ['gpu0', 'gpu1', 'both_gpus']:
-        #for option in model_options:
-            #model_names_short.append('{}_{}'.format(gpu, option))
-
+   
+    # List with model description (for example, '[gpu0_8_workers,gpu1_driver_16_workers]')
     model_names_short_str = sys.argv[5]
     model_names_short = model_names_short_str[1:len(model_names_short_str)-1].split(',')
     get_data(directory, model_names_short, model_ids, it_ini, it_fin)        
