@@ -10,3 +10,134 @@ El presente repositorio contiene el código necesario para llevar a cabo diferen
 
 La memoria del proyecto contiene información detallada acerca de todo el proceso de experimentación que se lleva a cabo y de los resultados obtenidos. Además, se incluye una guía de uso de los principales scripts que componen este repositorio. Hay que tener en cuenta que los experimentos se realizan en un servidor que, entre otros recursos, cuenta con dos GPUs y los scripts están adaptados para este propósito.
 
+# Uso de los principales scripts
+
+El código ha sido probado y ejecutado con éxito en un entorno \textit{Python 3.7.3} con las siguientes librerías instaladas:
+
+  - `Ray 1.1.0`
+  - `Tensorflow 2.4.1`
+  - `Gym 0.18.0`
+  
+Además, para obtener métricas relativas al uso de las GPUs ha sido necesario instalar la biblioteca `gputil` y para obtener la representación gráfica y en ficheros de los datos se emplean las bibliotecas `matplotlib` y `pandas`.
+## Script de entrenamiento 
+Proporcionamos un *script* `train_ppo.py` con el que se pueden realizar varios experimentos de entrenamiento para los seis modelos con los que trabajamos. El *script* contiene, aparte de la función `main` tres funciones auxiliares:
+
+  - `gpu_options(gpu_opt)`: establece las GPUs que se mostrarán visibles al proceso y por tanto podrán ser utilizadas para el entrenamiento. Recibe en `gpu_opt` un *string* indicando la configuración deseada: `gpu0` para usar únicamente la GPU con identificador 0 (RTX en el servdior *volta1*, `gpu1` para usar únicamente la GPU con identificador 1 (Tesla-v100 en *volta1*), `none` para no usar ninguna de ellas y `both` para usar las dos. Para ello, se establece el valor de la variable de entorno del sistema `CUDA_VISIBLE_DEVICES` con los identificadores de las GPUs que queremos que sean visibles en cada caso.
+    
+  - `get_config(model)`: Devuelve un diccionario con la configuración de un agente para cada uno de los seis modelos propuestos en la tabla \ref{tab:modelos}, que se especifican con un entero con valores entre 1 y 6 mediante el parámetro `model`.
+  - `full_train(checkpoint_root, agent, n_iter, save_file, n_ini = 0, header = True, restore = False, restore_dir = None)`: ejecuta una serie de iteraciones de entrenamiento sobre un agente dado y devuelve una estructura con sus resultados, además de guardar esta información en unos ficheros `.csv` y `.json`. Recibe como argumentos:
+    * `checkpoint_root`: *string* con la ruta del directorio en el que queremos que se vayan guardando los *checkpoints* para cada paso de entrenamiento realizado.
+    * `agent`: agente de *RLlib* sobre el que ejecutar las iteraciones de entrenamiento.
+    * `n_iter`: entero indicando el número de iteraciones de entrenamiento del algoritmo concreto del agente (en nuestro caso PPO) a ejecutar.
+    * `save_file`: ruta al archivo en el que queremos que se almacenen la información del entrenamiento. Mediante un *string* indicamos la ruta a un archivo sin extensión, así se crearán dos archivos en esa ruta con extensiones `.json` y `.csv`.
+    * `n_ini`: entero indicando el número de la última iteración realizada, su valor por defecto es 0, indicando que aun no hemos comenzado a entrenar ese modelo.
+    * `header`: booleano indicando si hay que añadir la línea de cabecera con los nombres de las columnas al fichero `.csv` con los datos del entrenamiento. Su valor por defecto es `True` indicando que si es la primera vez que estamos entrenando el modelo sí hay que añadir esta línea.
+    * `restore`: booleano indicando si debemos establecer o no el estado del agente desde un *checkpoint*, cuya ruta indicamos en `restore_dir`. Su valor por defecto es `False`.
+    * `restore_dir`: ruta del *checkpoint* desde el que queremos restaurar el estado del agente, si hemos indicado `restore=True`.
+  
+La función devuelve una lista con un diccionario por cada iteración de entrenamiento, en el que se incluyen el número de iteración, las recompensas mínima, media y máxima de los episodios, la longitud media de los episodios, el tiempo de la fase de aprendizaje en ms Y el tiempo total en segundos de esa iteración. Estos mismos datos se guardan en los ficheros `.json` y `.csv` antes mencionados.
+
+Así, para ejecutar uno de los experimentos de entrenamiento ejecutamos el *script* indicando pudiendo indicarle el valor de varios argumentos:
+  - `-m, --model`: entero (1-6) indicando el identificador del modelo a entrenar.
+  - `-g, --gpu`: string con los valores `gpu0, gpu1, none, both` indicando la configuración de GPUs con las que realizar el entrenamiento.
+  - `-d, --driver-gpus`: número de GPUs que se asignarán al driver (`config[num_gpus]`), puede ser un número decimal. El resto se repartirán a partes iguales entre los *workers*.
+  - `-w, --workers`: número de *workers* que se crearán en el algortimo para recoger experiencias del entorno.
+  - `-s, --save-name`: ruta del fichero, sin extensión, en el que se guardarán los datos de entrenamiento en formatos `.json` y `.csv`.
+  - `-i, --iters`: número de iteraciones de entrenamiento a ejecutar.
+  - `-c, --cpus`: número de CPUs que indicamos a *Ray* en su inicialización. Su valor por defecto es `None`, que indica que *Ray* usará todas las que encuentre disponibles.
+  - `-a, --set-affinity`: conjunto con los identificadores de las CPUs a las que queremos restringir la ejecución con `sched_setaffinity`. Su valor por defecto es el conjunto vacío (`{}`), que indica que no forzamos a que el programa se ejecute en unas CPUs concretas.
+  `-r, --restore _dir`: dirección del *chekpoint* desde el que queremos resturar el estado del agente. Su valor por defecto es `None` que indica que no queremos restaurar desde ningún *checkpoint*.
+    
+Además de realizar las iteraciones de entrenamiento indicadas, la ejecución de este *script* mueve los ficheros con las métricas que reporta Ray (y que por defecto se guardan en un directorio dentro de `~/ray\_results` cuyo nombre viene dado por el *timestamp* del momento en que se inicia la ejecución) y los almacena en un directorio dentro de la carpeta `ray\_results` del proyecto y con el nombre indicado por `save_name`. Además, también copia el fichero `params.pkl` de este directorio en el que se guardan los *checkpoints*, pues luego será necesario que este ahí para la ejecución de inferencias.
+
+Por ejemplo, podemos ejecutar 1000 iteraciones de enyrenamiento para el modelo 3 usando sólo la GPU 0 del sistema, con 0.001 GPUs para el *driver* y 4 *workers* que se reparten el resto de la GPU con la siguiente instrucción:
+
+```
+$ python training_scripts/train_ppo.py --model=3 --gpu=gpu0 --driver-gpus=0.001 --workers=4 --save-name=model3_4_workers_gpu0 --iters=1000
+```
+Esto generará un directorio para cada *checkpoint* en `checkpoints/ppo/model3_4_workers_gpu0` y unos ficheros `training_results/ppo/model3_4_workers_gpu0.csv` y el mismo pero con extensión `.json` con algunos datos del entrenamiento. Además, tendremos en `ray_results/model3_4_workers_gpu0` los ficheros con las métricas que genera *Ray*.
+
+
+## Script de inferencia en RLlib
+El *script* `rollout_with_time.py` será el que utilicemos para realizar los experimentos de inferencia en \textit{RLlib}. Este \textit{script} es una modificación del que proporciona ya [*RLlib*](https://github.com/ray-project/ray/blob/master/rllib/rollout.py), al que se le añade el código necesario para medir y guardar datos sobre el tiempo que se toma en cada inferencia y para la gestión de los recursos disponibles. Así, podemos especificar una serie de parámetros cuando ejecutemos este *script*, algunos de los cuales proviene del *script* original de *RLlib*:
+- `checkpoint`: primer argumento, con él indicamos la ruta al checkpoint desde el que queremos restablecer el estado del agente para las inferencias.
+- `--run`: algoritmo con el que hemos entrenado al agente. En nuestro caso siempre tomará el valor `PPO`.
+- `--env`: entorno *Gym* sobre el que ejecutar las inferencias. En nuestro caso tomará el valor `Pong-v0`.
+- `--time-output`: ruta a un fichero `.csv` en el que se guardarán los datos de tiempo de las inferencias.
+- `--no-render`: es necesario añadir este argumento si no queremos que se muestre por pantalla las interacciones con el entorno. Nosotros siempre lo añadiremos.
+- `--gpu`: configuración de GPUs con las que realizar la inferencia. Puede tomar los valores `gpu0`, `gpu1`, `none` y `both`.
+- `--video-dir`: directorio en el que guardaremos videos de las interacciones. No lo utilizamos en este trabajo.
+- `--seteps`: número de pasos de inferencia a ejecutar. Si especificamos un número de episodios (con `--episodes`) el valor que le hayamos dado al número de pasos quedará sin efecto.
+- `--episodes`: número de episodios completos a ejecutar.
+- `--config`: diccionario con la configuración del agente, que sobreescribe a la cargada del fichero `params.pkl` del directorio del *checkpoint*.
+- `--save-info`: guarda información sobre las observaciones y las acciones de cada paso de inferencia. No lo utilizaremos.
+- `--use-shelve`: guarda la información sobre las observaciones y las acciones de cada paso de inferencia con formato *shelf*.
+- `--set-affinity`: Conjunto (*set*) con los identificadores de las CPUs a las que queremos restringir la ejecución.
+- `num-cpus-ray` número de CPUs que indicamos a *Ray* n su incicialización. Si su valor es 0 (lo es por defecto), le estamos indicando a \textit{Ray} que puede usar todas las que encuentre disponibles.
+\end{itemize}
+La configuración de recursos específica (número de \textit{workers}, GPUs para el \textit{driver}...) podemos especificarla en le parámetro \texttt{--config}. Un ejemplo de ejecución de inferencia sin GPUs y sin crear \textit{workers} sería:
+\begin{lstlisting}
+python rollout_with_time.py checkpoints/ppo/model1_gpu/checkpoint_11000/checkpoint-11000 --run=PPO --env=Pong-v0 --time-output=rollout_results/volta1/model1_no_gpus_0_workers.csv --no-render --gpu=none --episodes=10 --config='{"num_workers":0, "num_gpus_per_worker":0, "num_gpus":0}
+\end{lstlisting}
+\section{Scripts de exportación y cuantización de modelos para la TPU}
+Detallaremos ahora el contenido y manera de uso de los cuatro \textit{scripts} que llevan a cabo el proceso completo de creación de modelos de \textit{Tensorflow Lite} cuantizados que pueden ser ejecutados en la TPU.
+\subsection{Script de exportación de modelos}
+\label{appendix:model_saver}
+El \textit{script} \texttt{model\_saver.py}\footnote{\url{https://github.com/javigm98/Mejorando-el-Aprendizaje-Automatico/blob/main/model_saver.py}} parte de un modelo entrenado en \textit{RLlib} y exporta la red neuronal con la que se modela la política y su valor en formato \texttt{.h5}. Para ello, la ejecución del \textit{script} requiere dos parámetros en su llamada:
+\begin{itemize}
+    \item Dirección a un \textit{checkpoint} desde el que restableceremos el estado del agente a exportar.
+    \item Ruta donde queremos guardar el modelo en formato \texttt{.h5}. Se indicará la ruta al fichero y su nombre sin extensión.
+\end{itemize}
+El \textit{script} creará un agente PPO restaurando el estado del \textit{checkpoint} pasado como primer argumento y guardará el modelo de \textit{keras} que contiene la red neuronal de la política y su valor en un fichero con extensión \texttt{.h5} en la dirección especificada como segundo argumento. Por ejemplo, podemos obtener un fichero \texttt{.h5} del modelo 1 ejecutando:
+\begin{lstlisting}[language=sh]
+python model_saver.py checkpoints/ppo/model1_gpu/checkpoint_1000/checkpoint-1000 exported_models/model1
+\end{lstlisting}
+\subsection{Script de creación de modelos de Tensorflow Lite}
+\label{appendix:tflite_converter}
+El \textit{script} \texttt{tflite\_converter.py}\footnote{\url{https://github.com/javigm98/Mejorando-el-Aprendizaje-Automatico/blob/main/tflite_converter.py}} crea y guarda un modelo de \textit{Tensorflow Lite} a partir de un modelo de \textit{keras} previamente exportado en formato \texttt{.h5}. En su ejecución debemos indicarle el valor de dos arumentos:
+\begin{itemize}
+    \item Dirección del rachivo con extensión \texttt{.h5} donde se encuentra el modelo de \textit{keras} exportado.
+    \item Dirección del fichero \texttt{.tflite} con extensión donde queremos guardar el modelo resultante.
+\end{itemize}
+El \textit{script} creará un objeto \texttt{TFLiteConverter} que llevará a cabo la conversión a partir del modelo de \textit{keras} previamente cargado. Por ejemplo, para crear un modelo de \textit{Tensorflow Lite} del modelo 1 podemos ejecutar:
+\begin{lstlisting}[language=sh]
+python tflite_converter.py exported_models/model1.h5 exported_models/model1.tflite
+\end{lstlisting}
+\subsection{Script de creación de datasets para la cuantización}
+\label{appendix:dataset_creator}
+El \textit{script} \texttt{dataset\_creator.py}\footnote{\url{https://github.com/javigm98/Mejorando-el-Aprendizaje-Automatico/blob/main/dataset_creator.py}} crea y guarda conjuntos de imágenes del entorno con el que interaccionan los modelos y que toman como entradas y que son necesarias para que durante el proceso de cuantización se puedan estimar los rangos que toman los tensores de entrada y de salida del modelo (pues sus valores son variables) y el modelo cuantizado pierda la menor precisión posible respecto al original. Debemos especificar el valor de dos argumentos en la ejecución del \textit{script}:
+\begin{itemize}
+    \item Dimensión de las imágenes que guardaremos en el \textit{dataset}.
+    \item Ruta en la que se guardará el \textit{dataset} que se cree, sin extensión.
+\end{itemize}
+Una vez ejecutemos el \textit{script}, se creará un entorno como con el que interaccionan los agentes y se tomarán 500 imágenes obtenidas como observaciones tras ejecutar una serie de acciones aleatorias sobre este entorno. Estas imágenes se guardarán en un fichero con extensión \texttt{.npy} (pues son en realidad \textit{arrays} de \textit{Numpy}) en la ruta indicada como segundo argumento. Por ejemplo, podemos crear un \textit{dataset} con imágenes de dimensión ($168\times 168 \times 4)$, que podrían ser usado para la cuantización del modelo 4, ejecutando:
+\begin{lstlisting}[language=sh]
+python dataset_creator.py 168 datasets/dataset_model4
+\end{lstlisting}
+\subsection{Script de cuantización de modelos de Tensorflow Lite}
+\label{appendix:quantizer.py}
+El \textit{script} \texttt{quantizer.py}\footnote{\url{https://github.com/javigm98/Mejorando-el-Aprendizaje-Automatico/blob/main/quantizer.py}} lleva a cabo la creación de un modelo de \textit{Tensorflow Lite} cuantizado, con todos su parámetros como enteros de 8 bits, a partir de un modelo de \textit{keras} exportado en un fichero \texttt{.h5}. Para ello requerirá tres argumentos cuando lo ejecutemos:
+\begin{itemize}
+    \item Dirección a un dataset, con extensión \texttt{.npy} que contenga al menos 500 imágenes que podrían ser entrada del modelo que queremos convertir.
+    \item Dirección del modelo de \textit{keras} con extensión \texttt{.h5} que queremos convertir a \textit{Tensorflow Lite} y cuantizar.
+    \item Dirección del fichero con extensión \texttt{.tflite} donde queremos guardar el modelo convertido a \textit{Tensorflow Lite} y cuantizado.
+\end{itemize}
+El \textit{script} contiene la función \texttt{representative\_data\_gen()} que toma 100 imágenes del \textit{dataset} cargado de la ruta especificada como primer parámetro para poder estimar el rango de las entradas y las salidas del modelo y que la cuantización de estos valores sea correcta. Así, se carga el modelo de \textit{keras} guardado en la dirección del segundo argumento y se convierte a \textit{Tensorflow Lite} cuantizando los valores de sus parámetros, guardando el modelo resultante en el fichero especificado como tercer argumento. Por ejemplo, podemos crear una versión cuantizada del modelo 3 ejecutando:
+\begin{lstlisting}[language=sh]
+python quantizer.py datasets/dataset_model3.py exported_models/model3.h5 exported_models/model3_quant.tflite
+\end{lstlisting}
+\section{Scripts de inferencia de modelos de Tensorflow Lite}
+\label{appendix:rollout_coral}
+Detallaremos aquí como se implementan y el modo de uso de los \textit{scripts} \texttt{rollout\_coral.py}\footnote{\url{https://github.com/javigm98/Mejorando-el-Aprendizaje-Automatico/blob/main/exported_models/rollout_coral.py}} y \texttt{rollout\_tflite.py}\footnote{\url{https://github.com/javigm98/Mejorando-el-Aprendizaje-Automatico/blob/main/exported_models/rollout_tflite.py}} que ejecutan inferencias sobre modelos de \textit{Tensorflow Lite}, bien cuantizados o sin cuantizar sobre el acelerador Google Coral (\texttt{rollout\_coral.py}) o sobre las CPUs del sistema (\texttt{rollout\_tflite.py}). La estructura de estos dos \textit{scripts} es la misma, salvo que el primero de ellos al crear el intérprete del modelo de \textit{Tensorflow Lite} establece como delegado la TPU. Además, de la función principal de los \textit{scripts}, estos cuenta con dos funciones auxiliares:
+\begin{itemize}
+    \item \texttt{make\_interpreter(model\_file)}. Recibe como parámetro la ruta a un modelo guardado de \textit{Tensorflow Lite} y devuelve un objeto de la clase \texttt{Interpreter} sobre el que podremos ejecutar inferencias. En el caso del \textit{script} para la TPU, aquí se indica mediante un delegado que las ejecuciones se realizarán en este soporte.
+    \item \texttt{keep\_gping(steps, num\_steps, episodes, num\_episodes)}: Función que implementa la condición del bucle, indicando cuando debemos parar de ejecutar pasos de inferencia. Se toma directamente del \textit{script} de inferencia que nos proporciona \textit{RLlib} (\texttt{rollout.py}).
+\end{itemize}
+Cunado ejecutemos el \textit{script} podemos dar valor a una serie de parámetros que configuran las inferencias a realizar:
+\begin{itemize}
+    \item \texttt{-m, --model}: ruta al archivo \texttt{.tflite} en el que se encuentra el modelo de \textit{Tensorflow Lite} (cuantizado o no) sobre el que ejecutaremos las inferencias.
+    \item \texttt{-s, --steps}: pasos de inferencia que queremos ejecutar. Si damos valor a \texttt{--episodes} el número de pasos indicado no tendrá efecto.
+    \item \texttt{-e, --episodes}: número de epsiodios completos de inferencia a ejecutar. Si indicamos su valor, el de \texttt{--steps} queda sin efecto.
+    \item \texttt{-o, --output}: ruta a un archivo \texttt{.csv} en el que guardaremos los datos relativos a la ejecución de las inferencias (tiempos, pasos por episodio, recompensas...).
+\end{itemize}
+Cuando ejecutamos cualesquiera de los dos \textit{scripts} en primer lugar se crea el intérprete para el modelo de \textit{Tensorflow Lite} indicdo. Seguidamente se crea un entorno con \texttt{wrap\_deepmind} con \texttt{Pong-v0} como base, y de aquí será de donde se toman las iteraciones. Ahora, se itera mientras no hayamos completado el número total de episodios (o mientras no hayamos completado el número total de pasos en caso de no haber indicado un número de episodios a ejecutar) y en cada paso de iteración se toma una imagen del entorno, se coloca como tensor de entrada del intérprete del modelo, se invoca al modelo y se obtiene el valor del tensor de salida. De la salida de la política, se toma el índice con el valor más alto y esa será la siguiente acción, que se realiza sobre el entorno, obteniéndose así una nueva observación y comenzando nuevamente el proceso (básicamente es la misma idea que se sigue en el \textit{script} \texttt{rollout.py} de \textit{RLlib}.
