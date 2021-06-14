@@ -78,7 +78,7 @@ El *script* [`rollout_with_time.py`](https://github.com/javigm98/Mejorando-el-Ap
 
 La configuración de recursos específica (número de *workers*, GPUs para el *driver*...) podemos especificarla en le parámetro `--config`. Un ejemplo de ejecución de inferencia sin GPUs y sin crear *workers* sería:
 ```
-python rollout_with_time.py checkpoints/ppo/model1_gpu/checkpoint_11000/checkpoint-11000 --run=PPO --env=Pong-v0 --time-output=rollout_results/volta1/model1_no_gpus_0_workers.csv --no-render --gpu=none --episodes=10 --config='{"num_workers":0, "num_gpus_per_worker":0, "num_gpus":0}
+$ python rollout_with_time.py checkpoints/ppo/model1_gpu/checkpoint_11000/checkpoint-11000 --run=PPO --env=Pong-v0 --time-output=rollout_results/volta1/model1_no_gpus_0_workers.csv --no-render --gpu=none --episodes=10 --config='{"num_workers":0, "num_gpus_per_worker":0, "num_gpus":0}
 ```
 ## Scripts de exportación y cuantización de modelos para la TPU
 Detallaremos ahora el contenido y manera de uso de los cuatro *scripts* que llevan a cabo el proceso completo de creación de modelos de *Tensorflow Lite* cuantizados que pueden ser ejecutados en la TPU.
