@@ -60,8 +60,9 @@ def plot_bars_multiple(bars, values, name, save_name, labels,y_label=None):
     fig, ax =plt.subplots()
     pos =np.arange(len(bars))
     width = 0.8/len(values)
+    colors=['gray', 'orange', 'green']
     for i in range (0, len(values)):
-        rects=ax.bar(pos + width*i, values[i], label = labels[i], width = width)
+        rects=ax.bar(pos + width*i, values[i], label = labels[i], width = width, color=colors[i])
         ax.bar_label(rects, labels=['{:.2f}'.format(float(j)) for j in values[i]], padding=1)
     plt.xticks(pos + len(values)*width/2-width/2, bars)
     ax.set_title(name, loc='center', wrap=True)

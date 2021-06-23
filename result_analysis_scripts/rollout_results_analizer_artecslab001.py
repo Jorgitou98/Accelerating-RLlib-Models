@@ -42,15 +42,16 @@ def get_data_models(name, aggregated_results_name, model_ids, directory, save_di
     return aggregated_results
 
 def get_data(model_ids, directory):
-    descriptions = ['edgetpu', 'tflite', 'rllib']
+    descriptions = ['rllib', 'tflite', 'edgetpu']
     dir = dirname(dirname(abspath(__file__)))
     save_directory = dir + '/result_analysis/rollout_results/artecslab001'
     if not os.path.exists(save_directory):
         os.mkdir(save_directory)
     names = ['model{}_' + i + '.csv' for i in descriptions]
     aggregated_names = ['results_artecslab001_{}.csv'.format(i) for i in descriptions]
-    aggregated_results = [get_data_models(names[i], aggregated_names[i], model_ids, directory, save_directory) for i in range(0, len(descriptions)-1)]
-    aggregated_results.append(get_data_models(names[2], aggregated_names[2], model_ids, directory, save_directory, mil=True))
+    aggregated_results=[get_data_models(names[0], aggregated_names[0], model_ids, directory, save_directory, mil=True)]
+    for i in range(1, len(descriptions)):
+        aggregated_results.append(get_data_models(names[i], aggregated_names[i], model_ids, directory, save_directory))
 
     model_names = ['model {}'.format(i) for i in model_ids]
     vars = list(aggregated_results[0][0].keys())
@@ -70,7 +71,7 @@ def get_data(model_ids, directory):
 
         title_combined = var + ' per model all configurations'
         save_name_combined = dir + '/result_analysis/rollout_results/artecslab001/graphs/'+ var + '_per_model_all_descr.png' 
-        plot_results.plot_bars_multiple(model_names, var_values_list, title_combined, save_name_combined, ['edgetpu (int8)', 'tflite (float32)', 'RLlib (0 workers no gpus)'], y_label='Time(ms)')
+        plot_results.plot_bars_multiple(model_names, var_values_list, title_combined, save_name_combined, ['RLlib (0 workers no gpus)', 'tflite (float32)', 'edgetpu (int8)'], y_label='Time(ms)')
 
     '''
     for i in range(0, len(descriptions)-1):
