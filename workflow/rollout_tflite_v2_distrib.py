@@ -85,8 +85,8 @@ def main():
   print('Note: The first inference on Edge TPU is slow because it includes',
         'loading the model into Edge TPU memory.')
 
-  steps=0
-  episodes = 0
+  #steps=0
+  #episodes = 0
   timing_results=[]
 
   done = False
@@ -114,14 +114,15 @@ def main():
   this_step = 0
   steps = 0
   episodes = 0
-
+  reward_avg = 0
   while keep_going(steps, num_steps, episodes, num_episodes):
+    env.seed(0)
     image = env.reset()
 
     image = prep.transform(image)
 
-    print(image.shape)
-    print(image)
+    #print(image.shape)
+    #print(image)
 
     done = False
     steps_this_episode = 0
@@ -131,17 +132,18 @@ def main():
     #image = np.array([int(i == image) for i in range(500)])
     #print(image)
     #print(image)
-  
-    #if input_details[0]['dtype'] == np.float32:
-      #image=np.float32(image)
-    #if input_details[0]['dtype'] == np.uint8:
-      #image=np.uint8(image)
 
     image = image[np.newaxis, ...]
+    #if input_details[0]['dtype'] == np.float32:
+      #image=np.float32(image)
+    if input_details[0]['dtype'] == np.uint8:
+      image=np.uint8(image)
+      #print(image)
   
     interpreter.set_tensor(input_details[0]['index'], image)
   
     this_step = 0
+    reward_episode = 0
 
     while not done and keep_going(steps, args.steps, episodes, args.episodes):
       env.render()
@@ -158,15 +160,13 @@ def main():
   
       #dist = policy.dist_class(softmaxed, policy.model)
       dist = policy.dist_class(output_data, policy.model)
-      print(dist)
       action = int(dist.sample())
   
-      #action = np.argmax(output_data)
-      print(action)
         
       # Step environment and get reward and done information
       image, reward, done, prob = env.step(action)
-      print("Step {} --- Applied action {}. Returned observation: {}. Returned reward: {}. Probability: {}".format( this_step, action, image, reward, prob["prob"] ))
+      reward_episode += reward
+      #print("Step {} --- Applied action {}. Returned observation: {}. Returned reward: {}. Probability: {}".format( this_step, action, image, reward, prob["prob"] ))
       this_step = this_step+1
   
       image = prep.transform(image)
@@ -175,18 +175,25 @@ def main():
       #image = image[np.newaxis, ...]
       #image = np.array([int(i == image) for i in range(500)])
       #print(image)
-        
+      image = image[np.newaxis, ...]
+      
       #if input_details[0]['dtype'] == np.float32:
         #image=np.float32(image)
-      #if input_details[0]['dtype'] == np.uint8:
-        #image=np.uint8(image)
-      image = image[np.newaxis, ...]
-          
+      if input_details[0]['dtype'] == np.uint8:
+        image=np.uint8(image)
+ 
       interpreter.set_tensor(input_details[0]['index'], image)
 
       steps += 1
       ######################
       steps_this_episode += 1
+    episodes += 1
+    reward_avg += reward_episode
+    #with open('./resultsTaxi/resultsTFLite32', 'a') as f:
+      #f.write("Number of episode: {}\n".format(episodes))
+      #f.write("Reward: {}\n".format(reward_episode))
+  reward_avg /= episodes
+  print("Reward avg:", reward_avg)
 
 if __name__ == '__main__':
   main()

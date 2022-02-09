@@ -465,10 +465,12 @@ def rollout(agent,
     steps_per_episode =[]
     model_times_per_episode = []
     results = []
+    reward_avg = 0
     ######################################
     while keep_going(steps, num_steps, episodes, num_episodes):
         mapping_cache = {}  # in case policy_agent_mapping is stochastic
         saver.begin_rollout()
+        env.seed(0)
         obs = env.reset()
         agent_states = DefaultMapping(
             lambda agent_id: state_init[mapping_cache[agent_id]])
@@ -511,13 +513,13 @@ def rollout(agent,
                             prev_action=prev_actions[agent_id],
                             prev_reward=prev_rewards[agent_id],
                             policy_id=policy_id)
-                        print("Observation: {}".format(a_obs))
+                        #print("Observation: {}".format(a_obs))
                         prep = get_preprocessor(env.observation_space)(env.observation_space)
                         a_obs = prep.transform(a_obs)
-                        print("Observation transformed: {}".format(a_obs))
+                        #print("Observation transformed: {}".format(a_obs))
                         #logits, _ = agent.get_policy().model.from_batch({"obs": np.array([a_obs])})
                         logits, _ = agent.get_policy().model.__call__({"obs": np.array([a_obs])})
-                        print("logits: {}".format(logits))
+                        #print("logits: {}".format(logits))
                         #with agent.get_policy().get_session().graph.as_default():
                         #with agent.get_policy().model.context() as sess:
                         #with agent.get_policy().get_session() as sess:
@@ -533,8 +535,7 @@ def rollout(agent,
                     prev_actions[agent_id] = a_action
             action = action_dict
             env.render()
-            input("Action was {}. Press to continue...".format(action))
-            #print(action)
+            #input("Action was {}. Press to continue...".format(action))
 
             action = action if multiagent else action[_DUMMY_AGENT_ID]
             next_obs, reward, done, info = env.step(action)
@@ -574,12 +575,12 @@ def rollout(agent,
         results_this_episode['num_steps'] = steps_this_episode
         results_this_episode['average_model_time_per_step'] = this_episode_time/steps_this_episode
         results_this_episode['reward'] = reward_total
-       
         results.append(results_this_episode)
         ####################################################################
         
         if done:
             episodes += 1
+            reward_avg += reward_total
 
     ########################
     print("Episodes times:")
@@ -588,6 +589,8 @@ def rollout(agent,
     print("Average model time per episode: {}".format(sum(model_times_totals_per_episode)/episodes))
     print("Average model time per step: {}".format(sum(model_times_totals_per_episode)/sum(steps_per_episode)))
     print("Average steps per episode: {}".format(sum(steps_per_episode)/episodes))
+    reward_avg /= episodes
+    print("Average reward per episode: {}".format(reward_avg))
 
     with open(args.time_output, mode='w') as time_outfile:
         fieldnames = ['episode', 'total_model_time','num_steps', 'average_model_time_per_step', 'reward']
