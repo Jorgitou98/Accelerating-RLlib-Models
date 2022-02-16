@@ -32,7 +32,7 @@ python rollout_with_time.py checkpoints/ppo/model1_taxi/checkpoint_000009/checkp
 ```sh
 python quantizer8b.py dataset_taxi.npy exported_models/checkpoint-90 exported_models/checkpoint-90_quant.tflite
 ```
-6. Model quantization 16 bits
+7. Model quantization 16 bits
 
 ```sh
 python quantizer16b.py exported_models/checkpoint-90 exported_models/checkpoint-90_quant.tflite
