@@ -523,7 +523,7 @@ def rollout(agent,
                         #with agent.get_policy().get_session().graph.as_default():
                         #with agent.get_policy().model.context() as sess:
                         #with agent.get_policy().get_session() as sess:
-                        print(logits.eval(session=agent.get_policy().get_session()))
+                        print("Salida:", logits.eval(session=agent.get_policy().get_session()))
                         #tf.print(logits)
                     ########################
                     t1 = time.time()
@@ -535,7 +535,7 @@ def rollout(agent,
                     prev_actions[agent_id] = a_action
             action = action_dict
             env.render()
-            #input("Action was {}. Press to continue...".format(action))
+            input("Action was {}. Press to continue...".format(action))
 
             action = action if multiagent else action[_DUMMY_AGENT_ID]
             next_obs, reward, done, info = env.step(action)
