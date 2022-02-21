@@ -27,8 +27,13 @@ python rollout_tflite.py -m exported_models/taxi_9.tflite -s 10 -e 10
 ```sh
 python rollout_with_time.py checkpoints/ppo/model1_taxi/checkpoint_000009/checkpoint-9 --run=PPO --env=Taxi-v3 --time-output=rollout_results/volta1/model1_no_gpus_0_workers.csv --no-render --gpu=none --episodes=1000 --config='{"num_workers":1, "num_gpus_per_worker":0, "num_gpus":0, "explore":false}'
 ```
-6. Model quantization
+6. Model quantization 8 bits
 
 ```sh
-python quantizer.py dataset_taxi.npy exported_models/checkpoint-90 exported_models/checkpoint-90_quant.tflite
+python quantizer8b.py dataset_taxi.npy exported_models/checkpoint-90 exported_models/checkpoint-90_quant.tflite
+```
+7. Model quantization 16 bits
+
+```sh
+python quantizer16b.py exported_models/checkpoint-90 exported_models/checkpoint-90_quant.tflite
 ```
