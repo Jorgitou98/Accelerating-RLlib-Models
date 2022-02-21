@@ -1,23 +1,13 @@
 import sys
 
-dataset_dir = sys.argv[1]
-checkpoint_dir = sys.argv[2]
-tflite_dir= sys.argv[3]
+checkpoint_dir = sys.argv[1]
+tflite_dir= sys.argv[2]
 
-inputs = []
 import numpy as np
-with open(dataset_dir, 'rb') as f:
-    for _ in range(500):
-        inputs.append(np.load(f))
-print("20 loaded image: ", inputs[20])
 import tensorflow as tf 
-def representative_data_gen():
-    for data in inputs:
-        yield[tf.dtypes.cast(data, tf.float32)]
 
 converter = tf.compat.v1.lite.TFLiteConverter.from_saved_model(checkpoint_dir, input_arrays=['default_policy/obs'], output_arrays=['default_policy/model/fc_out/BiasAdd'])
 converter.optimizations = [tf.lite.Optimize.DEFAULT]
-converter.representative_dataset = representative_data_gen
 converter.target_spec.supported_ops = [tf.float16]
 tflite_model_quant= converter.convert()
 

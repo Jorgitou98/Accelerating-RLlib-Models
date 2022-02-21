@@ -158,9 +158,9 @@ def main():
       #print('Softmaxed:', softmaxed)
   
       #dist = policy.dist_class(softmaxed, policy.model)
-      dist = policy.dist_class(output_data, policy.model)
-      action = int(dist.sample())
-      #action = np.argmax(output_data)  
+      #dist = policy.dist_class(output_data, policy.model)
+      #action = int(dist.sample())
+      action = np.argmax(output_data)  
         
       # Step environment and get reward and done information
       image, reward, done, prob = env.step(action)
