@@ -136,8 +136,8 @@ def main():
     image = image[np.newaxis, ...]
     #if input_details[0]['dtype'] == np.float32:
       #image=np.float32(image)
-    if input_details[0]['dtype'] == np.uint8:
-      image=np.uint8(image)
+    #if input_details[0]['dtype'] == np.uint8:
+      #image=np.uint8(image)
       #print(image)
   
     interpreter.set_tensor(input_details[0]['index'], image)
@@ -179,8 +179,9 @@ def main():
       
       #if input_details[0]['dtype'] == np.float32:
         #image=np.float32(image)
-      if input_details[0]['dtype'] == np.uint8:
-        image=np.uint8(image)
+      #if input_details[0]['dtype'] == np.uint8:
+        #image=np.uint8(image)
+        #print(image)
  
       interpreter.set_tensor(input_details[0]['index'], image)
 
