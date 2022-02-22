@@ -37,3 +37,8 @@ python quantizer8b.py dataset_taxi.npy exported_models/checkpoint-90 exported_mo
 ```sh
 python quantizer16b.py exported_models/checkpoint-90 exported_models/checkpoint-90_quant.tflite
 ```
+8. Test with consecutive seeds given by episode number (used to compare models)
+
+```sh
+python rollout_tflite_sequenital_seeds.py --m exported_models/checkpoint-90_quant8_noinput.tflite -e 100
+```
