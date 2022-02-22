@@ -70,9 +70,6 @@ def main():
 
   input("Continue Enter...")
 
-  # Get image dim
-  dim = input_details[0]['shape'][1]
-
   # Create env
   #env = wrappers.wrap_deepmind(gym.make('Taxi-v3'), dim = dim)
   env = gym.make('Taxi-v3')
@@ -115,7 +112,9 @@ def main():
   steps = 0
   episodes = 0
   reward_avg = 0
+  rewards = []
   while keep_going(steps, num_steps, episodes, num_episodes):
+    env.seed(episodes)
     image = env.reset()
 
     image = prep.transform(image)
@@ -133,7 +132,8 @@ def main():
     #print(image)
 
     image = image[np.newaxis, ...]
-
+    #if input_details[0]['dtype'] == np.float32:
+      #image=np.float32(image)
     if input_details[0]['dtype'] == np.uint8:
       image=np.uint8(image)
       #print(image)
@@ -185,11 +185,14 @@ def main():
       ######################
       steps_this_episode += 1
     episodes += 1
+    if(reward_episode > -200):
+      rewards.append((episodes, reward_episode))
     reward_avg += reward_episode
     #with open('./resultsTaxi/resultsTFLite32', 'a') as f:
       #f.write("Number of episode: {}\n".format(episodes))
       #f.write("Reward: {}\n".format(reward_episode))
   reward_avg /= episodes
+  print("Rewards over -200:", rewards)
   print("Reward avg:", reward_avg)
 
 if __name__ == '__main__':
