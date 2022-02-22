@@ -9,7 +9,6 @@ import platform
 import tensorflow as tf
 from scipy.special import softmax
 
-#import ray.rllib.env.atari_wrappers as wrappers
 import ray.rllib.env.wrappers.atari_wrappers as wrappers
 from ray.rllib.models.preprocessors import get_preprocessor
 from ray.rllib.agents.ppo import PPOTrainer
@@ -74,43 +73,17 @@ def main():
   dim = input_details[0]['shape'][1]
 
   # Create env
-  #env = wrappers.wrap_deepmind(gym.make('Taxi-v3'), dim = dim)
   env = gym.make('Taxi-v3')
 
   prep = get_preprocessor(env.observation_space)(env.observation_space)
 
-  #env = wrappers.wrap_deepmind(env)
-  
   print('----INFERENCE TIME----')
   print('Note: The first inference on Edge TPU is slow because it includes',
         'loading the model into Edge TPU memory.')
 
-  #steps=0
-  #episodes = 0
   timing_results=[]
 
   done = False
-
-  #image = env.reset()
-
-  #image = prep.transform(image)
-
-  #print(image.shape)
-  #print(image)
-
-  #image = image[np.newaxis, ...]
-  #print(image)
-  #image = np.array([int(i == image) for i in range(500)])
-  #print(image)
-  #print(image)
-
-  #if input_details[0]['dtype'] == np.float32:
-    #image=np.float32(image)
-  #if input_details[0]['dtype'] == np.uint8:
-    #image=np.uint8(image)
-#
-  #interpreter.set_tensor(input_details[0]['index'], [image])
-#
   this_step = 0
   steps = 0
   episodes = 0
@@ -120,65 +93,47 @@ def main():
 
     image = prep.transform(image)
 
-    #print(image.shape)
-    #print(image)
-
     done = False
     steps_this_episode = 0
-  
-    #image = image[np.newaxis, ...]
-    #print(image)
-    #image = np.array([int(i == image) for i in range(500)])
-    #print(image)
-    #print(image)
 
     image = image[np.newaxis, ...]
 
     if input_details[0]['dtype'] == np.uint8:
       image=np.uint8(image)
-      #print(image)
-  
+
     interpreter.set_tensor(input_details[0]['index'], image)
-  
+
     this_step = 0
     reward_episode = 0
     while not done and keep_going(steps, args.steps, episodes, args.episodes):
       env.render()
-  
+
       #input("Press to continue...")
-  
+
       interpreter.invoke()
-  
+
       output_data = interpreter.get_tensor(output_details[0]['index'])
       print(output_data)
-  
-      #softmaxed = tf.nn.softmax(output_data)
-      #print('Softmaxed:', softmaxed)
-  
-      #dist = policy.dist_class(softmaxed, policy.model)
+
       #dist = policy.dist_class(output_data, policy.model)
       #action = int(dist.sample())
-      action = np.argmax(output_data)  
-        
+      action = np.argmax(output_data)
+
       # Step environment and get reward and done information
       image, reward, done, prob = env.step(action)
       reward_episode += reward
+
       #print("Step {} --- Applied action {}. Returned observation: {}. Returned reward: {}. Probability: {}".format( this_step, action, image, reward, prob["prob"] ))
       this_step = this_step+1
-  
+
       image = prep.transform(image)
-  
+
       # Place new image as the new model's input
-      #image = image[np.newaxis, ...]
-      #image = np.array([int(i == image) for i in range(500)])
-      #print(image)
+
       image = image[np.newaxis, ...]
-      
-      #if input_details[0]['dtype'] == np.float32:
-        #image=np.float32(image)
       if input_details[0]['dtype'] == np.uint8:
         image=np.uint8(image)
- 
+
       interpreter.set_tensor(input_details[0]['index'], image)
 
       steps += 1
@@ -186,9 +141,6 @@ def main():
       steps_this_episode += 1
     episodes += 1
     reward_avg += reward_episode
-    #with open('./resultsTaxi/resultsTFLite32', 'a') as f:
-      #f.write("Number of episode: {}\n".format(episodes))
-      #f.write("Reward: {}\n".format(reward_episode))
   reward_avg /= episodes
   print("Reward avg:", reward_avg)
 
