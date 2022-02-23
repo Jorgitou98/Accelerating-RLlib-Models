@@ -40,5 +40,5 @@ python quantizer16b.py exported_models/checkpoint-90 exported_models/checkpoint-
 8. Test with consecutive seeds given by episode number (used to compare models)
 
 ```sh
-python rollout_tflite_sequenital_seeds.py --m exported_models/checkpoint-90_quant8_noinput.tflite -e 100
+python rollout_tflite_sequential_seeds.py --m exported_models/checkpoint-90_quant8_noinput.tflite -e 100
 ```
