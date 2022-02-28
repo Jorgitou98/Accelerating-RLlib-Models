@@ -9,7 +9,6 @@ import platform
 import tensorflow as tf
 from scipy.special import softmax
 
-#import ray.rllib.env.atari_wrappers as wrappers
 import ray.rllib.env.wrappers.atari_wrappers as wrappers
 from ray.rllib.models.preprocessors import get_preprocessor
 from ray.rllib.agents.ppo import PPOTrainer
@@ -33,7 +32,7 @@ def main():
   parser = argparse.ArgumentParser(
       formatter_class=argparse.ArgumentDefaultsHelpFormatter)
   parser.add_argument(
-      '-m', '--model', required=True, help='File path of .tflite file.')
+      '-m', '--model', required=True, help='File path of first .tflite file.')
   parser.add_argument(
       '-i', '--input', required=False, help='Image to be classified.')
   parser.add_argument(
@@ -53,7 +52,7 @@ def main():
   num_episodes = int(args.episodes)
 
   ## Getting distrib
-  trainer = PPOTrainer(env="Taxi-v3", config={"framework": "tf2", "num_workers": 0})
+  trainer = PPOTrainer(env="Pong-v0", config={"framework": "tf2", "num_workers": 0})
   policy = trainer.get_policy()
   dist_class = policy.dist_class
   print(dist_class)
@@ -74,115 +73,81 @@ def main():
   dim = input_details[0]['shape'][1]
 
   # Create env
-  #env = wrappers.wrap_deepmind(gym.make('Taxi-v3'), dim = dim)
-  env = gym.make('Taxi-v3')
+  env = gym.make('Pong-v0')
+  env = wrappers.wrap_deepmind(env, dim=dim)
 
   prep = get_preprocessor(env.observation_space)(env.observation_space)
 
-  #env = wrappers.wrap_deepmind(env)
-  
   print('----INFERENCE TIME----')
   print('Note: The first inference on Edge TPU is slow because it includes',
         'loading the model into Edge TPU memory.')
 
-  #steps=0
-  #episodes = 0
   timing_results=[]
 
   done = False
-
-  #image = env.reset()
-
-  #image = prep.transform(image)
-
-  #print(image.shape)
-  #print(image)
-
-  #image = image[np.newaxis, ...]
-  #print(image)
-  #image = np.array([int(i == image) for i in range(500)])
-  #print(image)
-  #print(image)
-
-  #if input_details[0]['dtype'] == np.float32:
-    #image=np.float32(image)
-  #if input_details[0]['dtype'] == np.uint8:
-    #image=np.uint8(image)
-#
-  #interpreter.set_tensor(input_details[0]['index'], [image])
-#
   this_step = 0
   steps = 0
   episodes = 0
   reward_avg = 0
+  timing_results = []
   while keep_going(steps, num_steps, episodes, num_episodes):
     env.seed(0)
     image = env.reset()
 
     image = prep.transform(image)
 
-    #print(image.shape)
-    #print(image)
-
     done = False
     steps_this_episode = 0
-  
-    #image = image[np.newaxis, ...]
-    #print(image)
-    #image = np.array([int(i == image) for i in range(500)])
-    #print(image)
-    #print(image)
-
     image = image[np.newaxis, ...]
-    #if input_details[0]['dtype'] == np.float32:
-      #image=np.float32(image)
-    #if input_details[0]['dtype'] == np.uint8:
-      #image=np.uint8(image)
-      #print(image)
-  
+
+    print(input_details[0]['dtype'])
+    if input_details[0]['dtype'] == np.float32:
+        image=np.float32(image)
+    if input_details[0]['dtype'] == np.uint8:
+      image=np.uint8(image)
+
     interpreter.set_tensor(input_details[0]['index'], image)
-  
+
     this_step = 0
     reward_episode = 0
-
+    steps = 0
     while not done and keep_going(steps, args.steps, episodes, args.episodes):
-      env.render()
-  
+
+      #env.render()
+
       input("Press to continue...")
-  
+
+      start = time.perf_counter()
       interpreter.invoke()
-  
+      inference_time = time.perf_counter() - start
+      # We store inference time in ms
+      timing_results.append((episodes, steps, inference_time * 1000))
+
       output_data = interpreter.get_tensor(output_details[0]['index'])
       print(output_data)
-  
-      #softmaxed = tf.nn.softmax(output_data)
-      #print('Softmaxed:', softmaxed)
-  
-      #dist = policy.dist_class(softmaxed, policy.model)
+
       #dist = policy.dist_class(output_data, policy.model)
       #action = int(dist.sample())
-      action = np.argmax(output_data)  
-        
+      action = np.argmax(output_data)
+
       # Step environment and get reward and done information
       image, reward, done, prob = env.step(action)
       reward_episode += reward
+
       #print("Step {} --- Applied action {}. Returned observation: {}. Returned reward: {}. Probability: {}".format( this_step, action, image, reward, prob["prob"] ))
       this_step = this_step+1
-  
+
       image = prep.transform(image)
-  
+
       # Place new image as the new model's input
-      #image = image[np.newaxis, ...]
-      #image = np.array([int(i == image) for i in range(500)])
-      #print(image)
+
       image = image[np.newaxis, ...]
-      
-      #if input_details[0]['dtype'] == np.float32:
-        #image=np.float32(image)
-      #if input_details[0]['dtype'] == np.uint8:
-        #image=np.uint8(image)
-        #print(image)
- 
+
+      if input_details[0]['dtype'] == np.float32:
+        image=np.float32(image)
+      if input_details[0]['dtype'] == np.uint8:
+        image=np.uint8(image)
+
       interpreter.set_tensor(input_details[0]['index'], image)
 
       steps += 1
@@ -190,11 +155,10 @@ def main():
       steps_this_episode += 1
     episodes += 1
     reward_avg += reward_episode
-    #with open('./resultsTaxi/resultsTFLite32', 'a') as f:
-      #f.write("Number of episode: {}\n".format(episodes))
-      #f.write("Reward: {}\n".format(reward_episode))
   reward_avg /= episodes
   print("Reward avg:", reward_avg)
+  for episode, step, inference_time in timing_results:
+    print("Episode: {}, step {} -> Inference time: {}".format(episode, step, inference_time))
 
 if __name__ == '__main__':
   main()

@@ -76,7 +76,6 @@ def main():
   # Create env
   #env = wrappers.wrap_deepmind(gym.make('Taxi-v3'), dim = dim)
   env = gym.make('Taxi-v3')
-
   prep = get_preprocessor(env.observation_space)(env.observation_space)
 
   #env = wrappers.wrap_deepmind(env)

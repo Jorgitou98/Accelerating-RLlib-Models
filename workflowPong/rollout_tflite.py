@@ -52,7 +52,7 @@ def main():
   num_episodes = int(args.episodes)
 
   ## Getting distrib
-  trainer = PPOTrainer(env="Taxi-v3", config={"framework": "tf2", "num_workers": 0})
+  trainer = PPOTrainer(env="Pong-v0", config={"framework": "tf2", "num_workers": 0})
   policy = trainer.get_policy()
   dist_class = policy.dist_class
   print(dist_class)
@@ -73,7 +73,8 @@ def main():
   dim = input_details[0]['shape'][1]
 
   # Create env
-  env = gym.make('Taxi-v3')
+  env = gym.make('Pong-v0')
+  env = wrappers.wrap_deepmind(env, dim=dim)
 
   prep = get_preprocessor(env.observation_space)(env.observation_space)
 
@@ -96,9 +97,11 @@ def main():
 
     done = False
     steps_this_episode = 0
-
     image = image[np.newaxis, ...]
 
+    print(input_details[0]['dtype'])
+    if input_details[0]['dtype'] == np.float32:
+        image=np.float32(image)
     if input_details[0]['dtype'] == np.uint8:
       image=np.uint8(image)
 
@@ -109,7 +112,7 @@ def main():
     steps = 0
     while not done and keep_going(steps, args.steps, episodes, args.episodes):
 
-      env.render()
+      #env.render()
 
       #input("Press to continue...")
 
@@ -138,6 +141,9 @@ def main():
       # Place new image as the new model's input
 
       image = image[np.newaxis, ...]
+
+      if input_details[0]['dtype'] == np.float32:
+        image=np.float32(image)
       if input_details[0]['dtype'] == np.uint8:
         image=np.uint8(image)
 

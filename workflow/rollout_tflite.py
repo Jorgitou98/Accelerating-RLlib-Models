@@ -88,6 +88,7 @@ def main():
   steps = 0
   episodes = 0
   reward_avg = 0
+  timing_results = []
   while keep_going(steps, num_steps, episodes, num_episodes):
     image = env.reset()
 
@@ -105,12 +106,18 @@ def main():
 
     this_step = 0
     reward_episode = 0
+    steps = 0
     while not done and keep_going(steps, args.steps, episodes, args.episodes):
+
       env.render()
 
       #input("Press to continue...")
 
+      start = time.perf_counter()
       interpreter.invoke()
+      inference_time = time.perf_counter() - start
+      # We store inference time in ms
+      timing_results.append((episodes, steps, inference_time * 1000))
 
       output_data = interpreter.get_tensor(output_details[0]['index'])
       print(output_data)
@@ -143,6 +150,8 @@ def main():
     reward_avg += reward_episode
   reward_avg /= episodes
   print("Reward avg:", reward_avg)
+  for episode, step, inference_time in timing_results:
+    print("Episode: {}, step {} -> Inference time: {}".format(episode, step, inference_time))
 
 if __name__ == '__main__':
   main()

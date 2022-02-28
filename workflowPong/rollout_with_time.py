@@ -534,7 +534,7 @@ def rollout(agent,
                     action_dict[agent_id] = a_action
                     prev_actions[agent_id] = a_action
             action = action_dict
-            env.render()
+            #env.render()
             input("Action was {}. Press to continue...".format(action))
 
             action = action if multiagent else action[_DUMMY_AGENT_ID]
