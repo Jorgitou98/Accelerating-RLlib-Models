@@ -29,7 +29,8 @@ python rollout_with_time.py checkpoints/ppo/model1_taxi/checkpoint_000009/checkp
 ```
 
 6. Creación de dataset representativo
-```python dataset_creator.py 168 datasets/dataset_model4
+```sh
+python dataset_creator.py 168 datasets/dataset_model4
 ```
 
 7. Model quantization 8 bits
